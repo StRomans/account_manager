@@ -15,6 +15,14 @@ export class CurrencyService {
 
   constructor(protected http: HttpClient) {}
 
+  create(currency: ICurrency): Observable<EntityResponseType> {
+    return this.http.post<ICurrency>(this.resourceUrl, currency, { observe: 'response' });
+  }
+
+  update(currency: ICurrency): Observable<EntityResponseType> {
+    return this.http.put<ICurrency>(this.resourceUrl, currency, { observe: 'response' });
+  }
+
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<ICurrency>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -22,5 +30,9 @@ export class CurrencyService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ICurrency[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 }

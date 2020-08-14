@@ -79,6 +79,82 @@ public class CurrencyResourceIT {
 
     @Test
     @Transactional
+    public void createCurrency() throws Exception {
+        int databaseSizeBeforeCreate = currencyRepository.findAll().size();
+        // Create the Currency
+        restCurrencyMockMvc.perform(post("/api/currencies").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(currency)))
+            .andExpect(status().isCreated());
+
+        // Validate the Currency in the database
+        List<Currency> currencyList = currencyRepository.findAll();
+        assertThat(currencyList).hasSize(databaseSizeBeforeCreate + 1);
+        Currency testCurrency = currencyList.get(currencyList.size() - 1);
+        assertThat(testCurrency.getLabel()).isEqualTo(DEFAULT_LABEL);
+        assertThat(testCurrency.getCode()).isEqualTo(DEFAULT_CODE);
+    }
+
+    @Test
+    @Transactional
+    public void createCurrencyWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = currencyRepository.findAll().size();
+
+        // Create the Currency with an existing ID
+        currency.setId(1L);
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restCurrencyMockMvc.perform(post("/api/currencies").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(currency)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Currency in the database
+        List<Currency> currencyList = currencyRepository.findAll();
+        assertThat(currencyList).hasSize(databaseSizeBeforeCreate);
+    }
+
+
+    @Test
+    @Transactional
+    public void checkLabelIsRequired() throws Exception {
+        int databaseSizeBeforeTest = currencyRepository.findAll().size();
+        // set the field null
+        currency.setLabel(null);
+
+        // Create the Currency, which fails.
+
+
+        restCurrencyMockMvc.perform(post("/api/currencies").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(currency)))
+            .andExpect(status().isBadRequest());
+
+        List<Currency> currencyList = currencyRepository.findAll();
+        assertThat(currencyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = currencyRepository.findAll().size();
+        // set the field null
+        currency.setCode(null);
+
+        // Create the Currency, which fails.
+
+
+        restCurrencyMockMvc.perform(post("/api/currencies").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(currency)))
+            .andExpect(status().isBadRequest());
+
+        List<Currency> currencyList = currencyRepository.findAll();
+        assertThat(currencyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllCurrencies() throws Exception {
         // Initialize the database
         currencyRepository.saveAndFlush(currency);
@@ -112,5 +188,68 @@ public class CurrencyResourceIT {
         // Get the currency
         restCurrencyMockMvc.perform(get("/api/currencies/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    public void updateCurrency() throws Exception {
+        // Initialize the database
+        currencyRepository.saveAndFlush(currency);
+
+        int databaseSizeBeforeUpdate = currencyRepository.findAll().size();
+
+        // Update the currency
+        Currency updatedCurrency = currencyRepository.findById(currency.getId()).get();
+        // Disconnect from session so that the updates on updatedCurrency are not directly saved in db
+        em.detach(updatedCurrency);
+        updatedCurrency
+            .label(UPDATED_LABEL)
+            .code(UPDATED_CODE);
+
+        restCurrencyMockMvc.perform(put("/api/currencies").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(updatedCurrency)))
+            .andExpect(status().isOk());
+
+        // Validate the Currency in the database
+        List<Currency> currencyList = currencyRepository.findAll();
+        assertThat(currencyList).hasSize(databaseSizeBeforeUpdate);
+        Currency testCurrency = currencyList.get(currencyList.size() - 1);
+        assertThat(testCurrency.getLabel()).isEqualTo(UPDATED_LABEL);
+        assertThat(testCurrency.getCode()).isEqualTo(UPDATED_CODE);
+    }
+
+    @Test
+    @Transactional
+    public void updateNonExistingCurrency() throws Exception {
+        int databaseSizeBeforeUpdate = currencyRepository.findAll().size();
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restCurrencyMockMvc.perform(put("/api/currencies").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(currency)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Currency in the database
+        List<Currency> currencyList = currencyRepository.findAll();
+        assertThat(currencyList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    public void deleteCurrency() throws Exception {
+        // Initialize the database
+        currencyRepository.saveAndFlush(currency);
+
+        int databaseSizeBeforeDelete = currencyRepository.findAll().size();
+
+        // Delete the currency
+        restCurrencyMockMvc.perform(delete("/api/currencies/{id}", currency.getId()).with(csrf())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+
+        // Validate the database contains one less item
+        List<Currency> currencyList = currencyRepository.findAll();
+        assertThat(currencyList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

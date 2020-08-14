@@ -23,7 +23,8 @@ public class Currency implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "label")
+    @NotNull
+    @Column(name = "label", nullable = false)
     private String label;
 
     @NotNull

@@ -10,6 +10,7 @@ import { ICurrency, Currency } from 'app/shared/model/currency.model';
 import { CurrencyService } from './currency.service';
 import { CurrencyComponent } from './currency.component';
 import { CurrencyDetailComponent } from './currency-detail.component';
+import { CurrencyUpdateComponent } from './currency-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class CurrencyResolve implements Resolve<ICurrency> {
@@ -46,6 +47,30 @@ export const currencyRoute: Routes = [
   {
     path: ':id/view',
     component: CurrencyDetailComponent,
+    resolve: {
+      currency: CurrencyResolve,
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'accountManagerApp.currency.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'new',
+    component: CurrencyUpdateComponent,
+    resolve: {
+      currency: CurrencyResolve,
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'accountManagerApp.currency.home.title',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/edit',
+    component: CurrencyUpdateComponent,
     resolve: {
       currency: CurrencyResolve,
     },

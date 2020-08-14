@@ -5,7 +5,8 @@
   "fields": [
     {
       "fieldName": "label",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "code",
@@ -19,7 +20,7 @@
   "service": "no",
   "entityTableName": "currency",
   "databaseType": "sql",
-  "readOnly": true,
+  "readOnly": false,
   "jpaMetamodelFiltering": false,
   "pagination": "no"
 }

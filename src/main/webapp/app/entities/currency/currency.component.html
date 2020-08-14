@@ -1,6 +1,13 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="accountManagerApp.currency.home.title">Currencies</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-currency" [routerLink]="['/currency/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="accountManagerApp.currency.home.createLabel">
+            Create a new Currency
+            </span>
+        </button>
     </h2>
 
     <jhi-alert-error></jhi-alert-error>
@@ -33,6 +40,19 @@
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/currency', currency.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(currency)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                             </button>
                         </div>
                     </td>

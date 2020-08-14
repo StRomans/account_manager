@@ -34,6 +34,41 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject(elemDefault);
       });
 
+      it('should create a Currency', () => {
+        const returnedFromService = Object.assign(
+          {
+            id: 0,
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign({}, returnedFromService);
+
+        service.create(new Currency()).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'POST' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
+      it('should update a Currency', () => {
+        const returnedFromService = Object.assign(
+          {
+            label: 'BBBBBB',
+            code: 'BBBBBB',
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign({}, returnedFromService);
+
+        service.update(expected).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'PUT' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
       it('should return a list of Currency', () => {
         const returnedFromService = Object.assign(
           {
@@ -51,6 +86,14 @@ describe('Service Tests', () => {
         req.flush([returnedFromService]);
         httpMock.verify();
         expect(expectedResult).toContainEqual(expected);
+      });
+
+      it('should delete a Currency', () => {
+        service.delete(123).subscribe(resp => (expectedResult = resp.ok));
+
+        const req = httpMock.expectOne({ method: 'DELETE' });
+        req.flush({ status: 200 });
+        expect(expectedResult);
       });
     });
 
