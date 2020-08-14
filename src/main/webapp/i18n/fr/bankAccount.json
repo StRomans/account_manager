@@ -2,22 +2,22 @@
   "accountManagerApp": {
     "bankAccount": {
       "home": {
-        "title": "BankAccounts",
-        "createLabel": "Créer un nouveau Bank Account",
-        "createOrEditLabel": "Créer ou éditer un Bank Account",
-        "notFound": "Aucun Bank Account trouvé"
+        "title": "Compte Bancaire",
+        "createLabel": "Créer un nouveau compte bancaire",
+        "createOrEditLabel": "Créer ou éditer un compte bancaire",
+        "notFound": "Aucun compte bancaire trouvé"
       },
-      "created": "Un nouveau Bank Account a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Bank Account avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Bank Account avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouveau compte bancaire a été créé avec l'identifiant {{ param }}",
+      "updated": "Le compte bancaire avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le compte bancaire avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Bank Account {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer le compte bancaire {{ id }} ?"
       },
       "detail": {
-        "title": "Bank Account"
+        "title": "Compte bancaire"
       },
-      "label": "Label",
-      "currency": "Currency"
+      "label": "Nom",
+      "currency": "Devise"
     }
   }
 }

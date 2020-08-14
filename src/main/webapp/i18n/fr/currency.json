@@ -2,21 +2,21 @@
   "accountManagerApp": {
     "currency": {
       "home": {
-        "title": "Currencies",
-        "createLabel": "Créer un nouveau Currency",
-        "createOrEditLabel": "Créer ou éditer un Currency",
-        "notFound": "Aucun Currency trouvé"
+        "title": "Devises",
+        "createLabel": "Ajouter une nouvelle devise",
+        "createOrEditLabel": "Ajouter ou Modifier une devise",
+        "notFound": "Aucune devise trouvée"
       },
-      "created": "Un nouveau Currency a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Currency avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Currency avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle Devise a été créée avec l'identifiant {{ param }}",
+      "updated": "La devise avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La devise avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Currency {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la Devise {{ id }} ?"
       },
       "detail": {
-        "title": "Currency"
+        "title": "Devise"
       },
-      "label": "Label",
+      "label": "Nom complet",
       "code": "Code"
     }
   }
