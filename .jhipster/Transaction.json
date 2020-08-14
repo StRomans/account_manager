@@ -1,0 +1,52 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "bankAccount",
+      "otherEntityName": "bankAccount",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "label",
+      "otherEntityRelationshipName": "transaction"
+    },
+    {
+      "relationshipName": "subCategory",
+      "otherEntityName": "subCategory",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "label",
+      "otherEntityRelationshipName": "transaction"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "label",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "identifier",
+      "fieldType": "String",
+      "fieldValidateRules": []
+    }
+  ],
+  "changelogDate": "20200814154329",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "no",
+  "entityTableName": "transaction",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}

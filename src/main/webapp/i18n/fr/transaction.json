@@ -1,0 +1,27 @@
+{
+  "accountManagerApp": {
+    "transaction": {
+      "home": {
+        "title": "Transactions",
+        "createLabel": "Créer une nouvelle transaction",
+        "createOrEditLabel": "Créer ou éditer une transaction",
+        "notFound": "Aucune transaction trouvée"
+      },
+      "created": "Une nouvelle transaction a été créée avec l'identifiant {{ param }}",
+      "updated": "La transaction avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "Le transaction avec l'identifiant {{ param }} a été supprimée",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer la transaction {{ id }} ?"
+      },
+      "detail": {
+        "title": "Transaction"
+      },
+      "date": "Date",
+      "amount": "Montant",
+      "label": "Description",
+      "identifier": "Identifiant bancaire",
+      "bankAccount": "Compte bancaire",
+      "subCategory": "Sous-catégorie"
+    }
+  }
+}

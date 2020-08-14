@@ -1,0 +1,98 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-transaction-heading" jhiTranslate="accountManagerApp.transaction.home.createOrEditLabel">Create or edit a Transaction</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.transaction.date" for="field_date">Date</label>
+                    <div class="input-group">
+                        <input id="field_date" type="text" class="form-control" name="date" ngbDatepicker #dateDp="ngbDatepicker" formControlName="date"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('date')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.transaction.amount" for="field_amount">Amount</label>
+                    <input type="number" class="form-control" name="amount" id="field_amount"
+                           formControlName="amount"/>
+                    <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('amount')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('amount')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.transaction.label" for="field_label">Label</label>
+                    <input type="text" class="form-control" name="label" id="field_label"
+                           formControlName="label"/>
+                    <div *ngIf="editForm.get('label')!.invalid && (editForm.get('label')!.dirty || editForm.get('label')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('label')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.transaction.identifier" for="field_identifier">Identifier</label>
+                    <input type="text" class="form-control" name="identifier" id="field_identifier"
+                           formControlName="identifier"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.transaction.bankAccount" for="field_bankAccount">Bank Account</label>
+                    <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount">
+                        <option *ngIf="!editForm.get('bankAccount')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('bankAccount')!.invalid && (editForm.get('bankAccount')!.dirty || editForm.get('bankAccount')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('bankAccount')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.transaction.subCategory" for="field_subCategory">Sub Category</label>
+                    <select class="form-control" id="field_subCategory" name="subCategory" formControlName="subCategory">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="subCategoryOption.id === editForm.get('subCategory')!.value?.id ? editForm.get('subCategory')!.value : subCategoryOption" *ngFor="let subCategoryOption of subcategories; trackBy: trackById">{{ subCategoryOption.label }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
