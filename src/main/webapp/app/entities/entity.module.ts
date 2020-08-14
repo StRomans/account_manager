@@ -16,6 +16,10 @@ import { RouterModule } from '@angular/router';
         path: 'category',
         loadChildren: () => import('./category/category.module').then(m => m.AccountManagerCategoryModule),
       },
+      {
+        path: 'sub-category',
+        loadChildren: () => import('./sub-category/sub-category.module').then(m => m.AccountManagerSubCategoryModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

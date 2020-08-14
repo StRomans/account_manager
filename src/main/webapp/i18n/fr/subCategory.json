@@ -1,0 +1,23 @@
+{
+  "accountManagerApp": {
+    "subCategory": {
+      "home": {
+        "title": "Sous-catégories",
+        "createLabel": "Créer une nouvelle sous-catégorie",
+        "createOrEditLabel": "Créer ou éditer une sous-catégorie",
+        "notFound": "Aucune sous-catégorie trouvée"
+      },
+      "created": "Une nouvelle sous-catégorie a été créée avec l'identifiant {{ param }}",
+      "updated": "La sous-catégorie avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La sous-catégorie avec l'identifiant {{ param }} a été supprimée",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer la sous-catégorie {{ id }} ?"
+      },
+      "detail": {
+        "title": "Sous-catégorie"
+      },
+      "label": "Nom",
+      "category": "Catégorie"
+    }
+  }
+}

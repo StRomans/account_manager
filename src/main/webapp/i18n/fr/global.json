@@ -10,6 +10,7 @@
         "bankAccount": "Comptes Bancaires",
         "currency": "Devises",
         "category": "Catégories",
+        "subCategory": "Sous-catégories",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
