@@ -19,7 +19,7 @@
       "date": "Date",
       "amount": "Montant",
       "label": "Description",
-      "identifier": "Identifiant bancaire",
+      "identifier": "Référence bancaire",
       "bankAccount": "Compte bancaire",
       "subCategory": "Sous-catégorie"
     }
