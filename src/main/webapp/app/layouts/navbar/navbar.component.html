@@ -7,6 +7,25 @@
         <fa-icon icon="bars"></fa-icon>
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
+        <ul class="navbar-nav mr-auto" *jhiHasAnyAuthority="'ROLE_USER'">
+            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="transaction-menu">
+                    <span>
+                        <fa-icon [fixedWidth]="true" icon="coins"></fa-icon>
+                        <span jhiTranslate="global.menu.data.manage">My Data</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="transaction-menu">
+                    <li>
+                        <a class="dropdown-item" routerLink="transactions" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <span jhiTranslate="global.menu.data.transactions">Consulter mes transactions</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+
         <ul class="navbar-nav ml-auto">
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
