@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "AccountManager",
+    "title": "Picsou Manager",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
     "menu": {
       "home": "Accueil",
@@ -89,7 +89,7 @@
       "id": "ID"
     },
     "ribbon": {
-      "dev": "Développement"
+      "dev": "Dev."
     },
     "item-count": "Affichage {{first}} - {{second}} de {{total}} items."
   },
@@ -141,5 +141,5 @@
       "not.image": "Le fichier doit être une image et non du type \"{{ fileType }}\""
     }
   },
-  "footer": "Ceci est votre pied de page"
+  "footer": ""
 }
