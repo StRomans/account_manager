@@ -52,6 +52,7 @@ public class CacheConfiguration {
             createCache(cm, fr.stromans.domain.User.class.getName() + ".persistentTokens");
             createCache(cm, fr.stromans.domain.BankAccount.class.getName());
             createCache(cm, fr.stromans.domain.Currency.class.getName());
+            createCache(cm, fr.stromans.domain.Category.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

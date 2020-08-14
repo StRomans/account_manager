@@ -1,0 +1,23 @@
+{
+  "accountManagerApp": {
+    "category": {
+      "home": {
+        "title": "Catégories",
+        "createLabel": "Créer une nouvelle catégorie",
+        "createOrEditLabel": "Créer ou éditer une catégorie",
+        "notFound": "Aucune catégorie trouvée"
+      },
+      "created": "Une nouvelle catégorie a été créé avec l'identifiant {{ param }}",
+      "updated": "La catégorie avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La catégorie avec l'identifiant {{ param }} a été supprimée",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer la catégorie {{ id }} ?"
+      },
+      "detail": {
+        "title": "Catégorie"
+      },
+      "label": "Nom",
+      "color": "Couleur"
+    }
+  }
+}

@@ -9,6 +9,7 @@
         "main": "Entities",
         "bankAccount": "Bank Account",
         "currency": "Currency",
+        "category": "Category",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
