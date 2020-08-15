@@ -1,15 +1,15 @@
 {
   "home": {
-    "title": "Welcome on Account Manager!",
-    "subtitle": "Few words to come...",
+    "title": "Welcome on TireLyre!",
+    "subtitle": "",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
-    "question": "If you encounter any issue using Account Manager:",
+    "question": "If you encounter any issue using TireLyre:",
     "link": {
       "bugtracker": "Bug tracker"
     },
-    "like": "If you like Account Manager, don't forget to give us a star on",
+    "like": "If you like TireLyre, don't forget to give us a star on",
     "github": "GitHub"
   }
 }

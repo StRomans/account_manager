@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Bienvenue sur ton Gestionnaire de compte !",
+    "title": "Bienvenue sur TireLyre !",
     "subtitle": "",
     "logged": {
       "message": "Vous êtes connecté en tant que \"{{username}}\"."
@@ -9,7 +9,7 @@
     "link": {
       "bugtracker": "Bug tracker"
     },
-    "like": "Si vous aimez le Gestionnaire de compte, donnez nous une étoile sur",
+    "like": "Si vous aimez TireLyre, donnez nous une étoile sur",
     "github": "GitHub "
   }
 }
