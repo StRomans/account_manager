@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "bank_account")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class BankAccount implements Serializable {
+public class BankAccount extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,3 +1,3 @@
-id;label;currency_id
-1;Compte courant;1
-2;Compte joint;1
+id;label;currency_id;created_by;last_modified_by
+1;Compte courant;1;user;user
+2;Compte joint;1;user;user
