@@ -5,8 +5,14 @@
     "menu": {
       "home": "Home",
       "data": {
-        "manage": "My data",
-        "transactions": "View my transactions"
+        "manage": {
+          "main": "My data",
+          "transactions": "View my transactions",
+          "bankAccount": "My Bank Account"
+        },
+        "classify": {
+          "main": "Classify"
+        }
       },
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {

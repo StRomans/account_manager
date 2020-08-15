@@ -1,12 +1,20 @@
 {
   "global": {
-    "title": "Picsou Manager",
+    "title": "Gestionnaire de comptes",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
     "menu": {
       "home": "Accueil",
       "data": {
-        "manage": "Mes données",
-        "transactions": "Consulter mes transactions"
+        "manage": {
+          "main": "Alimenter",
+          "transactions": "Consulter mes transactions",
+          "bankAccount": "Mes comptes"
+        },
+        "classify": {
+          "main": "Classer",
+          "category": "Catégories",
+          "subCategory": "Sous-catégories"
+        }
       },
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {

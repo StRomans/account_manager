@@ -1,15 +1,15 @@
 {
   "home": {
-    "title": "Bienvenue sur Picsou Manager !",
-    "subtitle": "Laïus d'introduction à venir...",
+    "title": "Bienvenue sur ton Gestionnaire de compte !",
+    "subtitle": "",
     "logged": {
       "message": "Vous êtes connecté en tant que \"{{username}}\"."
     },
     "question": "Si vous rencontrez des difficultés : ",
     "link": {
-      "bugtracker": "Picsou Manager bug tracker"
+      "bugtracker": "Bug tracker"
     },
-    "like": "Si vous aimez Picsou Manager, donnez nous une étoile sur",
+    "like": "Si vous aimez le Gestionnaire de compte, donnez nous une étoile sur",
     "github": "GitHub "
   }
 }

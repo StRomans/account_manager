@@ -11,14 +11,43 @@
             <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="transaction-menu">
                     <span>
-                        <fa-icon [fixedWidth]="true" icon="coins"></fa-icon>
-                        <span jhiTranslate="global.menu.data.manage">My Data</span>
+                        <fa-icon [fixedWidth]="true" icon="plus"></fa-icon>
+                        <span jhiTranslate="global.menu.data.manage.main">My Data</span>
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="transaction-menu">
                     <li>
-                        <a class="dropdown-item" routerLink="transactions" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <span jhiTranslate="global.menu.data.transactions">Consulter mes transactions</span>
+                        <a class="dropdown-item" routerLink="bank-account" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.data.manage.bankAccount">Comptes bancaires</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="transaction" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.data.manage.transactions">Consulter mes transactions</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="classify-menu">
+                    <span>
+                        <fa-icon [fixedWidth]="true" icon="map-signs"></fa-icon>
+                        <span jhiTranslate="global.menu.data.classify.main">Classify</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="classify-menu">
+                    <li>
+                        <a class="dropdown-item" routerLink="category" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.data.classify.category">Gérer mes catégories</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="sub-category" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.data.classify.subCategory">Gérer mes sous-catégories</span>
                         </a>
                     </li>
                 </ul>

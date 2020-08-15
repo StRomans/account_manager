@@ -1,15 +1,15 @@
 {
   "home": {
-    "title": "Welcome on Picsou Manager!",
+    "title": "Welcome on Account Manager!",
     "subtitle": "Few words to come...",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
-    "question": "If you encounter any issue using Picsou Manager:",
+    "question": "If you encounter any issue using Account Manager:",
     "link": {
-      "bugtracker": "Picsou Manager bug tracker"
+      "bugtracker": "Bug tracker"
     },
-    "like": "If you like Picsou Manager, don't forget to give us a star on",
+    "like": "If you like Account Manager, don't forget to give us a star on",
     "github": "GitHub"
   }
 }
