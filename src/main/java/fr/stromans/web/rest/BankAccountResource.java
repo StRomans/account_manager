@@ -1,16 +1,20 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.BankAccount;
-import fr.stromans.repository.BankAccountRepository;
+import fr.stromans.security.AuthoritiesConstants;
+import fr.stromans.security.SecurityUtils;
+import fr.stromans.service.BankAccountService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
+import fr.stromans.service.dto.BankAccountCriteria;
+import fr.stromans.service.BankAccountQueryService;
 
+import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +28,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class BankAccountResource {
 
     private final Logger log = LoggerFactory.getLogger(BankAccountResource.class);
@@ -34,10 +37,13 @@ public class BankAccountResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final BankAccountRepository bankAccountRepository;
+    private final BankAccountService bankAccountService;
 
-    public BankAccountResource(BankAccountRepository bankAccountRepository) {
-        this.bankAccountRepository = bankAccountRepository;
+    private final BankAccountQueryService bankAccountQueryService;
+
+    public BankAccountResource(BankAccountService bankAccountService, BankAccountQueryService bankAccountQueryService) {
+        this.bankAccountService = bankAccountService;
+        this.bankAccountQueryService = bankAccountQueryService;
     }
 
     /**
@@ -53,7 +59,7 @@ public class BankAccountResource {
         if (bankAccount.getId() != null) {
             throw new BadRequestAlertException("A new bankAccount cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        BankAccount result = bankAccountRepository.save(bankAccount);
+        BankAccount result = bankAccountService.save(bankAccount);
         return ResponseEntity.created(new URI("/api/bank-accounts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +80,7 @@ public class BankAccountResource {
         if (bankAccount.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        BankAccount result = bankAccountRepository.save(bankAccount);
+        BankAccount result = bankAccountService.save(bankAccount);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bankAccount.getId().toString()))
             .body(result);
@@ -83,12 +89,34 @@ public class BankAccountResource {
     /**
      * {@code GET  /bank-accounts} : get all the bankAccounts.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of bankAccounts in body.
      */
     @GetMapping("/bank-accounts")
-    public List<BankAccount> getAllBankAccounts() {
-        log.debug("REST request to get all BankAccounts");
-        return bankAccountRepository.findAll();
+    public ResponseEntity<List<BankAccount>> getAllBankAccounts(BankAccountCriteria criteria) {
+        log.debug("REST request to get BankAccounts by criteria: {}", criteria);
+
+        if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            String loggedUser = SecurityUtils.getCurrentUserLogin().get();
+            StringFilter createdByLoggerUser = new StringFilter();
+            createdByLoggerUser.setEquals(loggedUser);
+
+            criteria.setCreatedBy(createdByLoggerUser);
+        }
+        List<BankAccount> entityList = bankAccountQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /bank-accounts/count} : count all the bankAccounts.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/bank-accounts/count")
+    public ResponseEntity<Long> countBankAccounts(BankAccountCriteria criteria) {
+        log.debug("REST request to count BankAccounts by criteria: {}", criteria);
+        return ResponseEntity.ok().body(bankAccountQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -100,7 +128,7 @@ public class BankAccountResource {
     @GetMapping("/bank-accounts/{id}")
     public ResponseEntity<BankAccount> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
-        Optional<BankAccount> bankAccount = bankAccountRepository.findById(id);
+        Optional<BankAccount> bankAccount = bankAccountService.findOne(id);
         return ResponseUtil.wrapOrNotFound(bankAccount);
     }
 
@@ -113,7 +141,7 @@ public class BankAccountResource {
     @DeleteMapping("/bank-accounts/{id}")
     public ResponseEntity<Void> deleteBankAccount(@PathVariable Long id) {
         log.debug("REST request to delete BankAccount : {}", id);
-        bankAccountRepository.deleteById(id);
+        bankAccountService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

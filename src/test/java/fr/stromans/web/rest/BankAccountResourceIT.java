@@ -4,6 +4,9 @@ import fr.stromans.AccountManagerApp;
 import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.Currency;
 import fr.stromans.repository.BankAccountRepository;
+import fr.stromans.service.BankAccountService;
+import fr.stromans.service.dto.BankAccountCriteria;
+import fr.stromans.service.BankAccountQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +39,12 @@ public class BankAccountResourceIT {
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
+
+    @Autowired
+    private BankAccountService bankAccountService;
+
+    @Autowired
+    private BankAccountQueryService bankAccountQueryService;
 
     @Autowired
     private EntityManager em;
@@ -176,6 +185,154 @@ public class BankAccountResourceIT {
             .andExpect(jsonPath("$.id").value(bankAccount.getId().intValue()))
             .andExpect(jsonPath("$.label").value(DEFAULT_LABEL));
     }
+
+
+    @Test
+    @Transactional
+    public void getBankAccountsByIdFiltering() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        Long id = bankAccount.getId();
+
+        defaultBankAccountShouldBeFound("id.equals=" + id);
+        defaultBankAccountShouldNotBeFound("id.notEquals=" + id);
+
+        defaultBankAccountShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultBankAccountShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultBankAccountShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultBankAccountShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLabelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        // Get all the bankAccountList where label equals to DEFAULT_LABEL
+        defaultBankAccountShouldBeFound("label.equals=" + DEFAULT_LABEL);
+
+        // Get all the bankAccountList where label equals to UPDATED_LABEL
+        defaultBankAccountShouldNotBeFound("label.equals=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLabelIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        // Get all the bankAccountList where label not equals to DEFAULT_LABEL
+        defaultBankAccountShouldNotBeFound("label.notEquals=" + DEFAULT_LABEL);
+
+        // Get all the bankAccountList where label not equals to UPDATED_LABEL
+        defaultBankAccountShouldBeFound("label.notEquals=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLabelIsInShouldWork() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        // Get all the bankAccountList where label in DEFAULT_LABEL or UPDATED_LABEL
+        defaultBankAccountShouldBeFound("label.in=" + DEFAULT_LABEL + "," + UPDATED_LABEL);
+
+        // Get all the bankAccountList where label equals to UPDATED_LABEL
+        defaultBankAccountShouldNotBeFound("label.in=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLabelIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        // Get all the bankAccountList where label is not null
+        defaultBankAccountShouldBeFound("label.specified=true");
+
+        // Get all the bankAccountList where label is null
+        defaultBankAccountShouldNotBeFound("label.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllBankAccountsByLabelContainsSomething() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        // Get all the bankAccountList where label contains DEFAULT_LABEL
+        defaultBankAccountShouldBeFound("label.contains=" + DEFAULT_LABEL);
+
+        // Get all the bankAccountList where label contains UPDATED_LABEL
+        defaultBankAccountShouldNotBeFound("label.contains=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLabelNotContainsSomething() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        // Get all the bankAccountList where label does not contain DEFAULT_LABEL
+        defaultBankAccountShouldNotBeFound("label.doesNotContain=" + DEFAULT_LABEL);
+
+        // Get all the bankAccountList where label does not contain UPDATED_LABEL
+        defaultBankAccountShouldBeFound("label.doesNotContain=" + UPDATED_LABEL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByCurrencyIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Currency currency = bankAccount.getCurrency();
+        bankAccountRepository.saveAndFlush(bankAccount);
+        Long currencyId = currency.getId();
+
+        // Get all the bankAccountList where currency equals to currencyId
+        defaultBankAccountShouldBeFound("currencyId.equals=" + currencyId);
+
+        // Get all the bankAccountList where currency equals to currencyId + 1
+        defaultBankAccountShouldNotBeFound("currencyId.equals=" + (currencyId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultBankAccountShouldBeFound(String filter) throws Exception {
+        restBankAccountMockMvc.perform(get("/api/bank-accounts?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(bankAccount.getId().intValue())))
+            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)));
+
+        // Check, that the count call also returns 1
+        restBankAccountMockMvc.perform(get("/api/bank-accounts/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultBankAccountShouldNotBeFound(String filter) throws Exception {
+        restBankAccountMockMvc.perform(get("/api/bank-accounts?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restBankAccountMockMvc.perform(get("/api/bank-accounts/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
+    }
+
     @Test
     @Transactional
     public void getNonExistingBankAccount() throws Exception {
@@ -188,7 +345,7 @@ public class BankAccountResourceIT {
     @Transactional
     public void updateBankAccount() throws Exception {
         // Initialize the database
-        bankAccountRepository.saveAndFlush(bankAccount);
+        bankAccountService.save(bankAccount);
 
         int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
 
@@ -231,7 +388,7 @@ public class BankAccountResourceIT {
     @Transactional
     public void deleteBankAccount() throws Exception {
         // Initialize the database
-        bankAccountRepository.saveAndFlush(bankAccount);
+        bankAccountService.save(bankAccount);
 
         int databaseSizeBeforeDelete = bankAccountRepository.findAll().size();
 
