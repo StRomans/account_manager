@@ -18,6 +18,10 @@
                         <a [routerLink]="['/currency', bankAccount.currency?.id, 'view']">{{ bankAccount.currency?.code }}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="accountManagerApp.bankAccount.owner">Owner</span></dt>
+                <dd>
+                    {{ bankAccount.owner?.login }}
+                </dd>
             </dl>
 
             <button type="submit"

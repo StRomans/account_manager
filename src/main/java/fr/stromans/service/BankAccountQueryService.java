@@ -92,6 +92,10 @@ public class BankAccountQueryService extends QueryService<BankAccount> {
                 specification = specification.and(buildSpecification(criteria.getCurrencyId(),
                     root -> root.join(BankAccount_.currency, JoinType.LEFT).get(Currency_.id)));
             }
+            if (criteria.getOwnerId() != null) {
+                specification = specification.and(buildSpecification(criteria.getOwnerId(),
+                    root -> root.join(BankAccount_.owner, JoinType.LEFT).get(User_.id)));
+            }
             if (criteria.getCreatedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getCreatedBy(), BankAccount_.createdBy));
             }

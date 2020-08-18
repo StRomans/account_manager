@@ -1,13 +1,16 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.BankAccount;
+import fr.stromans.domain.User;
 import fr.stromans.security.AuthoritiesConstants;
 import fr.stromans.security.SecurityUtils;
 import fr.stromans.service.BankAccountService;
+import fr.stromans.service.UserService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 import fr.stromans.service.dto.BankAccountCriteria;
 import fr.stromans.service.BankAccountQueryService;
 
+import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -41,9 +44,12 @@ public class BankAccountResource {
 
     private final BankAccountQueryService bankAccountQueryService;
 
-    public BankAccountResource(BankAccountService bankAccountService, BankAccountQueryService bankAccountQueryService) {
+    private final UserService userService;
+
+    public BankAccountResource(BankAccountService bankAccountService, BankAccountQueryService bankAccountQueryService, UserService userService) {
         this.bankAccountService = bankAccountService;
         this.bankAccountQueryService = bankAccountQueryService;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +65,7 @@ public class BankAccountResource {
         if (bankAccount.getId() != null) {
             throw new BadRequestAlertException("A new bankAccount cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
         BankAccount result = bankAccountService.save(bankAccount);
         return ResponseEntity.created(new URI("/api/bank-accounts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -97,11 +104,11 @@ public class BankAccountResource {
         log.debug("REST request to get BankAccounts by criteria: {}", criteria);
 
         if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            String loggedUser = SecurityUtils.getCurrentUserLogin().get();
-            StringFilter createdByLoggerUser = new StringFilter();
-            createdByLoggerUser.setEquals(loggedUser);
-
-            criteria.setCreatedBy(createdByLoggerUser);
+            String currentLogin = SecurityUtils.getCurrentUserLogin().get();
+            User loggedUser = userService.getUserWithAuthoritiesByLogin(currentLogin).get();
+            LongFilter ownerIdFilter = new LongFilter();
+            ownerIdFilter.setEquals(loggedUser.getId());
+            criteria.setOwnerId(ownerIdFilter);
         }
         List<BankAccount> entityList = bankAccountQueryService.findByCriteria(criteria);
         return ResponseEntity.ok().body(entityList);

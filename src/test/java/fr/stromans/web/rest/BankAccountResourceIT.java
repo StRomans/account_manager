@@ -3,6 +3,7 @@ package fr.stromans.web.rest;
 import fr.stromans.AccountManagerApp;
 import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.Currency;
+import fr.stromans.domain.User;
 import fr.stromans.repository.BankAccountRepository;
 import fr.stromans.service.BankAccountService;
 import fr.stromans.service.dto.BankAccountCriteria;
@@ -73,6 +74,11 @@ public class BankAccountResourceIT {
             currency = TestUtil.findAll(em, Currency.class).get(0);
         }
         bankAccount.setCurrency(currency);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        bankAccount.setOwner(user);
         return bankAccount;
     }
     /**
@@ -94,6 +100,11 @@ public class BankAccountResourceIT {
             currency = TestUtil.findAll(em, Currency.class).get(0);
         }
         bankAccount.setCurrency(currency);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        bankAccount.setOwner(user);
         return bankAccount;
     }
 
@@ -297,6 +308,22 @@ public class BankAccountResourceIT {
 
         // Get all the bankAccountList where currency equals to currencyId + 1
         defaultBankAccountShouldNotBeFound("currencyId.equals=" + (currencyId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByOwnerIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        User owner = bankAccount.getOwner();
+        bankAccountRepository.saveAndFlush(bankAccount);
+        Long ownerId = owner.getId();
+
+        // Get all the bankAccountList where owner equals to ownerId
+        defaultBankAccountShouldBeFound("ownerId.equals=" + ownerId);
+
+        // Get all the bankAccountList where owner equals to ownerId + 1
+        defaultBankAccountShouldNotBeFound("ownerId.equals=" + (ownerId + 1));
     }
 
     /**

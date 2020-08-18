@@ -25,6 +25,7 @@
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.bankAccount.label">Label</span></th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.bankAccount.currency">Currency</span></th>
+                    <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.bankAccount.owner">Owner</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -36,6 +37,9 @@
                         <div *ngIf="bankAccount.currency">
                             <a [routerLink]="['/currency', bankAccount.currency?.id, 'view']" >{{ bankAccount.currency?.code }}</a>
                         </div>
+                    </td>
+                    <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                        {{ bankAccount.owner?.login }}
                     </td>
                     <td class="text-right">
                         <div class="btn-group">

@@ -9,6 +9,15 @@
       "relationshipValidateRules": ["required"],
       "otherEntityField": "code",
       "otherEntityRelationshipName": "bankAccount"
+    },
+    {
+      "relationshipName": "owner",
+      "otherEntityName": "user",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "login",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "bankAccount"
     }
   ],
   "fields": [

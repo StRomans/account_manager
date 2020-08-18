@@ -24,6 +24,8 @@ public class BankAccountCriteria implements Serializable, Criteria {
 
     private LongFilter currencyId;
 
+    private LongFilter ownerId;
+
     private StringFilter createdBy;
 
     private InstantFilter createdDate;
@@ -39,6 +41,7 @@ public class BankAccountCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.label = other.label == null ? null : other.label.copy();
         this.currencyId = other.currencyId == null ? null : other.currencyId.copy();
+        this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
         this.createdBy = other.createdBy == null ? null : other.createdBy.copy();
         this.createdDate = other.createdDate == null ? null : other.createdDate.copy();
         this.lastModifiedBy = other.lastModifiedBy == null ? null : other.lastModifiedBy.copy();
@@ -72,6 +75,14 @@ public class BankAccountCriteria implements Serializable, Criteria {
 
     public void setCurrencyId(LongFilter currencyId) {
         this.currencyId = currencyId;
+    }
+
+    public LongFilter getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(LongFilter ownerId) {
+        this.ownerId = ownerId;
     }
 
     public StringFilter getCreatedBy() {
@@ -120,6 +131,7 @@ public class BankAccountCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(label, that.label) &&
             Objects.equals(currencyId, that.currencyId) &&
+            Objects.equals(ownerId, that.ownerId) &&
             Objects.equals(createdBy, that.createdBy) &&
             Objects.equals(createdDate, that.createdDate) &&
             Objects.equals(lastModifiedBy, that.lastModifiedBy) &&
@@ -132,6 +144,7 @@ public class BankAccountCriteria implements Serializable, Criteria {
         id,
         label,
         currencyId,
+        ownerId,
         createdBy,
         createdDate,
         lastModifiedBy,
@@ -146,6 +159,7 @@ public class BankAccountCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (label != null ? "label=" + label + ", " : "") +
                 (currencyId != null ? "currencyId=" + currencyId + ", " : "") +
+                (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
                 (createdBy != null ? "createdBy=" + createdBy + ", " : "") +
                 (createdDate != null ? "createdDate=" + createdDate + ", " : "") +
                 (lastModifiedBy != null ? "lastModifiedBy=" + lastModifiedBy + ", " : "") +

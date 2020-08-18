@@ -9,6 +9,10 @@ import { IBankAccount, BankAccount } from 'app/shared/model/bank-account.model';
 import { BankAccountService } from './bank-account.service';
 import { ICurrency } from 'app/shared/model/currency.model';
 import { CurrencyService } from 'app/entities/currency/currency.service';
+import { IUser, User } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
+
+type SelectableEntity = ICurrency | IUser;
 
 @Component({
   selector: 'jhi-bank-account-update',
@@ -17,16 +21,20 @@ import { CurrencyService } from 'app/entities/currency/currency.service';
 export class BankAccountUpdateComponent implements OnInit {
   isSaving = false;
   currencies: ICurrency[] = [];
+  users: IUser[] = [];
+  defaultOwner: IUser = new User();
 
   editForm = this.fb.group({
     id: [],
     label: [null, [Validators.required]],
     currency: [null, Validators.required],
+    owner: [null, null],
   });
 
   constructor(
     protected bankAccountService: BankAccountService,
     protected currencyService: CurrencyService,
+    protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -34,8 +42,8 @@ export class BankAccountUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ bankAccount }) => {
       this.updateForm(bankAccount);
-
       this.currencyService.query().subscribe((res: HttpResponse<ICurrency[]>) => (this.currencies = res.body || []));
+      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
     });
   }
 
@@ -44,7 +52,11 @@ export class BankAccountUpdateComponent implements OnInit {
       id: bankAccount.id,
       label: bankAccount.label,
       currency: bankAccount.currency,
+      owner: bankAccount.owner,
     });
+    if (!bankAccount.owner) {
+      this.userService.currentUser().subscribe((user: IUser) => this.editForm.patchValue({ owner: user }));
+    }
   }
 
   previousState(): void {
@@ -67,6 +79,7 @@ export class BankAccountUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       label: this.editForm.get(['label'])!.value,
       currency: this.editForm.get(['currency'])!.value,
+      owner: this.editForm.get(['owner'])!.value,
     };
   }
 
@@ -86,7 +99,7 @@ export class BankAccountUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: ICurrency): any {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 }

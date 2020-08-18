@@ -16,18 +16,21 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="label" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_bank_account_label" />
+                <constraints nullable="false" />
             </column>
             <column name="currency_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="owner_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp"/>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
 
@@ -52,6 +55,7 @@
             <column name="id" type="numeric"/>
             <column name="label" type="string"/>
             <column name="currency_id" type="numeric"/>
+            <column name="owner_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

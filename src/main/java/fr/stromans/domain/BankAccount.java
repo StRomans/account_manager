@@ -25,13 +25,18 @@ public class BankAccount extends AbstractAuditingEntity implements Serializable 
     private Long id;
 
     @NotNull
-    @Column(name = "label", nullable = false, unique = true)
+    @Column(name = "label", nullable = false)
     private String label;
 
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "bankAccounts", allowSetters = true)
     private Currency currency;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = "bankAccounts", allowSetters = true)
+    private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -66,6 +71,19 @@ public class BankAccount extends AbstractAuditingEntity implements Serializable 
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public BankAccount owner(User user) {
+        this.owner = user;
+        return this;
+    }
+
+    public void setOwner(User user) {
+        this.owner = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

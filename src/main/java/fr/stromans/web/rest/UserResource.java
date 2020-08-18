@@ -78,6 +78,17 @@ public class UserResource {
     }
 
     /**
+     * {@code GET /users/current} : get current user.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the current user.
+     */
+    @GetMapping("/users/current")
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        log.debug("REST request to get Current User");
+        return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthorities().map(UserDTO::new));
+    }
+
+    /**
      * {@code POST  /users}  : Creates a new user.
      * <p>
      * Creates a new user if the login and email are not already used, and sends an
