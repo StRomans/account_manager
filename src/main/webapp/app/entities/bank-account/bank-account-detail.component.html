@@ -18,8 +18,8 @@
                         <a [routerLink]="['/currency', bankAccount.currency?.id, 'view']">{{ bankAccount.currency?.code }}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="accountManagerApp.bankAccount.owner">Owner</span></dt>
-                <dd>
+                <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.bankAccount.owner">Owner</span></dt>
+                <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     {{ bankAccount.owner?.login }}
                 </dd>
             </dl>

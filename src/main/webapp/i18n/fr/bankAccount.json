@@ -2,7 +2,7 @@
   "accountManagerApp": {
     "bankAccount": {
       "home": {
-        "title": "Compte Bancaire",
+        "title": "Comptes Bancaires",
         "createLabel": "Créer un nouveau compte bancaire",
         "createOrEditLabel": "Créer ou éditer un compte bancaire",
         "notFound": "Aucun compte bancaire trouvé"
