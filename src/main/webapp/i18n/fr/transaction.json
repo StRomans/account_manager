@@ -21,7 +21,8 @@
       "label": "Description",
       "identifier": "Référence bancaire",
       "bankAccount": "Compte bancaire",
-      "subCategory": "Sous-catégorie"
+      "subCategory": "Sous-catégorie",
+      "category": "Catégorie"
     }
   }
 }

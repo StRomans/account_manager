@@ -28,6 +28,7 @@
                     <th scope="col"  jhiSortBy="label"><span jhiTranslate="accountManagerApp.transaction.label">Label</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="identifier"><span jhiTranslate="accountManagerApp.transaction.identifier">Identifier</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="bankAccount.label"><span jhiTranslate="accountManagerApp.transaction.bankAccount">Bank Account</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="category.label"><span jhiTranslate="accountManagerApp.transaction.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="subCategory.label"><span jhiTranslate="accountManagerApp.transaction.subCategory">Sub Category</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
@@ -42,6 +43,11 @@
                     <td>
                         <div *ngIf="transaction.bankAccount">
                             <a [routerLink]="['/bank-account', transaction.bankAccount?.id, 'view']" >{{ transaction.bankAccount?.label }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="transaction.subCategory">
+                            <a [routerLink]="['/category', transaction.subCategory?.category?.id, 'view']" >{{ transaction.subCategory?.category?.label }}</a>
                         </div>
                     </td>
                     <td>

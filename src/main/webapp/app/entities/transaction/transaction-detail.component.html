@@ -30,6 +30,12 @@
                         <a [routerLink]="['/bank-account', transaction.bankAccount?.id, 'view']">{{ transaction.bankAccount?.label }}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="accountManagerApp.transaction.category">Category</span></dt>
+                <dd>
+                    <div *ngIf="transaction.subCategory">
+                        <a [routerLink]="['/category', transaction.subCategory?.category?.id, 'view']">{{ transaction.subCategory?.category?.label }}</a>
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="accountManagerApp.transaction.subCategory">Sub Category</span></dt>
                 <dd>
                     <div *ngIf="transaction.subCategory">

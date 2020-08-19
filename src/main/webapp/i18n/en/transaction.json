@@ -21,7 +21,8 @@
       "label": "Label",
       "identifier": "Identifier",
       "bankAccount": "Bank Account",
-      "subCategory": "Sub Category"
+      "subCategory": "Sub Category",
+      "category": "Category"
     }
   }
 }
