@@ -2,6 +2,8 @@ package fr.stromans.web.rest;
 
 import fr.stromans.domain.Transaction;
 import fr.stromans.repository.TransactionRepository;
+import fr.stromans.security.AuthoritiesConstants;
+import fr.stromans.security.SecurityUtils;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,7 +96,14 @@ public class TransactionResource {
     @GetMapping("/transactions")
     public ResponseEntity<List<Transaction>> getAllTransactions(Pageable pageable) {
         log.debug("REST request to get a page of Transactions");
-        Page<Transaction> page = transactionRepository.findAll(pageable);
+
+        Page<Transaction> page;
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            page = transactionRepository.findAll(pageable);
+        } else {
+            page = transactionRepository.findByOwnedBankAccounts(pageable);
+        }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
