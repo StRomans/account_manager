@@ -40,6 +40,15 @@ export class CategoryUpdateComponent implements OnInit {
     });
   }
 
+  /**
+   * Set color from color picker
+   * @param {string} type
+   * @param {string} color
+   */
+  changeColor(type: string, color: string): void {
+    this.editForm.patchValue({ color });
+  }
+
   updateForm(category: ICategory): void {
     this.editForm.patchValue({
       id: category.id,

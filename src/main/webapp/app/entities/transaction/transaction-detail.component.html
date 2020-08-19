@@ -33,7 +33,7 @@
                 <dt><span jhiTranslate="accountManagerApp.transaction.category">Category</span></dt>
                 <dd>
                     <div *ngIf="transaction.subCategory">
-                        <a [routerLink]="['/category', transaction.subCategory?.category?.id, 'view']">{{ transaction.subCategory?.category?.label }}</a>
+                        <span class="badge" [ngStyle]="{color: transaction.subCategory?.category?.color, 'background-color': 'white' }">{{ transaction.subCategory?.category?.label }}</span>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="accountManagerApp.transaction.subCategory">Sub Category</span></dt>

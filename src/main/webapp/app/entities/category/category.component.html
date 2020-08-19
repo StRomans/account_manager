@@ -33,7 +33,9 @@
                 <tr *ngFor="let category of categories ;trackBy: trackId">
                     <td><a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a></td>
                     <td>{{ category.label }}</td>
-                    <td>{{ category.color }}</td>
+                    <td>
+                        <div class="circle" [ngStyle]="{'background-color': category.color }"></div>
+                    </td>
                     <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         {{ category.owner?.login }}
                     </td>

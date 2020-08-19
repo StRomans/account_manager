@@ -25,8 +25,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="accountManagerApp.category.color" for="field_color">Color</label>
-                    <input type="text" class="form-control" name="color" id="field_color"
-                           formControlName="color"/>
+                    <div class="picker">
+                        <jhi-app-color-picker id="field_color" [color]="editForm.get('color')!.value" [heading]="'Couleur du texte'" (event)="changeColor('color', $event)"></jhi-app-color-picker>
+                    </div>
                 </div>
 
                 <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
