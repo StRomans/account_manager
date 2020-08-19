@@ -1,8 +1,10 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.SubCategory;
-import fr.stromans.repository.SubCategoryRepository;
+import fr.stromans.service.SubCategoryService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
+import fr.stromans.service.dto.SubCategoryCriteria;
+import fr.stromans.service.SubCategoryQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -10,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +25,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class SubCategoryResource {
 
     private final Logger log = LoggerFactory.getLogger(SubCategoryResource.class);
@@ -34,10 +34,13 @@ public class SubCategoryResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SubCategoryRepository subCategoryRepository;
+    private final SubCategoryService subCategoryService;
 
-    public SubCategoryResource(SubCategoryRepository subCategoryRepository) {
-        this.subCategoryRepository = subCategoryRepository;
+    private final SubCategoryQueryService subCategoryQueryService;
+
+    public SubCategoryResource(SubCategoryService subCategoryService, SubCategoryQueryService subCategoryQueryService) {
+        this.subCategoryService = subCategoryService;
+        this.subCategoryQueryService = subCategoryQueryService;
     }
 
     /**
@@ -53,7 +56,7 @@ public class SubCategoryResource {
         if (subCategory.getId() != null) {
             throw new BadRequestAlertException("A new subCategory cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SubCategory result = subCategoryRepository.save(subCategory);
+        SubCategory result = subCategoryService.save(subCategory);
         return ResponseEntity.created(new URI("/api/sub-categories/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +77,7 @@ public class SubCategoryResource {
         if (subCategory.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        SubCategory result = subCategoryRepository.save(subCategory);
+        SubCategory result = subCategoryService.save(subCategory);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, subCategory.getId().toString()))
             .body(result);
@@ -83,12 +86,26 @@ public class SubCategoryResource {
     /**
      * {@code GET  /sub-categories} : get all the subCategories.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of subCategories in body.
      */
     @GetMapping("/sub-categories")
-    public List<SubCategory> getAllSubCategories() {
-        log.debug("REST request to get all SubCategories");
-        return subCategoryRepository.findAll();
+    public ResponseEntity<List<SubCategory>> getAllSubCategories(SubCategoryCriteria criteria) {
+        log.debug("REST request to get SubCategories by criteria: {}", criteria);
+        List<SubCategory> entityList = subCategoryQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /sub-categories/count} : count all the subCategories.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/sub-categories/count")
+    public ResponseEntity<Long> countSubCategories(SubCategoryCriteria criteria) {
+        log.debug("REST request to count SubCategories by criteria: {}", criteria);
+        return ResponseEntity.ok().body(subCategoryQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -100,7 +117,7 @@ public class SubCategoryResource {
     @GetMapping("/sub-categories/{id}")
     public ResponseEntity<SubCategory> getSubCategory(@PathVariable Long id) {
         log.debug("REST request to get SubCategory : {}", id);
-        Optional<SubCategory> subCategory = subCategoryRepository.findById(id);
+        Optional<SubCategory> subCategory = subCategoryService.findOne(id);
         return ResponseUtil.wrapOrNotFound(subCategory);
     }
 
@@ -113,7 +130,7 @@ public class SubCategoryResource {
     @DeleteMapping("/sub-categories/{id}")
     public ResponseEntity<Void> deleteSubCategory(@PathVariable Long id) {
         log.debug("REST request to delete SubCategory : {}", id);
-        subCategoryRepository.deleteById(id);
+        subCategoryService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

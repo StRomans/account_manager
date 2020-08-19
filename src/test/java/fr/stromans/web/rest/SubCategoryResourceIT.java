@@ -4,6 +4,9 @@ import fr.stromans.AccountManagerApp;
 import fr.stromans.domain.SubCategory;
 import fr.stromans.domain.Category;
 import fr.stromans.repository.SubCategoryRepository;
+import fr.stromans.service.SubCategoryService;
+import fr.stromans.service.dto.SubCategoryCriteria;
+import fr.stromans.service.SubCategoryQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +39,12 @@ public class SubCategoryResourceIT {
 
     @Autowired
     private SubCategoryRepository subCategoryRepository;
+
+    @Autowired
+    private SubCategoryService subCategoryService;
+
+    @Autowired
+    private SubCategoryQueryService subCategoryQueryService;
 
     @Autowired
     private EntityManager em;
@@ -176,6 +185,154 @@ public class SubCategoryResourceIT {
             .andExpect(jsonPath("$.id").value(subCategory.getId().intValue()))
             .andExpect(jsonPath("$.label").value(DEFAULT_LABEL));
     }
+
+
+    @Test
+    @Transactional
+    public void getSubCategoriesByIdFiltering() throws Exception {
+        // Initialize the database
+        subCategoryRepository.saveAndFlush(subCategory);
+
+        Long id = subCategory.getId();
+
+        defaultSubCategoryShouldBeFound("id.equals=" + id);
+        defaultSubCategoryShouldNotBeFound("id.notEquals=" + id);
+
+        defaultSubCategoryShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultSubCategoryShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultSubCategoryShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultSubCategoryShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSubCategoriesByLabelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        subCategoryRepository.saveAndFlush(subCategory);
+
+        // Get all the subCategoryList where label equals to DEFAULT_LABEL
+        defaultSubCategoryShouldBeFound("label.equals=" + DEFAULT_LABEL);
+
+        // Get all the subCategoryList where label equals to UPDATED_LABEL
+        defaultSubCategoryShouldNotBeFound("label.equals=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSubCategoriesByLabelIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        subCategoryRepository.saveAndFlush(subCategory);
+
+        // Get all the subCategoryList where label not equals to DEFAULT_LABEL
+        defaultSubCategoryShouldNotBeFound("label.notEquals=" + DEFAULT_LABEL);
+
+        // Get all the subCategoryList where label not equals to UPDATED_LABEL
+        defaultSubCategoryShouldBeFound("label.notEquals=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSubCategoriesByLabelIsInShouldWork() throws Exception {
+        // Initialize the database
+        subCategoryRepository.saveAndFlush(subCategory);
+
+        // Get all the subCategoryList where label in DEFAULT_LABEL or UPDATED_LABEL
+        defaultSubCategoryShouldBeFound("label.in=" + DEFAULT_LABEL + "," + UPDATED_LABEL);
+
+        // Get all the subCategoryList where label equals to UPDATED_LABEL
+        defaultSubCategoryShouldNotBeFound("label.in=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSubCategoriesByLabelIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        subCategoryRepository.saveAndFlush(subCategory);
+
+        // Get all the subCategoryList where label is not null
+        defaultSubCategoryShouldBeFound("label.specified=true");
+
+        // Get all the subCategoryList where label is null
+        defaultSubCategoryShouldNotBeFound("label.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSubCategoriesByLabelContainsSomething() throws Exception {
+        // Initialize the database
+        subCategoryRepository.saveAndFlush(subCategory);
+
+        // Get all the subCategoryList where label contains DEFAULT_LABEL
+        defaultSubCategoryShouldBeFound("label.contains=" + DEFAULT_LABEL);
+
+        // Get all the subCategoryList where label contains UPDATED_LABEL
+        defaultSubCategoryShouldNotBeFound("label.contains=" + UPDATED_LABEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSubCategoriesByLabelNotContainsSomething() throws Exception {
+        // Initialize the database
+        subCategoryRepository.saveAndFlush(subCategory);
+
+        // Get all the subCategoryList where label does not contain DEFAULT_LABEL
+        defaultSubCategoryShouldNotBeFound("label.doesNotContain=" + DEFAULT_LABEL);
+
+        // Get all the subCategoryList where label does not contain UPDATED_LABEL
+        defaultSubCategoryShouldBeFound("label.doesNotContain=" + UPDATED_LABEL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSubCategoriesByCategoryIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Category category = subCategory.getCategory();
+        subCategoryRepository.saveAndFlush(subCategory);
+        Long categoryId = category.getId();
+
+        // Get all the subCategoryList where category equals to categoryId
+        defaultSubCategoryShouldBeFound("categoryId.equals=" + categoryId);
+
+        // Get all the subCategoryList where category equals to categoryId + 1
+        defaultSubCategoryShouldNotBeFound("categoryId.equals=" + (categoryId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultSubCategoryShouldBeFound(String filter) throws Exception {
+        restSubCategoryMockMvc.perform(get("/api/sub-categories?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(subCategory.getId().intValue())))
+            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)));
+
+        // Check, that the count call also returns 1
+        restSubCategoryMockMvc.perform(get("/api/sub-categories/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultSubCategoryShouldNotBeFound(String filter) throws Exception {
+        restSubCategoryMockMvc.perform(get("/api/sub-categories?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restSubCategoryMockMvc.perform(get("/api/sub-categories/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
+    }
+
     @Test
     @Transactional
     public void getNonExistingSubCategory() throws Exception {
@@ -188,7 +345,7 @@ public class SubCategoryResourceIT {
     @Transactional
     public void updateSubCategory() throws Exception {
         // Initialize the database
-        subCategoryRepository.saveAndFlush(subCategory);
+        subCategoryService.save(subCategory);
 
         int databaseSizeBeforeUpdate = subCategoryRepository.findAll().size();
 
@@ -231,7 +388,7 @@ public class SubCategoryResourceIT {
     @Transactional
     public void deleteSubCategory() throws Exception {
         // Initialize the database
-        subCategoryRepository.saveAndFlush(subCategory);
+        subCategoryService.save(subCategory);
 
         int databaseSizeBeforeDelete = subCategoryRepository.findAll().size();
 
