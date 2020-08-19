@@ -17,7 +17,8 @@
         "title": "Catégorie"
       },
       "label": "Nom",
-      "color": "Couleur"
+      "color": "Couleur",
+      "owner": "Propriétaire"
     }
   }
 }

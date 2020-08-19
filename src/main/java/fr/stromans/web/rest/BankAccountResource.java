@@ -102,14 +102,6 @@ public class BankAccountResource {
     @GetMapping("/bank-accounts")
     public ResponseEntity<List<BankAccount>> getAllBankAccounts(BankAccountCriteria criteria) {
         log.debug("REST request to get BankAccounts by criteria: {}", criteria);
-
-        if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            String currentLogin = SecurityUtils.getCurrentUserLogin().get();
-            User loggedUser = userService.getUserWithAuthoritiesByLogin(currentLogin).get();
-            LongFilter ownerIdFilter = new LongFilter();
-            ownerIdFilter.setEquals(loggedUser.getId());
-            criteria.setOwnerId(ownerIdFilter);
-        }
         List<BankAccount> entityList = bankAccountQueryService.findByCriteria(criteria);
         return ResponseEntity.ok().body(entityList);
     }

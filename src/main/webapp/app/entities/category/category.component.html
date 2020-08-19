@@ -25,6 +25,7 @@
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.category.label">Label</span></th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.category.color">Color</span></th>
+                    <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.category.owner">Owner</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -33,6 +34,9 @@
                     <td><a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a></td>
                     <td>{{ category.label }}</td>
                     <td>{{ category.color }}</td>
+                    <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                        {{ category.owner?.login }}
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

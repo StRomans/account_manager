@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.criteria.JoinType;
 
+import fr.stromans.security.AuthoritiesConstants;
+import fr.stromans.security.SecurityUtils;
+import io.github.jhipster.service.filter.LongFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -33,8 +36,11 @@ public class BankAccountQueryService extends QueryService<BankAccount> {
 
     private final BankAccountRepository bankAccountRepository;
 
-    public BankAccountQueryService(BankAccountRepository bankAccountRepository) {
+    private final UserService userService;
+
+    public BankAccountQueryService(BankAccountRepository bankAccountRepository, UserService userService) {
         this.bankAccountRepository = bankAccountRepository;
+        this.userService = userService;
     }
 
     /**
@@ -80,6 +86,13 @@ public class BankAccountQueryService extends QueryService<BankAccount> {
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<BankAccount> createSpecification(BankAccountCriteria criteria) {
+        if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) && userService.findCurrentUser().isPresent()) {
+            User loggedUser = userService.findCurrentUser().get();
+            LongFilter ownerIdFilter = new LongFilter();
+            ownerIdFilter.setEquals(loggedUser.getId());
+            criteria.setOwnerId(ownerIdFilter);
+        }
+
         Specification<BankAccount> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {

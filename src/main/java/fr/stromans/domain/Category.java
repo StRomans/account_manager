@@ -1,5 +1,6 @@
 package fr.stromans.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,6 +30,11 @@ public class Category implements Serializable {
 
     @Column(name = "color")
     private String color;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = "bankAccounts", allowSetters = true)
+    private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -63,6 +69,19 @@ public class Category implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Category owner(User user) {
+        this.owner = user;
+        return this;
+    }
+
+    public void setOwner(User user) {
+        this.owner = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

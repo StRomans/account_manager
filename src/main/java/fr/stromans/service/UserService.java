@@ -55,6 +55,16 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
+    /**
+     * Return connected user if any
+     * @return currently connected user or null
+     */
+    public Optional<User> findCurrentUser(){
+        log.debug("Retrieving currently connected user");
+        String currentLogin = SecurityUtils.getCurrentUserLogin().get();
+        return this.getUserWithAuthoritiesByLogin(currentLogin);
+    }
+
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository.findOneByActivationKey(key)

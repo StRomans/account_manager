@@ -1,10 +1,10 @@
-id;label;color
-1;Quotidien;turquoise
-2;Santé;lavender
-3;Abonnements;ivory
-4;Logement;maroon
-5;Dépenses libres;gold
-6;Impôts;salmon
-7;Voiture;mint green
-8;Autres transport;grey
-9;Autres mouvements;mint green
+id;label;color;owner_id
+1;Quotidien;turquoise;4
+2;Santé;lavender;4
+3;Abonnements;ivory;4
+4;Logement;maroon;4
+5;Dépenses libres;gold;4
+6;Impôts;salmon;4
+7;Voiture;mint green;4
+8;Autres transport;grey;4
+9;Autres mouvements;mint green;4

@@ -16,6 +16,10 @@
                 <dd>
                     <span>{{ category.color }}</span>
                 </dd>
+                <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.category.owner">Owner</span></dt>
+                <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    {{ category.owner?.login }}
+                </dd>
             </dl>
 
             <button type="submit"

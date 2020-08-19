@@ -1,7 +1,17 @@
 {
   "fluentMethods": true,
   "clientRootFolder": "",
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipName": "owner",
+      "otherEntityName": "user",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "login",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "bankAccount"
+    }
+  ],
   "fields": [
     {
       "fieldName": "label",
@@ -16,10 +26,10 @@
   "changelogDate": "20200814150456",
   "dto": "no",
   "searchEngine": false,
-  "service": "no",
+  "service": "serviceClass",
   "entityTableName": "category",
   "databaseType": "sql",
   "readOnly": false,
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "pagination": "no"
 }

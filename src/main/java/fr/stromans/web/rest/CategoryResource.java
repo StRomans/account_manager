@@ -1,16 +1,22 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.Category;
-import fr.stromans.repository.CategoryRepository;
+import fr.stromans.domain.User;
+import fr.stromans.security.AuthoritiesConstants;
+import fr.stromans.security.SecurityUtils;
+import fr.stromans.service.CategoryService;
+import fr.stromans.service.UserService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
+import fr.stromans.service.dto.CategoryCriteria;
+import fr.stromans.service.CategoryQueryService;
 
+import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +30,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class CategoryResource {
 
     private final Logger log = LoggerFactory.getLogger(CategoryResource.class);
@@ -34,10 +39,16 @@ public class CategoryResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public CategoryResource(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    private final CategoryQueryService categoryQueryService;
+
+    private final UserService userService;
+
+    public CategoryResource(CategoryService categoryService, CategoryQueryService categoryQueryService, UserService userService) {
+        this.categoryService = categoryService;
+        this.categoryQueryService = categoryQueryService;
+        this.userService = userService;
     }
 
     /**
@@ -53,7 +64,7 @@ public class CategoryResource {
         if (category.getId() != null) {
             throw new BadRequestAlertException("A new category cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Category result = categoryRepository.save(category);
+        Category result = categoryService.save(category);
         return ResponseEntity.created(new URI("/api/categories/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +85,7 @@ public class CategoryResource {
         if (category.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Category result = categoryRepository.save(category);
+        Category result = categoryService.save(category);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, category.getId().toString()))
             .body(result);
@@ -83,12 +94,26 @@ public class CategoryResource {
     /**
      * {@code GET  /categories} : get all the categories.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
      */
     @GetMapping("/categories")
-    public List<Category> getAllCategories() {
-        log.debug("REST request to get all Categories");
-        return categoryRepository.findAll();
+    public ResponseEntity<List<Category>> getAllCategories(CategoryCriteria criteria) {
+        log.debug("REST request to get Categories by criteria: {}", criteria);
+        List<Category> entityList = categoryQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /categories/count} : count all the categories.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/categories/count")
+    public ResponseEntity<Long> countCategories(CategoryCriteria criteria) {
+        log.debug("REST request to count Categories by criteria: {}", criteria);
+        return ResponseEntity.ok().body(categoryQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -100,7 +125,7 @@ public class CategoryResource {
     @GetMapping("/categories/{id}")
     public ResponseEntity<Category> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
-        Optional<Category> category = categoryRepository.findById(id);
+        Optional<Category> category = categoryService.findOne(id);
         return ResponseUtil.wrapOrNotFound(category);
     }
 
@@ -113,7 +138,7 @@ public class CategoryResource {
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
-        categoryRepository.deleteById(id);
+        categoryService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

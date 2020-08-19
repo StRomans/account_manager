@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 
 import { ICategory, Category } from 'app/shared/model/category.model';
 import { CategoryService } from './category.service';
+import { IUser } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'jhi-category-update',
@@ -14,18 +16,27 @@ import { CategoryService } from './category.service';
 })
 export class CategoryUpdateComponent implements OnInit {
   isSaving = false;
+  users: IUser[] = [];
 
   editForm = this.fb.group({
     id: [],
     label: [null, [Validators.required]],
     color: [],
+    owner: [null, null],
   });
 
-  constructor(protected categoryService: CategoryService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected categoryService: CategoryService,
+    protected userService: UserService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ category }) => {
       this.updateForm(category);
+
+      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
     });
   }
 
@@ -34,7 +45,11 @@ export class CategoryUpdateComponent implements OnInit {
       id: category.id,
       label: category.label,
       color: category.color,
+      owner: category.owner,
     });
+    if (!category.owner) {
+      this.userService.currentUser().subscribe((user: IUser) => this.editForm.patchValue({ owner: user }));
+    }
   }
 
   previousState(): void {
@@ -57,6 +72,7 @@ export class CategoryUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       label: this.editForm.get(['label'])!.value,
       color: this.editForm.get(['color'])!.value,
+      owner: this.editForm.get(['owner'])!.value,
     };
   }
 
@@ -74,5 +90,9 @@ export class CategoryUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IUser): any {
+    return item.id;
   }
 }
