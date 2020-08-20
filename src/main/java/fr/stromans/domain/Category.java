@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Category.
@@ -40,6 +42,9 @@ public class Category implements Serializable {
     @NotNull
     @JsonIgnoreProperties(value = "bankAccounts", allowSetters = true)
     private User owner;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<SubCategory> subCategories = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -96,6 +101,14 @@ public class Category implements Serializable {
     public Category owner(User user) {
         this.owner = user;
         return this;
+    }
+
+    public void setSubCategories(Set<SubCategory> subCategories) {
+        this.subCategories = subCategories;
+    }
+
+    public Set<SubCategory> getSubCategories() {
+        return subCategories;
     }
 
     public void setOwner(User user) {

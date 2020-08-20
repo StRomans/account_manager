@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A SubCategory.
@@ -32,6 +34,9 @@ public class SubCategory implements Serializable {
     @NotNull
     @JsonIgnoreProperties(value = "subCategories", allowSetters = true)
     private Category category;
+
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Transaction> transactions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -66,6 +71,14 @@ public class SubCategory implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
