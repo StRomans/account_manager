@@ -27,18 +27,24 @@
                     <th scope="col" ><span jhiTranslate="accountManagerApp.category.primaryColor">Primary Color</span></th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.category.secondaryColor">Secondary Color</span></th>
                     <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.category.owner">Owner</span></th>
+                    <th scope="col" ><span jhiTranslate="accountManagerApp.category.preview">Preview</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let category of categories ;trackBy: trackId">
                     <td><a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a></td>
-                    <td>{{ category.label }}</td>
+                    <td>
+                        {{ category.label }}
+                    </td>
                     <td>
                         <div class="circle" [ngStyle]="{'background-color': category.primaryColor }"></div>
                     </td>
                     <td>
                         <div class="circle" [ngStyle]="{'background-color': category.secondaryColor }"></div>
+                    </td>
+                    <td>
+                        <span class="badge bigger" [ngStyle]="{color: category.secondaryColor, background: category.primaryColor }">{{ category.label }}</span>
                     </td>
                     <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         {{ category.owner?.login }}

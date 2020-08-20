@@ -19,7 +19,8 @@
       "label": "Nom",
       "primaryColor": "Couleur principale",
       "secondaryColor": "Couleur secondaire",
-      "owner": "Propriétaire"
+      "owner": "Propriétaire",
+      "preview": "Prévisualisation"
     }
   }
 }

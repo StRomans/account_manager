@@ -19,7 +19,8 @@
       "label": "Label",
       "primaryColor": "Primary Color",
       "secondaryColor": "Secondary Color",
-      "owner": "Owner"
+      "owner": "Owner",
+      "preview": "Preview"
     }
   }
 }
