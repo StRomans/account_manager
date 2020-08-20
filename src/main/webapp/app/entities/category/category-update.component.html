@@ -23,17 +23,23 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="accountManagerApp.category.primaryColor" for="field_primaryColor">Primary Color</label>
-                    <div class="picker">
-                        <jhi-app-color-picker id="field_primaryColor" [color]="editForm.get('primaryColor')!.value" [heading]="'Couleur 1'" (event)="changeColor('primaryColor', $event)"></jhi-app-color-picker>
-                    </div>
-                </div>
+                <label jhiTranslate="accountManagerApp.category.preview">Preview</label>
+                <dd>
+                    <span class="badge bigger" [ngStyle]="{color: editForm.get('secondaryColor')?.value, background: editForm.get('primaryColor')?.value }">{{ editForm.get('label')?.value }}</span>
+                </dd>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="accountManagerApp.category.secondaryColor" for="field_secondaryColor">Secondary Color</label>
-                    <div class="picker">
-                        <jhi-app-color-picker id="field_secondaryColor" [color]="editForm.get('secondaryColor')!.value" [heading]="'Couleur 2'" (event)="changeColor('secondaryColor', $event)"></jhi-app-color-picker>
+                <div class="row">
+                    <div class="form-group col-md-auto">
+                        <label class="form-control-label" jhiTranslate="accountManagerApp.category.primaryColor" for="field_primaryColor">Primary Color</label>
+                        <div class="picker">
+                            <jhi-app-color-picker id="field_primaryColor" [color]="editForm.get('primaryColor')!.value" (event)="changeColor('primaryColor', $event)"></jhi-app-color-picker>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-auto">
+                        <label class="form-control-label" jhiTranslate="accountManagerApp.category.secondaryColor" for="field_secondaryColor">Secondary Color</label>
+                        <div class="picker">
+                            <jhi-app-color-picker id="field_secondaryColor" [color]="editForm.get('secondaryColor')!.value" (event)="changeColor('secondaryColor', $event)"></jhi-app-color-picker>
+                        </div>
                     </div>
                 </div>
 
@@ -52,7 +58,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="mt-4">
                 <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
                     <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>

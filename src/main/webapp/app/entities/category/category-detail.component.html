@@ -14,15 +14,19 @@
                 </dd>
                 <dt><span jhiTranslate="accountManagerApp.category.primaryColor">Primary Color</span></dt>
                 <dd>
-                    <span>{{ category.primaryColor }}</span>
+                    <div class="circle" [ngStyle]="{'background-color': category.primaryColor }"></div>
                 </dd>
                 <dt><span jhiTranslate="accountManagerApp.category.secondaryColor">Secondary Color</span></dt>
                 <dd>
-                    <span>{{ category.secondaryColor }}</span>
+                    <div class="circle" [ngStyle]="{'background-color': category.secondaryColor }"></div>
                 </dd>
                 <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.category.owner">Owner</span></dt>
                 <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     {{ category.owner?.login }}
+                </dd>
+                <dt><span jhiTranslate="accountManagerApp.category.preview">Preview</span></dt>
+                <dd>
+                    <span class="badge bigger" [ngStyle]="{color: category.secondaryColor, background: category.primaryColor }">{{ category.label }}</span>
                 </dd>
             </dl>
 

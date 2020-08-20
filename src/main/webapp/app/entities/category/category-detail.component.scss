@@ -1,0 +1,14 @@
+.circle {
+  $size: 30px;
+  height: $size;
+  width: $size;
+  box-sizing: border-box;
+  border-radius: 100%;
+  cursor: pointer;
+  border: 1px solid #dadada;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14);
+}
+
+.bigger {
+  font-size: unset;
+}

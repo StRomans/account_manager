@@ -6,6 +6,7 @@ import { ICategory } from 'app/shared/model/category.model';
 @Component({
   selector: 'jhi-category-detail',
   templateUrl: './category-detail.component.html',
+  styleUrls: ['./category-detail.component.scss'],
 })
 export class CategoryDetailComponent implements OnInit {
   category: ICategory | null = null;

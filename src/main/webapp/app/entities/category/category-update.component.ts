@@ -13,6 +13,7 @@ import { UserService } from 'app/core/user/user.service';
 @Component({
   selector: 'jhi-category-update',
   templateUrl: './category-update.component.html',
+  styleUrls: ['./category-update.component.scss'],
 })
 export class CategoryUpdateComponent implements OnInit {
   isSaving = false;
