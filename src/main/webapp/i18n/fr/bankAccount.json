@@ -5,7 +5,8 @@
         "title": "Comptes Bancaires",
         "createLabel": "Créer un nouveau compte bancaire",
         "createOrEditLabel": "Créer ou éditer un compte bancaire",
-        "notFound": "Aucun compte bancaire trouvé"
+        "notFound": "Aucun compte bancaire trouvé",
+        "search": "Rechercher un compte bancaire"
       },
       "created": "Un nouveau compte bancaire a été créé avec l'identifiant {{ param }}",
       "updated": "Le compte bancaire avec l'identifiant {{ param }} a été mis à jour",

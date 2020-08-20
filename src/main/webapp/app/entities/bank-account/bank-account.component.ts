@@ -15,6 +15,7 @@ import { BankAccountDeleteDialogComponent } from './bank-account-delete-dialog.c
 export class BankAccountComponent implements OnInit, OnDestroy {
   bankAccounts?: IBankAccount[];
   eventSubscriber?: Subscription;
+  currentSearch = '';
 
   constructor(
     protected bankAccountService: BankAccountService,
@@ -23,7 +24,18 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.bankAccountService.query().subscribe((res: HttpResponse<IBankAccount[]>) => (this.bankAccounts = res.body || []));
+    if (this.currentSearch) {
+      this.bankAccountService
+        .query({ 'label.contains': this.currentSearch })
+        .subscribe((res: HttpResponse<IBankAccount[]>) => (this.bankAccounts = res.body || []));
+    } else {
+      this.bankAccountService.query().subscribe((res: HttpResponse<IBankAccount[]>) => (this.bankAccounts = res.body || []));
+    }
+  }
+
+  search(query: string): void {
+    this.currentSearch = query;
+    this.loadAll();
   }
 
   ngOnInit(): void {
