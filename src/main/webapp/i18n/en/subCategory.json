@@ -17,7 +17,11 @@
         "title": "Sub Category"
       },
       "label": "Label",
-      "category": "Category"
+      "category": "Category",
+      "search": {
+        "label": "Search on Label",
+        "category": "Search on Category"
+      }
     }
   }
 }

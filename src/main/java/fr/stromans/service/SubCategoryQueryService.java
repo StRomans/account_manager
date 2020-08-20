@@ -109,6 +109,10 @@ public class SubCategoryQueryService extends QueryService<SubCategory> {
                 specification = specification.and(buildSpecification(criteria.getOwnerId(),
                     root -> root.join(SubCategory_.category, JoinType.INNER).get(Category_.owner).get(User_.id)));
             }
+            if (criteria.getCategoryLabel() != null) {
+                specification = specification.and(buildSpecification(criteria.getCategoryLabel(),
+                    root -> root.join(SubCategory_.category, JoinType.INNER).get(Category_.label)));
+            }
         }
         return specification;
     }

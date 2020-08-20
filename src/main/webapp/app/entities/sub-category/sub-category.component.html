@@ -14,17 +14,32 @@
 
     <jhi-alert></jhi-alert>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="subCategories?.length === 0">
-        <span jhiTranslate="accountManagerApp.subCategory.home.notFound">No subCategories found</span>
-    </div>
-
-    <div class="table-responsive" id="entities" *ngIf="subCategories && subCategories.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="subCategories && subCategories.length > 0  || fullCriteria">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="accountManagerApp.subCategory.label">Label</span></th>
-                    <th scope="col" ><span jhiTranslate="accountManagerApp.subCategory.category">Category</span></th>
+                    <th scope="col" >
+                        <span jhiTranslate="global.field.id">ID</span>
+                    </th>
+                    <th scope="col" >
+                        <div class="row ml-auto">
+                            <span class="mt-auto mb-auto" jhiTranslate="accountManagerApp.subCategory.label">Label</span>
+                            <fa-icon class="ml-2 mr-2 mt-auto mb-auto" icon="search"></fa-icon>
+                            <input type="text" class="form-control form-control-sm col" id="labelSearch" name="labelSearch"
+                                   [(ngModel)]="labelSearch" (keydown.enter)="search('label.contains', labelSearch)"
+                                   placeholder="{{ 'accountManagerApp.subCategory.search.label' | translate }}" />
+                        </div>
+                    </th>
+                    <th scope="col" >
+                        <div class="row ml-auto">
+                            <span class="mt-auto mb-auto" jhiTranslate="accountManagerApp.subCategory.category">Category</span>
+                            <fa-icon class="ml-2 mr-2 mt-auto mb-auto" icon="search"></fa-icon>
+                            <input type="text" class="form-control form-control-sm col" id="categorySearch" name="categorySearch"
+                                   [(ngModel)]="categorySearch" (keydown.enter)="search('categoryLabel.contains', categorySearch)"
+                                   (change)="search('categoryLabel.contains', categorySearch)"
+                                   placeholder="{{ 'accountManagerApp.subCategory.search.category' | translate }}" />
+                        </div>
+                    </th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -63,5 +78,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="subCategories?.length === 0">
+        <span jhiTranslate="accountManagerApp.subCategory.home.notFound">No subCategories found</span>
     </div>
 </div>

@@ -17,7 +17,11 @@
         "title": "Sous-catégorie"
       },
       "label": "Nom",
-      "category": "Catégorie"
+      "category": "Catégorie",
+      "search": {
+        "label": "Rechercher par Nom",
+        "category": "Rechercher par Catégorie"
+      }
     }
   }
 }

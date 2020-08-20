@@ -15,6 +15,9 @@ import { SubCategoryDeleteDialogComponent } from './sub-category-delete-dialog.c
 export class SubCategoryComponent implements OnInit, OnDestroy {
   subCategories?: ISubCategory[];
   eventSubscriber?: Subscription;
+  labelSearch = '';
+  categorySearch = '';
+  fullCriteria = {};
 
   constructor(
     protected subCategoryService: SubCategoryService,
@@ -23,7 +26,22 @@ export class SubCategoryComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.subCategoryService.query().subscribe((res: HttpResponse<ISubCategory[]>) => (this.subCategories = res.body || []));
+    this.subCategoryService
+      .query(this.fullCriteria)
+      .subscribe((res: HttpResponse<ISubCategory[]>) => (this.subCategories = res.body || []));
+  }
+
+  search(jpaFilter: string, query: string): void {
+    if (!jpaFilter) {
+      this.fullCriteria = {};
+    } else {
+      if (query) {
+        this.fullCriteria[jpaFilter] = query;
+      } else {
+        delete this.fullCriteria[jpaFilter];
+      }
+    }
+    this.loadAll();
   }
 
   ngOnInit(): void {

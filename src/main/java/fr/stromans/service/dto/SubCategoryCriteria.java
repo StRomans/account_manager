@@ -28,6 +28,8 @@ public class SubCategoryCriteria implements Serializable, Criteria {
 
     private LongFilter ownerId;
 
+    private StringFilter categoryLabel;
+
     public SubCategoryCriteria() {
     }
 
@@ -36,6 +38,7 @@ public class SubCategoryCriteria implements Serializable, Criteria {
         this.label = other.label == null ? null : other.label.copy();
         this.categoryId = other.categoryId == null ? null : other.categoryId.copy();
         this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
+        this.categoryLabel = other.categoryLabel == null ? null : other.categoryLabel.copy();
     }
 
     @Override
@@ -75,6 +78,14 @@ public class SubCategoryCriteria implements Serializable, Criteria {
         this.ownerId = ownerId;
     }
 
+    public StringFilter getCategoryLabel() {
+        return categoryLabel;
+    }
+
+    public void setCategoryLabel(StringFilter categoryLabel) {
+        this.categoryLabel = categoryLabel;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -89,7 +100,8 @@ public class SubCategoryCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(label, that.label) &&
             Objects.equals(categoryId, that.categoryId) &&
-            Objects.equals(ownerId, that.ownerId);
+            Objects.equals(ownerId, that.ownerId) &&
+            Objects.equals(categoryLabel, that.categoryLabel);
     }
 
     @Override
@@ -98,7 +110,8 @@ public class SubCategoryCriteria implements Serializable, Criteria {
         id,
         label,
         categoryId,
-        ownerId
+        ownerId,
+        categoryLabel
         );
     }
 
@@ -110,6 +123,7 @@ public class SubCategoryCriteria implements Serializable, Criteria {
                 (label != null ? "label=" + label + ", " : "") +
                 (categoryId != null ? "categoryId=" + categoryId + ", " : "") +
                 (ownerId != null ? "category.ownerId=" + ownerId + ", " : "") +
+                (categoryLabel != null ? "category.label=" + categoryLabel + ", " : "") +
             "}";
     }
 
