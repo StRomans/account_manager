@@ -32,11 +32,7 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="bankAccounts?.length === 0">
-        <span jhiTranslate="accountManagerApp.bankAccount.home.notFound">No bankAccounts found</span>
-    </div>
-
-    <div class="table-responsive" id="entities" *ngIf="bankAccounts && bankAccounts.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="bankAccounts && bankAccounts.length > 0 || currentSearch">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
@@ -85,5 +81,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="bankAccounts?.length === 0">
+        <span jhiTranslate="accountManagerApp.bankAccount.home.notFound">No bankAccounts found</span>
     </div>
 </div>
