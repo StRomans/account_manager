@@ -17,7 +17,8 @@
         "title": "Category"
       },
       "label": "Label",
-      "color": "Color",
+      "primaryColor": "Primary Color",
+      "secondaryColor": "Secondary Color",
       "owner": "Owner"
     }
   }

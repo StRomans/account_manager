@@ -1,16 +1,11 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.Category;
-import fr.stromans.domain.User;
-import fr.stromans.security.AuthoritiesConstants;
-import fr.stromans.security.SecurityUtils;
 import fr.stromans.service.CategoryService;
-import fr.stromans.service.UserService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 import fr.stromans.service.dto.CategoryCriteria;
 import fr.stromans.service.CategoryQueryService;
 
-import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -43,12 +38,9 @@ public class CategoryResource {
 
     private final CategoryQueryService categoryQueryService;
 
-    private final UserService userService;
-
-    public CategoryResource(CategoryService categoryService, CategoryQueryService categoryQueryService, UserService userService) {
+    public CategoryResource(CategoryService categoryService, CategoryQueryService categoryQueryService) {
         this.categoryService = categoryService;
         this.categoryQueryService = categoryQueryService;
-        this.userService = userService;
     }
 
     /**

@@ -18,7 +18,10 @@
             <column name="label" type="varchar(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_category_label" />
             </column>
-            <column name="color" type="varchar(255)">
+            <column name="primary_color" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="secondary_color" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="owner_id" type="bigint">
@@ -48,7 +51,8 @@
                   tableName="category">
             <column name="id" type="numeric"/>
             <column name="label" type="string"/>
-            <column name="color" type="string"/>
+            <column name="primary_color" type="string"/>
+            <column name="secondary_color" type="string"/>
             <column name="owner_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

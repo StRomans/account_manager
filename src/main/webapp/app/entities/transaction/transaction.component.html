@@ -47,7 +47,7 @@
                     </td>
                     <td>
                         <div *ngIf="transaction.subCategory">
-                            <span class="badge" [ngStyle]="{color: transaction.subCategory?.category?.color, 'background-color': 'white' }">{{ transaction.subCategory?.category?.label }}</span>
+                            <span class="badge bigger" [ngStyle]="{color: transaction.subCategory?.category?.secondaryColor, background: transaction.subCategory?.category?.primaryColor }">{{ transaction.subCategory?.category?.label }}</span>
                         </div>
                     </td>
                     <td>

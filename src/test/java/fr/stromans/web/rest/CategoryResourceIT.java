@@ -37,8 +37,11 @@ public class CategoryResourceIT {
     private static final String DEFAULT_LABEL = "AAAAAAAAAA";
     private static final String UPDATED_LABEL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COLOR = "AAAAAAAAAA";
-    private static final String UPDATED_COLOR = "BBBBBBBBBB";
+    private static final String DEFAULT_PRIMARY_COLOR = "AAAAAAAAAA";
+    private static final String UPDATED_PRIMARY_COLOR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SECONDARY_COLOR = "AAAAAAAAAA";
+    private static final String UPDATED_SECONDARY_COLOR = "BBBBBBBBBB";
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -66,7 +69,8 @@ public class CategoryResourceIT {
     public static Category createEntity(EntityManager em) {
         Category category = new Category()
             .label(DEFAULT_LABEL)
-            .color(DEFAULT_COLOR);
+            .primaryColor(DEFAULT_PRIMARY_COLOR)
+            .secondaryColor(DEFAULT_SECONDARY_COLOR);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -83,7 +87,8 @@ public class CategoryResourceIT {
     public static Category createUpdatedEntity(EntityManager em) {
         Category category = new Category()
             .label(UPDATED_LABEL)
-            .color(UPDATED_COLOR);
+            .primaryColor(UPDATED_PRIMARY_COLOR)
+            .secondaryColor(UPDATED_SECONDARY_COLOR);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -112,7 +117,8 @@ public class CategoryResourceIT {
         assertThat(categoryList).hasSize(databaseSizeBeforeCreate + 1);
         Category testCategory = categoryList.get(categoryList.size() - 1);
         assertThat(testCategory.getLabel()).isEqualTo(DEFAULT_LABEL);
-        assertThat(testCategory.getColor()).isEqualTo(DEFAULT_COLOR);
+        assertThat(testCategory.getPrimaryColor()).isEqualTo(DEFAULT_PRIMARY_COLOR);
+        assertThat(testCategory.getSecondaryColor()).isEqualTo(DEFAULT_SECONDARY_COLOR);
     }
 
     @Test
@@ -166,7 +172,8 @@ public class CategoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(category.getId().intValue())))
             .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)))
-            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)));
+            .andExpect(jsonPath("$.[*].primaryColor").value(hasItem(DEFAULT_PRIMARY_COLOR)))
+            .andExpect(jsonPath("$.[*].secondaryColor").value(hasItem(DEFAULT_SECONDARY_COLOR)));
     }
     
     @Test
@@ -181,7 +188,8 @@ public class CategoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(category.getId().intValue()))
             .andExpect(jsonPath("$.label").value(DEFAULT_LABEL))
-            .andExpect(jsonPath("$.color").value(DEFAULT_COLOR));
+            .andExpect(jsonPath("$.primaryColor").value(DEFAULT_PRIMARY_COLOR))
+            .andExpect(jsonPath("$.secondaryColor").value(DEFAULT_SECONDARY_COLOR));
     }
 
 
@@ -284,79 +292,157 @@ public class CategoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllCategoriesByColorIsEqualToSomething() throws Exception {
+    public void getAllCategoriesByPrimaryColorIsEqualToSomething() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
 
-        // Get all the categoryList where color equals to DEFAULT_COLOR
-        defaultCategoryShouldBeFound("color.equals=" + DEFAULT_COLOR);
+        // Get all the categoryList where primaryColor equals to DEFAULT_PRIMARY_COLOR
+        defaultCategoryShouldBeFound("primaryColor.equals=" + DEFAULT_PRIMARY_COLOR);
 
-        // Get all the categoryList where color equals to UPDATED_COLOR
-        defaultCategoryShouldNotBeFound("color.equals=" + UPDATED_COLOR);
+        // Get all the categoryList where primaryColor equals to UPDATED_PRIMARY_COLOR
+        defaultCategoryShouldNotBeFound("primaryColor.equals=" + UPDATED_PRIMARY_COLOR);
     }
 
     @Test
     @Transactional
-    public void getAllCategoriesByColorIsNotEqualToSomething() throws Exception {
+    public void getAllCategoriesByPrimaryColorIsNotEqualToSomething() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
 
-        // Get all the categoryList where color not equals to DEFAULT_COLOR
-        defaultCategoryShouldNotBeFound("color.notEquals=" + DEFAULT_COLOR);
+        // Get all the categoryList where primaryColor not equals to DEFAULT_PRIMARY_COLOR
+        defaultCategoryShouldNotBeFound("primaryColor.notEquals=" + DEFAULT_PRIMARY_COLOR);
 
-        // Get all the categoryList where color not equals to UPDATED_COLOR
-        defaultCategoryShouldBeFound("color.notEquals=" + UPDATED_COLOR);
+        // Get all the categoryList where primaryColor not equals to UPDATED_PRIMARY_COLOR
+        defaultCategoryShouldBeFound("primaryColor.notEquals=" + UPDATED_PRIMARY_COLOR);
     }
 
     @Test
     @Transactional
-    public void getAllCategoriesByColorIsInShouldWork() throws Exception {
+    public void getAllCategoriesByPrimaryColorIsInShouldWork() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
 
-        // Get all the categoryList where color in DEFAULT_COLOR or UPDATED_COLOR
-        defaultCategoryShouldBeFound("color.in=" + DEFAULT_COLOR + "," + UPDATED_COLOR);
+        // Get all the categoryList where primaryColor in DEFAULT_PRIMARY_COLOR or UPDATED_PRIMARY_COLOR
+        defaultCategoryShouldBeFound("primaryColor.in=" + DEFAULT_PRIMARY_COLOR + "," + UPDATED_PRIMARY_COLOR);
 
-        // Get all the categoryList where color equals to UPDATED_COLOR
-        defaultCategoryShouldNotBeFound("color.in=" + UPDATED_COLOR);
+        // Get all the categoryList where primaryColor equals to UPDATED_PRIMARY_COLOR
+        defaultCategoryShouldNotBeFound("primaryColor.in=" + UPDATED_PRIMARY_COLOR);
     }
 
     @Test
     @Transactional
-    public void getAllCategoriesByColorIsNullOrNotNull() throws Exception {
+    public void getAllCategoriesByPrimaryColorIsNullOrNotNull() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
 
-        // Get all the categoryList where color is not null
-        defaultCategoryShouldBeFound("color.specified=true");
+        // Get all the categoryList where primaryColor is not null
+        defaultCategoryShouldBeFound("primaryColor.specified=true");
 
-        // Get all the categoryList where color is null
-        defaultCategoryShouldNotBeFound("color.specified=false");
+        // Get all the categoryList where primaryColor is null
+        defaultCategoryShouldNotBeFound("primaryColor.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllCategoriesByColorContainsSomething() throws Exception {
+    public void getAllCategoriesByPrimaryColorContainsSomething() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
 
-        // Get all the categoryList where color contains DEFAULT_COLOR
-        defaultCategoryShouldBeFound("color.contains=" + DEFAULT_COLOR);
+        // Get all the categoryList where primaryColor contains DEFAULT_PRIMARY_COLOR
+        defaultCategoryShouldBeFound("primaryColor.contains=" + DEFAULT_PRIMARY_COLOR);
 
-        // Get all the categoryList where color contains UPDATED_COLOR
-        defaultCategoryShouldNotBeFound("color.contains=" + UPDATED_COLOR);
+        // Get all the categoryList where primaryColor contains UPDATED_PRIMARY_COLOR
+        defaultCategoryShouldNotBeFound("primaryColor.contains=" + UPDATED_PRIMARY_COLOR);
     }
 
     @Test
     @Transactional
-    public void getAllCategoriesByColorNotContainsSomething() throws Exception {
+    public void getAllCategoriesByPrimaryColorNotContainsSomething() throws Exception {
         // Initialize the database
         categoryRepository.saveAndFlush(category);
 
-        // Get all the categoryList where color does not contain DEFAULT_COLOR
-        defaultCategoryShouldNotBeFound("color.doesNotContain=" + DEFAULT_COLOR);
+        // Get all the categoryList where primaryColor does not contain DEFAULT_PRIMARY_COLOR
+        defaultCategoryShouldNotBeFound("primaryColor.doesNotContain=" + DEFAULT_PRIMARY_COLOR);
 
-        // Get all the categoryList where color does not contain UPDATED_COLOR
-        defaultCategoryShouldBeFound("color.doesNotContain=" + UPDATED_COLOR);
+        // Get all the categoryList where primaryColor does not contain UPDATED_PRIMARY_COLOR
+        defaultCategoryShouldBeFound("primaryColor.doesNotContain=" + UPDATED_PRIMARY_COLOR);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCategoriesBySecondaryColorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where secondaryColor equals to DEFAULT_SECONDARY_COLOR
+        defaultCategoryShouldBeFound("secondaryColor.equals=" + DEFAULT_SECONDARY_COLOR);
+
+        // Get all the categoryList where secondaryColor equals to UPDATED_SECONDARY_COLOR
+        defaultCategoryShouldNotBeFound("secondaryColor.equals=" + UPDATED_SECONDARY_COLOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesBySecondaryColorIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where secondaryColor not equals to DEFAULT_SECONDARY_COLOR
+        defaultCategoryShouldNotBeFound("secondaryColor.notEquals=" + DEFAULT_SECONDARY_COLOR);
+
+        // Get all the categoryList where secondaryColor not equals to UPDATED_SECONDARY_COLOR
+        defaultCategoryShouldBeFound("secondaryColor.notEquals=" + UPDATED_SECONDARY_COLOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesBySecondaryColorIsInShouldWork() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where secondaryColor in DEFAULT_SECONDARY_COLOR or UPDATED_SECONDARY_COLOR
+        defaultCategoryShouldBeFound("secondaryColor.in=" + DEFAULT_SECONDARY_COLOR + "," + UPDATED_SECONDARY_COLOR);
+
+        // Get all the categoryList where secondaryColor equals to UPDATED_SECONDARY_COLOR
+        defaultCategoryShouldNotBeFound("secondaryColor.in=" + UPDATED_SECONDARY_COLOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesBySecondaryColorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where secondaryColor is not null
+        defaultCategoryShouldBeFound("secondaryColor.specified=true");
+
+        // Get all the categoryList where secondaryColor is null
+        defaultCategoryShouldNotBeFound("secondaryColor.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllCategoriesBySecondaryColorContainsSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where secondaryColor contains DEFAULT_SECONDARY_COLOR
+        defaultCategoryShouldBeFound("secondaryColor.contains=" + DEFAULT_SECONDARY_COLOR);
+
+        // Get all the categoryList where secondaryColor contains UPDATED_SECONDARY_COLOR
+        defaultCategoryShouldNotBeFound("secondaryColor.contains=" + UPDATED_SECONDARY_COLOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesBySecondaryColorNotContainsSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where secondaryColor does not contain DEFAULT_SECONDARY_COLOR
+        defaultCategoryShouldNotBeFound("secondaryColor.doesNotContain=" + DEFAULT_SECONDARY_COLOR);
+
+        // Get all the categoryList where secondaryColor does not contain UPDATED_SECONDARY_COLOR
+        defaultCategoryShouldBeFound("secondaryColor.doesNotContain=" + UPDATED_SECONDARY_COLOR);
     }
 
 
@@ -384,7 +470,8 @@ public class CategoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(category.getId().intValue())))
             .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)))
-            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)));
+            .andExpect(jsonPath("$.[*].primaryColor").value(hasItem(DEFAULT_PRIMARY_COLOR)))
+            .andExpect(jsonPath("$.[*].secondaryColor").value(hasItem(DEFAULT_SECONDARY_COLOR)));
 
         // Check, that the count call also returns 1
         restCategoryMockMvc.perform(get("/api/categories/count?sort=id,desc&" + filter))
@@ -432,7 +519,8 @@ public class CategoryResourceIT {
         em.detach(updatedCategory);
         updatedCategory
             .label(UPDATED_LABEL)
-            .color(UPDATED_COLOR);
+            .primaryColor(UPDATED_PRIMARY_COLOR)
+            .secondaryColor(UPDATED_SECONDARY_COLOR);
 
         restCategoryMockMvc.perform(put("/api/categories").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
@@ -444,7 +532,8 @@ public class CategoryResourceIT {
         assertThat(categoryList).hasSize(databaseSizeBeforeUpdate);
         Category testCategory = categoryList.get(categoryList.size() - 1);
         assertThat(testCategory.getLabel()).isEqualTo(UPDATED_LABEL);
-        assertThat(testCategory.getColor()).isEqualTo(UPDATED_COLOR);
+        assertThat(testCategory.getPrimaryColor()).isEqualTo(UPDATED_PRIMARY_COLOR);
+        assertThat(testCategory.getSecondaryColor()).isEqualTo(UPDATED_SECONDARY_COLOR);
     }
 
     @Test

@@ -24,7 +24,8 @@
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.category.label">Label</span></th>
-                    <th scope="col" ><span jhiTranslate="accountManagerApp.category.color">Color</span></th>
+                    <th scope="col" ><span jhiTranslate="accountManagerApp.category.primaryColor">Primary Color</span></th>
+                    <th scope="col" ><span jhiTranslate="accountManagerApp.category.secondaryColor">Secondary Color</span></th>
                     <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.category.owner">Owner</span></th>
                     <th scope="col"></th>
                 </tr>
@@ -34,7 +35,10 @@
                     <td><a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a></td>
                     <td>{{ category.label }}</td>
                     <td>
-                        <div class="circle" [ngStyle]="{'background-color': category.color }"></div>
+                        <div class="circle" [ngStyle]="{'background-color': category.primaryColor }"></div>
+                    </td>
+                    <td>
+                        <div class="circle" [ngStyle]="{'background-color': category.secondaryColor }"></div>
                     </td>
                     <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         {{ category.owner?.login }}

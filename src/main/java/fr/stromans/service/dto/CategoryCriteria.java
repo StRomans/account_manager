@@ -28,7 +28,9 @@ public class CategoryCriteria implements Serializable, Criteria {
 
     private StringFilter label;
 
-    private StringFilter color;
+    private StringFilter primaryColor;
+
+    private StringFilter secondaryColor;
 
     private LongFilter ownerId;
 
@@ -38,7 +40,8 @@ public class CategoryCriteria implements Serializable, Criteria {
     public CategoryCriteria(CategoryCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.label = other.label == null ? null : other.label.copy();
-        this.color = other.color == null ? null : other.color.copy();
+        this.primaryColor = other.primaryColor == null ? null : other.primaryColor.copy();
+        this.secondaryColor = other.secondaryColor == null ? null : other.secondaryColor.copy();
         this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
     }
 
@@ -63,12 +66,20 @@ public class CategoryCriteria implements Serializable, Criteria {
         this.label = label;
     }
 
-    public StringFilter getColor() {
-        return color;
+    public StringFilter getPrimaryColor() {
+        return primaryColor;
     }
 
-    public void setColor(StringFilter color) {
-        this.color = color;
+    public void setPrimaryColor(StringFilter primaryColor) {
+        this.primaryColor = primaryColor;
+    }
+
+    public StringFilter getSecondaryColor() {
+        return secondaryColor;
+    }
+
+    public void setSecondaryColor(StringFilter secondaryColor) {
+        this.secondaryColor = secondaryColor;
     }
 
     public LongFilter getOwnerId() {
@@ -92,7 +103,8 @@ public class CategoryCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(label, that.label) &&
-            Objects.equals(color, that.color) &&
+            Objects.equals(primaryColor, that.primaryColor) &&
+            Objects.equals(secondaryColor, that.secondaryColor) &&
             Objects.equals(ownerId, that.ownerId);
     }
 
@@ -101,7 +113,8 @@ public class CategoryCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         label,
-        color,
+        primaryColor,
+        secondaryColor,
         ownerId
         );
     }
@@ -112,7 +125,8 @@ public class CategoryCriteria implements Serializable, Criteria {
         return "CategoryCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (label != null ? "label=" + label + ", " : "") +
-                (color != null ? "color=" + color + ", " : "") +
+                (primaryColor != null ? "primaryColor=" + primaryColor + ", " : "") +
+                (secondaryColor != null ? "secondaryColor=" + secondaryColor + ", " : "") +
                 (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
             "}";
     }

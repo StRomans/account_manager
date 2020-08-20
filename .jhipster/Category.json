@@ -19,7 +19,11 @@
       "fieldValidateRules": ["required", "unique"]
     },
     {
-      "fieldName": "color",
+      "fieldName": "primaryColor",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "secondaryColor",
       "fieldType": "String"
     }
   ],

@@ -14,6 +14,7 @@ import { TransactionDeleteDialogComponent } from './transaction-delete-dialog.co
 @Component({
   selector: 'jhi-transaction',
   templateUrl: './transaction.component.html',
+  styleUrls: ['./transaction.component.scss'],
 })
 export class TransactionComponent implements OnInit, OnDestroy {
   transactions?: ITransaction[];

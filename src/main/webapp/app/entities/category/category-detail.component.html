@@ -12,9 +12,13 @@
                 <dd>
                     <span>{{ category.label }}</span>
                 </dd>
-                <dt><span jhiTranslate="accountManagerApp.category.color">Color</span></dt>
+                <dt><span jhiTranslate="accountManagerApp.category.primaryColor">Primary Color</span></dt>
                 <dd>
-                    <span>{{ category.color }}</span>
+                    <span>{{ category.primaryColor }}</span>
+                </dd>
+                <dt><span jhiTranslate="accountManagerApp.category.secondaryColor">Secondary Color</span></dt>
+                <dd>
+                    <span>{{ category.secondaryColor }}</span>
                 </dd>
                 <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.category.owner">Owner</span></dt>
                 <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">

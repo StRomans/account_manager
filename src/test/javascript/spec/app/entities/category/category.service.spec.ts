@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(CategoryService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Category(0, 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new Category(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -55,7 +55,8 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             label: 'BBBBBB',
-            color: 'BBBBBB',
+            primaryColor: 'BBBBBB',
+            secondaryColor: 'BBBBBB',
           },
           elemDefault
         );
@@ -73,7 +74,8 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             label: 'BBBBBB',
-            color: 'BBBBBB',
+            primaryColor: 'BBBBBB',
+            secondaryColor: 'BBBBBB',
           },
           elemDefault
         );

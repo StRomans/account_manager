@@ -18,6 +18,8 @@ import java.io.Serializable;
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final String DEFAULT_PRIMARY_COLOR = "#000000";
+    private static final String DEFAULT_SECONDARY_COLOR = "#FFFFFF";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
@@ -28,8 +30,11 @@ public class Category implements Serializable {
     @Column(name = "label", nullable = false, unique = true)
     private String label;
 
-    @Column(name = "color")
-    private String color;
+    @Column(name = "primary_color")
+    private String primaryColor;
+
+    @Column(name = "secondary_color")
+    private String secondaryColor;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -58,17 +63,30 @@ public class Category implements Serializable {
         this.label = label;
     }
 
-    public String getColor() {
-        return color;
+    public String getPrimaryColor() {
+        return primaryColor == null ? DEFAULT_PRIMARY_COLOR : primaryColor;
     }
 
-    public Category color(String color) {
-        this.color = color;
+    public Category primaryColor(String primaryColor) {
+        this.primaryColor = primaryColor;
         return this;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setPrimaryColor(String primaryColor) {
+        this.primaryColor = primaryColor;
+    }
+
+    public String getSecondaryColor() {
+        return secondaryColor == null ? DEFAULT_SECONDARY_COLOR : secondaryColor;
+    }
+
+    public Category secondaryColor(String secondaryColor) {
+        this.secondaryColor = secondaryColor;
+        return this;
+    }
+
+    public void setSecondaryColor(String secondaryColor) {
+        this.secondaryColor = secondaryColor;
     }
 
     public User getOwner() {
@@ -107,7 +125,8 @@ public class Category implements Serializable {
         return "Category{" +
             "id=" + getId() +
             ", label='" + getLabel() + "'" +
-            ", color='" + getColor() + "'" +
+            ", primaryColor='" + getPrimaryColor() + "'" +
+            ", secondaryColor='" + getSecondaryColor() + "'" +
             "}";
     }
 }

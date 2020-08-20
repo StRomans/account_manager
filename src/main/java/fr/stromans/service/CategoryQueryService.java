@@ -101,8 +101,11 @@ public class CategoryQueryService extends QueryService<Category> {
             if (criteria.getLabel() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLabel(), Category_.label));
             }
-            if (criteria.getColor() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getColor(), Category_.color));
+            if (criteria.getPrimaryColor() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getPrimaryColor(), Category_.primaryColor));
+            }
+            if (criteria.getSecondaryColor() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSecondaryColor(), Category_.secondaryColor));
             }
             if (criteria.getOwnerId() != null) {
                 specification = specification.and(buildSpecification(criteria.getOwnerId(),

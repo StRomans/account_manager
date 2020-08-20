@@ -21,7 +21,8 @@ export class CategoryUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     label: [null, [Validators.required]],
-    color: [],
+    primaryColor: [],
+    secondaryColor: [],
     owner: [null, null],
   });
 
@@ -46,14 +47,22 @@ export class CategoryUpdateComponent implements OnInit {
    * @param {string} color
    */
   changeColor(type: string, color: string): void {
-    this.editForm.patchValue({ color });
+    switch (type) {
+      case 'primaryColor':
+        this.editForm.patchValue({ primaryColor: color });
+        break;
+      case 'secondaryColor':
+        this.editForm.patchValue({ secondaryColor: color });
+        break;
+    }
   }
 
   updateForm(category: ICategory): void {
     this.editForm.patchValue({
       id: category.id,
       label: category.label,
-      color: category.color,
+      primaryColor: category.primaryColor,
+      secondaryColor: category.secondaryColor,
       owner: category.owner,
     });
     if (!category.owner) {
@@ -80,7 +89,8 @@ export class CategoryUpdateComponent implements OnInit {
       ...new Category(),
       id: this.editForm.get(['id'])!.value,
       label: this.editForm.get(['label'])!.value,
-      color: this.editForm.get(['color'])!.value,
+      primaryColor: this.editForm.get(['primaryColor'])!.value,
+      secondaryColor: this.editForm.get(['secondaryColor'])!.value,
       owner: this.editForm.get(['owner'])!.value,
     };
   }

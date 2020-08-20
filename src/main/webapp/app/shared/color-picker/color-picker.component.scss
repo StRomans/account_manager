@@ -2,12 +2,12 @@
   $radius: 5px;
   .summary-info {
     box-shadow: 0 7px 13px 0 rgba(86, 95, 102, 0.07);
-    background: #fff;
     max-width: 240px;
     padding: 15px;
     border-radius: $radius;
     display: flex;
     cursor: pointer;
+    height: unset;
 
     .info {
       width: calc(100% - 40px); //40px is $size
@@ -55,15 +55,16 @@
     .colors {
       display: flex;
       flex-wrap: wrap;
+      justify-content: space-between;
+      height: unset;
+      flex-flow: column wrap;
+      max-height: 250px;
 
       .circle {
         flex: 40px 0 0;
-        margin-right: 10px;
+        margin-right: 5px;
+        margin-left: 5px;
         margin-bottom: 10px;
-
-        &:nth-child(4n) {
-          margin-right: 0;
-        }
       }
     }
 
