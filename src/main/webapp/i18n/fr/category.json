@@ -20,7 +20,10 @@
       "primaryColor": "Couleur principale",
       "secondaryColor": "Couleur secondaire",
       "owner": "Propriétaire",
-      "preview": "Prévisualisation"
+      "preview": "Prévisualisation",
+      "search": {
+        "label": "Rechercher par Nom"
+      }
     }
   }
 }

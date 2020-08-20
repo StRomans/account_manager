@@ -20,7 +20,10 @@
       "primaryColor": "Primary Color",
       "secondaryColor": "Secondary Color",
       "owner": "Owner",
-      "preview": "Preview"
+      "preview": "Preview",
+      "search": {
+        "label": "Search by Name"
+      }
     }
   }
 }

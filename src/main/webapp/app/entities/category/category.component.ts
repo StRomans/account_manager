@@ -16,11 +16,26 @@ import { CategoryDeleteDialogComponent } from './category-delete-dialog.componen
 export class CategoryComponent implements OnInit, OnDestroy {
   categories?: ICategory[];
   eventSubscriber?: Subscription;
+  labelSearch = '';
+  fullCriteria = {};
 
   constructor(protected categoryService: CategoryService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    this.categoryService.query().subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body || []));
+    this.categoryService.query(this.fullCriteria).subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body || []));
+  }
+
+  search(jpaFilter: string, query: string): void {
+    if (!jpaFilter) {
+      this.fullCriteria = {};
+    } else {
+      if (query) {
+        this.fullCriteria[jpaFilter] = query;
+      } else {
+        delete this.fullCriteria[jpaFilter];
+      }
+    }
+    this.loadAll();
   }
 
   ngOnInit(): void {

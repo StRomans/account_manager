@@ -19,8 +19,8 @@
       "label": "Label",
       "category": "Category",
       "search": {
-        "label": "Search on Label",
-        "category": "Search on Category"
+        "label": "Search by Label",
+        "category": "Search by Category"
       }
     }
   }

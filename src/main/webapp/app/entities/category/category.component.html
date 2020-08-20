@@ -14,16 +14,21 @@
 
     <jhi-alert></jhi-alert>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="categories?.length === 0">
-        <span jhiTranslate="accountManagerApp.category.home.notFound">No categories found</span>
-    </div>
-
-    <div class="table-responsive" id="entities" *ngIf="categories && categories.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="categories && categories.length > 0 || fullCriteria">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="accountManagerApp.category.label">Label</span></th>
+                    <th scope="col" >
+                        <div class="row ml-auto">
+                            <span class="mt-auto mb-auto" jhiTranslate="accountManagerApp.category.label">Label</span>
+                            <fa-icon class="ml-2 mr-2 mt-auto mb-auto" icon="search"></fa-icon>
+                            <input type="text" class="form-control form-control-sm col" id="labelSearch" name="labelSearch"
+                                   [(ngModel)]="labelSearch" (keydown.enter)="search('label.contains', labelSearch)"
+                                   (change)="search('label.contains', labelSearch)"
+                                   placeholder="{{ 'accountManagerApp.category.search.label' | translate }}" />
+                        </div>
+                    </th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.category.primaryColor">Primary Color</span></th>
                     <th scope="col" ><span jhiTranslate="accountManagerApp.category.secondaryColor">Secondary Color</span></th>
                     <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.category.owner">Owner</span></th>
@@ -75,5 +80,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="categories?.length === 0">
+        <span jhiTranslate="accountManagerApp.category.home.notFound">No categories found</span>
     </div>
 </div>
