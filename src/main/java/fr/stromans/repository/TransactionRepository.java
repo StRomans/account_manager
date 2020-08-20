@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
 
     @Query("select transaction from Transaction transaction where transaction.bankAccount.owner.login = ?#{principal.username}")
     Page<Transaction> findByOwnedBankAccounts(Pageable pageable);

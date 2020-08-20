@@ -1,10 +1,10 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.Transaction;
-import fr.stromans.repository.TransactionRepository;
-import fr.stromans.security.AuthoritiesConstants;
-import fr.stromans.security.SecurityUtils;
+import fr.stromans.service.TransactionService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
+import fr.stromans.service.dto.TransactionCriteria;
+import fr.stromans.service.TransactionQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,7 +31,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class TransactionResource {
 
     private final Logger log = LoggerFactory.getLogger(TransactionResource.class);
@@ -41,10 +40,13 @@ public class TransactionResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TransactionRepository transactionRepository;
+    private final TransactionService transactionService;
 
-    public TransactionResource(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
+    private final TransactionQueryService transactionQueryService;
+
+    public TransactionResource(TransactionService transactionService, TransactionQueryService transactionQueryService) {
+        this.transactionService = transactionService;
+        this.transactionQueryService = transactionQueryService;
     }
 
     /**
@@ -60,7 +62,7 @@ public class TransactionResource {
         if (transaction.getId() != null) {
             throw new BadRequestAlertException("A new transaction cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Transaction result = transactionRepository.save(transaction);
+        Transaction result = transactionService.save(transaction);
         return ResponseEntity.created(new URI("/api/transactions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,7 +83,7 @@ public class TransactionResource {
         if (transaction.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Transaction result = transactionRepository.save(transaction);
+        Transaction result = transactionService.save(transaction);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transaction.getId().toString()))
             .body(result);
@@ -91,21 +93,27 @@ public class TransactionResource {
      * {@code GET  /transactions} : get all the transactions.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
      */
     @GetMapping("/transactions")
-    public ResponseEntity<List<Transaction>> getAllTransactions(Pageable pageable) {
-        log.debug("REST request to get a page of Transactions");
-
-        Page<Transaction> page;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            page = transactionRepository.findAll(pageable);
-        } else {
-            page = transactionRepository.findByOwnedBankAccounts(pageable);
-        }
-
+    public ResponseEntity<List<Transaction>> getAllTransactions(TransactionCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Transactions by criteria: {}", criteria);
+        Page<Transaction> page = transactionQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /transactions/count} : count all the transactions.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/transactions/count")
+    public ResponseEntity<Long> countTransactions(TransactionCriteria criteria) {
+        log.debug("REST request to count Transactions by criteria: {}", criteria);
+        return ResponseEntity.ok().body(transactionQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -117,7 +125,7 @@ public class TransactionResource {
     @GetMapping("/transactions/{id}")
     public ResponseEntity<Transaction> getTransaction(@PathVariable Long id) {
         log.debug("REST request to get Transaction : {}", id);
-        Optional<Transaction> transaction = transactionRepository.findById(id);
+        Optional<Transaction> transaction = transactionService.findOne(id);
         return ResponseUtil.wrapOrNotFound(transaction);
     }
 
@@ -130,7 +138,7 @@ public class TransactionResource {
     @DeleteMapping("/transactions/{id}")
     public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
         log.debug("REST request to delete Transaction : {}", id);
-        transactionRepository.deleteById(id);
+        transactionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }
