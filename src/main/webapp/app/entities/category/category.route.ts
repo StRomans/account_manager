@@ -40,6 +40,7 @@ export const categoryRoute: Routes = [
     component: CategoryComponent,
     data: {
       authorities: [Authority.USER],
+      defaultSort: 'label,asc',
       pageTitle: 'accountManagerApp.category.home.title',
     },
     canActivate: [UserRouteAccessService],

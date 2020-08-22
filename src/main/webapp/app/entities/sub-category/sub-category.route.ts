@@ -40,6 +40,7 @@ export const subCategoryRoute: Routes = [
     component: SubCategoryComponent,
     data: {
       authorities: [Authority.USER],
+      defaultSort: 'label,asc',
       pageTitle: 'accountManagerApp.subCategory.home.title',
     },
     canActivate: [UserRouteAccessService],

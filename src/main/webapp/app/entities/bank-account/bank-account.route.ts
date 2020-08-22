@@ -40,6 +40,7 @@ export const bankAccountRoute: Routes = [
     component: BankAccountComponent,
     data: {
       authorities: [Authority.USER],
+      defaultSort: 'label,asc',
       pageTitle: 'accountManagerApp.bankAccount.home.title',
     },
     canActivate: [UserRouteAccessService],

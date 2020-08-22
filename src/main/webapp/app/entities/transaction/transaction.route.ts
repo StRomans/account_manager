@@ -40,7 +40,7 @@ export const transactionRoute: Routes = [
     component: TransactionComponent,
     data: {
       authorities: [Authority.USER],
-      defaultSort: 'id,asc',
+      defaultSort: 'date,desc',
       pageTitle: 'accountManagerApp.transaction.home.title',
     },
     canActivate: [UserRouteAccessService],
