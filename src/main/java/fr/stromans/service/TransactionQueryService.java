@@ -114,6 +114,10 @@ public class TransactionQueryService extends QueryService<Transaction> {
                 specification = specification.and(buildSpecification(criteria.getBankAccountId(),
                     root -> root.join(Transaction_.bankAccount, JoinType.LEFT).get(BankAccount_.id)));
             }
+            if (criteria.getCategoryId() != null) {
+                specification = specification.and(buildSpecification(criteria.getCategoryId(),
+                    root -> root.join(Transaction_.subCategory, JoinType.LEFT).get(SubCategory_.category).get(Category_.id)));
+            }
             if (criteria.getSubCategoryId() != null) {
                 specification = specification.and(buildSpecification(criteria.getSubCategoryId(),
                     root -> root.join(Transaction_.subCategory, JoinType.LEFT).get(SubCategory_.id)));

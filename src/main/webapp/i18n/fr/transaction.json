@@ -22,7 +22,14 @@
       "identifier": "Référence bancaire",
       "bankAccount": "Compte bancaire",
       "subCategory": "Sous-catégorie",
-      "category": "Catégorie"
+      "category": "Catégorie",
+      "search": {
+        "label": "description",
+        "minAmountSearch": "min.",
+        "maxAmountSearch": "max.",
+        "minDateSearch": "min.",
+        "maxDateSearch": "max."
+      }
     }
   }
 }

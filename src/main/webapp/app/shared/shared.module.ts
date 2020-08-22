@@ -6,6 +6,8 @@ import { AlertErrorComponent } from './alert/alert-error.component';
 import { LoginModalComponent } from './login/login.component';
 import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
 import { ColorPickerComponent } from 'app/shared/color-picker/color-picker.component';
+import { FilterObjectPipe } from 'app/shared/util/filter-object-pipe';
+import { JhiDatePickerComponent } from 'app/shared/date-picker/date-picker-component';
 
 @NgModule({
   imports: [AccountManagerSharedLibsModule],
@@ -16,6 +18,8 @@ import { ColorPickerComponent } from 'app/shared/color-picker/color-picker.compo
     LoginModalComponent,
     HasAnyAuthorityDirective,
     ColorPickerComponent,
+    FilterObjectPipe,
+    JhiDatePickerComponent,
   ],
   entryComponents: [LoginModalComponent],
   exports: [
@@ -26,6 +30,8 @@ import { ColorPickerComponent } from 'app/shared/color-picker/color-picker.compo
     LoginModalComponent,
     HasAnyAuthorityDirective,
     ColorPickerComponent,
+    FilterObjectPipe,
+    JhiDatePickerComponent,
   ],
 })
 export class AccountManagerSharedModule {}

@@ -38,6 +38,8 @@ public class TransactionCriteria implements Serializable, Criteria {
 
     private LongFilter bankAccountId;
 
+    private LongFilter categoryId;
+
     private LongFilter subCategoryId;
 
     private LongFilter ownerId;
@@ -109,6 +111,14 @@ public class TransactionCriteria implements Serializable, Criteria {
         this.bankAccountId = bankAccountId;
     }
 
+    public LongFilter getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(LongFilter categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public LongFilter getSubCategoryId() {
         return subCategoryId;
     }
@@ -142,6 +152,7 @@ public class TransactionCriteria implements Serializable, Criteria {
             Objects.equals(label, that.label) &&
             Objects.equals(identifier, that.identifier) &&
             Objects.equals(bankAccountId, that.bankAccountId) &&
+            Objects.equals(categoryId, that.categoryId) &&
             Objects.equals(subCategoryId, that.subCategoryId) &&
             Objects.equals(ownerId, that.ownerId);
     }
@@ -155,6 +166,7 @@ public class TransactionCriteria implements Serializable, Criteria {
         label,
         identifier,
         bankAccountId,
+        categoryId,
         subCategoryId,
         ownerId
         );
@@ -170,6 +182,7 @@ public class TransactionCriteria implements Serializable, Criteria {
                 (label != null ? "label=" + label + ", " : "") +
                 (identifier != null ? "identifier=" + identifier + ", " : "") +
                 (bankAccountId != null ? "bankAccountId=" + bankAccountId + ", " : "") +
+                (categoryId != null ? "categoryId=" + categoryId + ", " : "") +
                 (subCategoryId != null ? "subCategoryId=" + subCategoryId + ", " : "") +
                 (ownerId != null ? "bankAccount.owner=" + ownerId + ", " : "") +
             "}";

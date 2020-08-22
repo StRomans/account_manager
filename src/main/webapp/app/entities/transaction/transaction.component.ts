@@ -10,6 +10,16 @@ import { ITransaction } from 'app/shared/model/transaction.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { TransactionService } from './transaction.service';
 import { TransactionDeleteDialogComponent } from './transaction-delete-dialog.component';
+import { IBankAccount } from '../../shared/model/bank-account.model';
+import { BankAccountService } from '../bank-account/bank-account.service';
+import { ISubCategory } from '../../shared/model/sub-category.model';
+import { ICategory } from '../../shared/model/category.model';
+import { SubCategoryService } from '../sub-category/sub-category.service';
+import { CategoryService } from '../category/category.service';
+import { Moment } from 'moment';
+import { DATE_FORMAT } from '../../shared/constants/input.constants';
+
+type SelectableEntity = IBankAccount | ISubCategory | ICategory;
 
 @Component({
   selector: 'jhi-transaction',
@@ -21,17 +31,34 @@ export class TransactionComponent implements OnInit, OnDestroy {
   eventSubscriber?: Subscription;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
+  dateFormat = DATE_FORMAT;
   page!: number;
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+
+  labelSearch = '';
+  minDateSearch?: Moment;
+  maxDateSearch?: Moment;
+  minAmountSearch?: number;
+  maxAmountSearch?: number;
+  bankAccounts: IBankAccount[] = [];
+  bankAccountSearch?: IBankAccount;
+  categories: ICategory[] = [];
+  categorySearch?: ICategory;
+  subcategories: ISubCategory[] = [];
+  subCategorySearch?: ISubCategory;
+  fullCriteria = {};
 
   constructor(
     protected transactionService: TransactionService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected bankAccountService: BankAccountService,
+    protected categoryService: CategoryService,
+    protected subCategoryService: SubCategoryService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -42,6 +69,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
+        ...this.fullCriteria,
       })
       .subscribe(
         (res: HttpResponse<ITransaction[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),
@@ -49,7 +77,23 @@ export class TransactionComponent implements OnInit, OnDestroy {
       );
   }
 
+  search(jpaFilter: string, query: any): void {
+    if (!jpaFilter) {
+      this.fullCriteria = {};
+    } else {
+      if (query) {
+        this.fullCriteria[jpaFilter] = query;
+      } else {
+        delete this.fullCriteria[jpaFilter];
+      }
+    }
+    this.loadPage();
+  }
+
   ngOnInit(): void {
+    this.bankAccountService.query().subscribe((res: HttpResponse<IBankAccount[]>) => (this.bankAccounts = res.body || []));
+    this.categoryService.query().subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body || []));
+    this.subCategoryService.query().subscribe((res: HttpResponse<ISubCategory[]>) => (this.subcategories = res.body || []));
     this.handleNavigation();
     this.registerChangeInTransactions();
   }
@@ -78,6 +122,10 @@ export class TransactionComponent implements OnInit, OnDestroy {
   trackId(index: number, item: ITransaction): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
+  }
+
+  trackById(index: number, item: SelectableEntity): any {
+    return item.id;
   }
 
   registerChangeInTransactions(): void {
