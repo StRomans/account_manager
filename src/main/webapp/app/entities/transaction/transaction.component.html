@@ -16,57 +16,80 @@
 
     <div class="card border-info mb-3">
         <div class="card-body">
-            <div class="row col-auto">
-                <label class="mr-2" jhiTranslate="accountManagerApp.transaction.date">Date</label>
-                <span class="input-group" style="height: fit-content; width: unset;">
-                    <jhi-date-picker name="minDateSearch" placeholder="{{ 'accountManagerApp.transaction.search.minDateSearch' | translate }}"
-                                     [(ngModel)]="minDateSearch" (ngModelChange)="search('date.greaterOrEqualThan', minDateSearch?.format(dateFormat))" ></jhi-date-picker>
-                </span>
-                <span class="input-group ml-4" style="height: fit-content; width: unset;">
-                    <jhi-date-picker name="maxDateSearch" placeholder="{{ 'accountManagerApp.transaction.search.maxDateSearch' | translate }}"
-                                     [(ngModel)]="maxDateSearch" (ngModelChange)="search('date.lessOrEqualThan', maxDateSearch?.format(dateFormat))" ></jhi-date-picker>
-                </span>
-            </div>
-            <div class="row col-auto">
-                <label for="minAmountSearch" class="mr-2" jhiTranslate="accountManagerApp.transaction.amount">Amount</label>
-                <input type="text" class="form-control form-control-sm col" id="minAmountSearch" name="minAmountSearch"
-                       [(ngModel)]="minAmountSearch" (keydown.enter)="search('amount.greaterOrEqualThan', minAmountSearch)"
-                       placeholder="{{ 'accountManagerApp.transaction.search.minAmountSearch' | translate }}" />
-                <input type="text" class="form-control form-control-sm col ml-4" id="maxAmountSearch" name="maxAmountSearch"
-                       [(ngModel)]="maxAmountSearch" (keydown.enter)="search('amount.lessOrEqualThan', maxAmountSearch)"
-                       placeholder="{{ 'accountManagerApp.transaction.search.maxAmountSearch' | translate }}" />
-            </div>
-            <div class="row col-auto">
-                <label for="labelSearch" class="mr-2" jhiTranslate="accountManagerApp.transaction.label">Label</label>
-                <input type="text" class="form-control form-control-sm col" id="labelSearch" name="labelSearch"
-                       [(ngModel)]="labelSearch" (keydown.enter)="search('label.contains', labelSearch)"
-                       placeholder="{{ 'accountManagerApp.transaction.search.label' | translate }}" />
-            </div>
-            <div class="row col-auto">
-                <label for="bankAccountSearch" class="mr-2" jhiTranslate="accountManagerApp.transaction.bankAccount" >Bank Account</label>
-                <select class="form-control form-control-sm" id="bankAccountSearch" name="bankAccountSearch"
-                        [(ngModel)]="bankAccountSearch" (change)="search('bankAccountId.equals', bankAccountSearch?.id)">
-                    <option [ngValue]="0" selected></option>
-                    <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
-                </select>
-            </div>
-            <div class="row col-auto">
-                <label for="categorySearch" class="mr-2" jhiTranslate="accountManagerApp.transaction.category">Category</label>
-                <select class="form-control form-control-sm" id="categorySearch" name="categorySearch"
-                        [(ngModel)]="categorySearch" (change)="search('categoryId.equals', categorySearch?.id)">
-                    <option [ngValue]="0" selected></option>
-                    <option [ngValue]="categoryOption" *ngFor="let categoryOption of categories; trackBy: trackById">{{ categoryOption.label }}</option>
-                </select>
-            </div>
-            <div class="row col-auto">
-                <label for="subCategorySearch" class="mr-2" jhiTranslate="accountManagerApp.transaction.subCategory">Sub Category</label>
-                <select class="form-control form-control-sm" id="subCategorySearch" name="subCategorySearch"
-                        [(ngModel)]="subCategorySearch" (change)="search('subCategoryId.equals', subCategorySearch?.id)">
-                    <option [ngValue]="0" selected></option>
-                    <optgroup *ngFor="let categoryOption of categories; trackBy: trackById" label="{{categoryOption.label}}">
-                        <option [ngValue]="subCategoryOption" *ngFor="let subCategoryOption of subcategories | filterObject:'category.id':categoryOption?.id; trackBy: trackById">{{ subCategoryOption.label }}</option>
-                    </optgroup>
-                </select>
+            <div class="row">
+                <!-- Partie gauche -->
+                <div class="col-4 mw-540">
+                    <!-- Recherche par Date -->
+                    <div class="form-group row">
+                        <label for="dateSearch" class="col-sm-2 col-form-label col-form-label-sm mw-100" jhiTranslate="accountManagerApp.transaction.date">Date</label>
+                        <div id="dateSearch" class="mw-200">
+                            <span class="input-group d-inline-flex align-items-center w-auto" >
+                                <jhi-date-picker name="minDateSearch" placeholder="{{ 'accountManagerApp.transaction.search.minDateSearch' | translate }}"
+                                                 [(ngModel)]="minDateSearch" (ngModelChange)="search('date.greaterOrEqualThan', minDateSearch?.format(dateFormat))" ></jhi-date-picker>
+                            </span>
+                            <span class="input-group d-inline-flex align-items-center w-auto" >
+                                <jhi-date-picker name="maxDateSearch" placeholder="{{ 'accountManagerApp.transaction.search.maxDateSearch' | translate }}"
+                                                 [(ngModel)]="maxDateSearch" (ngModelChange)="search('date.lessOrEqualThan', maxDateSearch?.format(dateFormat))" ></jhi-date-picker>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Recherche par Montant -->
+                    <div class="form-group row">
+                        <label for="amountSearch" class="col-sm-2 col-form-label col-form-label-sm mw-100" jhiTranslate="accountManagerApp.transaction.amount">Amount</label>
+                        <div id="amountSearch" class="input-group d-inline-flex align-items-center w-auto">
+                            <input type="text" class="form-control form-control-sm col-sm-6 mr-2" id="minAmountSearch" name="minAmountSearch"
+                                   [(ngModel)]="minAmountSearch" (keydown.enter)="search('amount.greaterOrEqualThan', minAmountSearch)"
+                                   placeholder="{{ 'accountManagerApp.transaction.search.minAmountSearch' | translate }}" />
+                            <input type="text" class="form-control form-control-sm col-sm-6 ml-4 " id="maxAmountSearch" name="maxAmountSearch"
+                                   [(ngModel)]="maxAmountSearch" (keydown.enter)="search('amount.lessOrEqualThan', maxAmountSearch)"
+                                   placeholder="{{ 'accountManagerApp.transaction.search.maxAmountSearch' | translate }}" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Partie centrale -->
+                <div class="col-4 mw-540">
+                    <!-- Recherche par Compte -->
+                    <div class="form-group row">
+                        <label for="bankAccountSearch" class="col-sm-3 col-form-label col-form-label-sm mw-100" jhiTranslate="accountManagerApp.transaction.bankAccount" >Bank Account</label>
+                        <select class="form-control form-control-sm col-sm-9" id="bankAccountSearch" name="bankAccountSearch"
+                                [(ngModel)]="bankAccountSearch" (change)="search('bankAccountId.equals', bankAccountSearch?.id)">
+                            <option [ngValue]="0" selected></option>
+                            <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
+                        </select>
+                    </div>
+                    <!-- Recherche par Description -->
+                    <div class="form-group row">
+                        <label for="labelSearch" class="col-sm-3 col-form-label col-form-label-sm mw-100" jhiTranslate="accountManagerApp.transaction.label">Label</label>
+                        <input type="text" class="form-control form-control-sm col-sm-9" id="labelSearch" name="labelSearch"
+                               [(ngModel)]="labelSearch" (keydown.enter)="search('label.contains', labelSearch)"
+                               placeholder="{{ 'accountManagerApp.transaction.search.label' | translate }}" />
+                    </div>
+                </div>
+
+                <!-- Partie droite -->
+                <div class="col-4 mw-540">
+                    <!-- Recherche par Catégories -->
+                    <div class="form-group row">
+                        <label for="categorySearch" class="col-sm-3 col-form-label col-form-label-sm mw-100" jhiTranslate="accountManagerApp.transaction.category">Category</label>
+                        <select class="form-control form-control-sm col-sm-9" id="categorySearch" name="categorySearch"
+                                [(ngModel)]="categorySearch" (change)="search('categoryId.equals', categorySearch?.id)">
+                            <option [ngValue]="0" selected></option>
+                            <option [ngValue]="categoryOption" *ngFor="let categoryOption of categories; trackBy: trackById">{{ categoryOption.label }}</option>
+                        </select>
+                    </div>
+                    <!-- Recherche par Sous-Catégorie -->
+                    <div class="form-group row">
+                        <label for="subCategorySearch" class="col-sm-3 col-form-label col-form-label-sm mw-100" jhiTranslate="accountManagerApp.transaction.subCategory">Sub Category</label>
+                        <select class="form-control form-control-sm col-sm-9" id="subCategorySearch" name="subCategorySearch"
+                                [(ngModel)]="subCategorySearch" (change)="search('subCategoryId.equals', subCategorySearch?.id)">
+                            <option [ngValue]="0" selected></option>
+                            <optgroup *ngFor="let categoryOption of categories; trackBy: trackById" label="{{categoryOption.label}}">
+                                <option [ngValue]="subCategoryOption" *ngFor="let subCategoryOption of subcategories | filterObject:'category.id':categoryOption?.id; trackBy: trackById">{{ subCategoryOption.label }}</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
