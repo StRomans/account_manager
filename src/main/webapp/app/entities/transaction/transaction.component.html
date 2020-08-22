@@ -65,7 +65,7 @@
                     <!-- Recherche par Compte -->
                     <div class="form-group row">
                         <label for="bankAccountSearch" class="col-sm-6 col-form-label col-form-label-sm text-right" jhiTranslate="accountManagerApp.transaction.bankAccount" >Bank Account</label>
-                        <select class="form-control form-control-sm col-sm-6" id="bankAccountSearch" name="bankAccountSearch"
+                        <select class="custom-select custom-select-sm col-sm-6" id="bankAccountSearch" name="bankAccountSearch"
                                 [(ngModel)]="bankAccountSearch" (change)="search('bankAccountId.equals', bankAccountSearch?.id)">
                             <option [ngValue]="0" selected></option>
                             <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
@@ -74,7 +74,7 @@
                     <!-- Recherche par Catégories -->
                     <div class="form-group row">
                         <label for="categorySearch" class="col-sm-6 col-form-label col-form-label-sm text-right" jhiTranslate="accountManagerApp.transaction.category">Category</label>
-                        <select class="form-control form-control-sm col-sm-6" id="categorySearch" name="categorySearch"
+                        <select class="custom-select custom-select-sm col-sm-6" id="categorySearch" name="categorySearch"
                                 [(ngModel)]="categorySearch" (change)="search('categoryId.equals', categorySearch?.id)">
                             <option [ngValue]="0" selected></option>
                             <option [ngValue]="categoryOption" *ngFor="let categoryOption of categories; trackBy: trackById">{{ categoryOption.label }}</option>
@@ -83,7 +83,7 @@
                     <!-- Recherche par Sous-Catégorie -->
                     <div class="form-group row">
                         <label for="subCategorySearch" class="col-sm-6 col-form-label col-form-label-sm text-right" jhiTranslate="accountManagerApp.transaction.subCategory">Sub Category</label>
-                        <select class="form-control form-control-sm col-sm-6" id="subCategorySearch" name="subCategorySearch"
+                        <select class="custom-select custom-select-sm col-sm-6" id="subCategorySearch" name="subCategorySearch"
                                 [(ngModel)]="subCategorySearch" (change)="search('subCategoryId.equals', subCategorySearch?.id)">
                             <option [ngValue]="0" selected></option>
                             <optgroup *ngFor="let categoryOption of categories; trackBy: trackById" label="{{categoryOption.label}}">
