@@ -43,10 +43,10 @@
                     <div class="form-group row">
                         <label for="amountSearch" class="col-sm-3 col-form-label col-form-label-sm text-right" jhiTranslate="accountManagerApp.transaction.amount">Amount</label>
                         <div id="amountSearch" class="input-group d-inline-flex align-items-center col-sm-9 pl-0 pr-0">
-                            <input type="text" class="form-control form-control-sm" id="minAmountSearch" name="minAmountSearch"
+                            <input type="number" class="form-control form-control-sm" id="minAmountSearch" name="minAmountSearch"
                                    [(ngModel)]="minAmountSearch" (keydown.enter)="search('amount.greaterOrEqualThan', minAmountSearch)"
                                    placeholder="{{ 'accountManagerApp.transaction.search.minAmountSearch' | translate }}" />
-                            <input type="text" class="form-control form-control-sm" id="maxAmountSearch" name="maxAmountSearch"
+                            <input type="number" class="form-control form-control-sm" id="maxAmountSearch" name="maxAmountSearch"
                                    [(ngModel)]="maxAmountSearch" (keydown.enter)="search('amount.lessOrEqualThan', maxAmountSearch)"
                                    placeholder="{{ 'accountManagerApp.transaction.search.maxAmountSearch' | translate }}" />
                         </div>
