@@ -2,6 +2,10 @@ package fr.stromans.service;
 
 import fr.stromans.domain.Transaction;
 import fr.stromans.repository.TransactionRepository;
+import fr.stromans.service.file.loader.IFileLoader;
+import fr.stromans.service.file.loader.OfcFileLoader;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -71,5 +77,23 @@ public class TransactionService {
     public void delete(Long id) {
         log.debug("Request to delete Transaction : {}", id);
         transactionRepository.deleteById(id);
+    }
+
+    public List<Transaction> processFile(List<String> lines, String filename){
+        IFileLoader fileLoader = null;
+        if(FilenameUtils.getExtension(filename).equalsIgnoreCase("OFC")){
+            fileLoader = new OfcFileLoader(lines);
+        }
+        else if (FilenameUtils.getExtension(filename).equalsIgnoreCase("OFX")){
+            fileLoader = new OfcFileLoader(lines);
+        }
+
+        List<Transaction> transactionsToCreate = fileLoader.parse();
+        List<Transaction> savedTransactions = new LinkedList<>();
+        for (Transaction transaction : transactionsToCreate){
+            savedTransactions.add(this.save(transaction));
+        }
+
+        return savedTransactions;
     }
 }

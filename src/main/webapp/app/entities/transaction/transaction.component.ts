@@ -18,6 +18,7 @@ import { SubCategoryService } from '../sub-category/sub-category.service';
 import { CategoryService } from '../category/category.service';
 import { Moment } from 'moment';
 import { DATE_FORMAT } from '../../shared/constants/input.constants';
+import { TransactionUploadDialogComponent } from './transaction-upload-dialog.component';
 
 type SelectableEntity = IBankAccount | ISubCategory | ICategory;
 
@@ -135,6 +136,11 @@ export class TransactionComponent implements OnInit, OnDestroy {
   delete(transaction: ITransaction): void {
     const modalRef = this.modalService.open(TransactionDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.transaction = transaction;
+  }
+
+  uploadFile(): void {
+    const modalRef = this.modalService.open(TransactionUploadDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.bankAccounts = this.bankAccounts;
   }
 
   sort(): string[] {

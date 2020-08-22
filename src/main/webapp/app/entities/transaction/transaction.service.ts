@@ -49,6 +49,12 @@ export class TransactionService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  upload(file: File): Observable<EntityResponseType> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post(`${this.resourceUrl}/upload`, formData, { observe: 'response' });
+  }
+
   protected convertDateFromClient(transaction: ITransaction): ITransaction {
     const copy: ITransaction = Object.assign({}, transaction, {
       date: transaction.date && transaction.date.isValid() ? transaction.date.format(DATE_FORMAT) : undefined,

@@ -9,6 +9,8 @@ import fr.stromans.service.TransactionQueryService;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +18,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +98,32 @@ public class TransactionResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transaction.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code GET  /transactions/upload} : upload transactions file.
+     *
+     * @param file the File to process.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @PostMapping("/transactions/upload")
+    public ResponseEntity<List<Transaction>> upload(@RequestParam(value = "file") MultipartFile file) {
+        log.debug("REST request to create transactions batch from file : {}", file.getOriginalFilename());
+
+        File tempFile = null;
+        List<Transaction> createdTransactions = null;
+        try {
+            tempFile = File.createTempFile("upload_transaction_", null);
+            FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
+            List<String> lineList = FileUtils.readLines(tempFile, Charset.defaultCharset());
+            createdTransactions = transactionService.processFile(lineList, file.getOriginalFilename());
+        } catch (IOException e) {
+            log.error("Unable to read file {}", file.getOriginalFilename());
+        }
+        finally {
+            if (null != tempFile) tempFile.delete();
+        }
+        return ResponseEntity.ok().body(createdTransactions);
     }
 
     /**

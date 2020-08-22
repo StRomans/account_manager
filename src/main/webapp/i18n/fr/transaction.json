@@ -17,6 +17,16 @@
       "detail": {
         "title": "Transaction"
       },
+      "upload": {
+        "title": "Déposer fichier de transactions",
+        "header": "Déposer un fichier de transactions issu de votre banque",
+        "bankAccount": "Compte bancaire concerné",
+        "chooseFile": "Choisissez un fichier",
+        "upload": "Déposer",
+        "action": {
+          "validate": "Valider"
+        }
+      },
       "date": "Date",
       "amount": "Montant",
       "label": "Description",

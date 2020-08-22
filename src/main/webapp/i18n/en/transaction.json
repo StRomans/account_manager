@@ -17,6 +17,16 @@
       "detail": {
         "title": "Transaction"
       },
+      "upload": {
+        "title": "Upload Transaction File",
+        "header": "Upload Transaction File from your Bank",
+        "bankAccount": "Targeted Bank Account",
+        "chooseFile": "Choose file",
+        "upload": "Upload",
+        "action": {
+          "validate": "Validate"
+        }
+      },
       "date": "Date",
       "amount": "Amount",
       "label": "Label",

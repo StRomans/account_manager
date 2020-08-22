@@ -8,8 +8,8 @@
             Create a new Transaction
             </span>
         </button>
-        <button id="jh-upload-file" class="btn btn-outline-secondary float-right jh-create-entity mr-2" [routerLink]="['/transaction/upload']">
-<!--            <fa-icon icon="plus"></fa-icon>-->
+        <button id="jh-upload-file" class="btn btn-outline-secondary float-right jh-create-entity mr-2" (click)="uploadFile()" type="submit">
+            <fa-icon icon="file-upload"></fa-icon>
             <span  jhiTranslate="accountManagerApp.transaction.home.uploadFile">
             Upload File
             </span>
