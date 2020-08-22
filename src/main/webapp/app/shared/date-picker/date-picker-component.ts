@@ -15,7 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       #dp="ngbDatepicker"
     />
     <span class="input-group-append">
-      <button type="button" class="btn btn-secondary btn-sm" (click)="dp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="dp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
     </span>
   </div>`,
   providers: [

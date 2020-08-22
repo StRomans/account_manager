@@ -5,7 +5,8 @@
         "title": "Transactions",
         "createLabel": "Create a new Transaction",
         "createOrEditLabel": "Create or edit a Transaction",
-        "notFound": "No Transactions found"
+        "notFound": "No Transactions found",
+        "uploadFile": "Upload File"
       },
       "created": "A new Transaction is created with identifier {{ param }}",
       "updated": "A Transaction is updated with identifier {{ param }}",
@@ -22,7 +23,14 @@
       "identifier": "Identifier",
       "bankAccount": "Bank Account",
       "subCategory": "Sub Category",
-      "category": "Category"
+      "category": "Category",
+      "search": {
+        "label": "label",
+        "minAmountSearch": "min.",
+        "maxAmountSearch": "max.",
+        "minDateSearch": "min.",
+        "maxDateSearch": "max."
+      }
     }
   }
 }
