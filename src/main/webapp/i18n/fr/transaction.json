@@ -23,8 +23,14 @@
         "bankAccount": "Compte bancaire concerné",
         "chooseFile": "Choisissez un fichier",
         "upload": "Déposer",
+        "wait": "Votre fichier est en cours de traitement. Veuillez patienter quelques instants...",
         "action": {
-          "validate": "Valider"
+          "validate": "Valider",
+          "close": "Fermer"
+        },
+        "result": {
+          "ignored": "transactions ont été ignorées.",
+          "saved": "transactions ont été créées."
         }
       },
       "date": "Date",

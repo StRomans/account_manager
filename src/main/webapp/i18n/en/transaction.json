@@ -23,8 +23,14 @@
         "bankAccount": "Targeted Bank Account",
         "chooseFile": "Choose file",
         "upload": "Upload",
+        "wait": "Your file is being processed. Please wait...",
         "action": {
-          "validate": "Validate"
+          "validate": "Validate",
+          "close": "Close"
+        },
+        "result": {
+          "ignored": "Transactions have been ignored.",
+          "saved": "Transactions have been created."
         }
       },
       "date": "Date",

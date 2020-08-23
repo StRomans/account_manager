@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionService } from './transaction.service';
 import { Component } from '@angular/core';
 import { IBankAccount } from '../../shared/model/bank-account.model';
+import { IUploadTransactionResultDto, UploadTransactionResultDto } from '../../shared/model/dto/upload-transaction-result.dto';
 
 @Component({
   templateUrl: './transaction-upload-dialog.component.html',
@@ -11,6 +12,8 @@ export class TransactionUploadDialogComponent {
   bankAccounts: IBankAccount[] = [];
   selectedBankAccount!: IBankAccount;
   selectedFile!: File;
+  uploadResult!: IUploadTransactionResultDto;
+  isProcessing = false;
 
   constructor(
     protected transactionService: TransactionService,
@@ -23,9 +26,10 @@ export class TransactionUploadDialogComponent {
   }
 
   upload(): void {
+    this.isProcessing = true;
     this.transactionService.upload(this.selectedFile, this.selectedBankAccount).subscribe(data => {
-      this.eventManager.broadcast('transactionListModification');
-      this.activeModal.close();
+      this.isProcessing = false;
+      this.uploadResult = data.body || new UploadTransactionResultDto([], []);
     });
   }
 
@@ -37,5 +41,10 @@ export class TransactionUploadDialogComponent {
     if (event && event.target) {
       this.selectedFile = event.target['files'].item(0);
     }
+  }
+
+  close(): void {
+    this.eventManager.broadcast('transactionListModification');
+    this.activeModal.close();
   }
 }

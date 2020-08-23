@@ -4,6 +4,7 @@ import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.Transaction;
 import fr.stromans.service.BankAccountService;
 import fr.stromans.service.TransactionService;
+import fr.stromans.service.dto.UploadTransactionResultDTO;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 import fr.stromans.service.dto.TransactionCriteria;
 import fr.stromans.service.TransactionQueryService;
@@ -112,8 +113,8 @@ public class TransactionResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
      */
     @PostMapping(value = "/transactions/upload")
-    public ResponseEntity<List<Transaction>> upload(@RequestParam(value = "file") MultipartFile file,
-                                                    @RequestParam(value = "bankAccountId") String bankAccountId) {
+    public ResponseEntity<UploadTransactionResultDTO> upload(@RequestParam(value = "file") MultipartFile file,
+                                                             @RequestParam(value = "bankAccountId") String bankAccountId) {
         log.debug("REST request to create transactions batch from file : {}", file.getOriginalFilename());
 
         BankAccount bankAccount = bankAccountService.findOne(Long.parseLong(bankAccountId)).get();
@@ -131,9 +132,7 @@ public class TransactionResource {
             if (null != tempFile) tempFile.delete();
         }
 
-        List<Transaction> createdTransactions = transactionService.processFile(bankAccount, lineList, file.getOriginalFilename());
-
-        return ResponseEntity.ok().body(createdTransactions);
+        return ResponseEntity.ok().body(transactionService.processFile(bankAccount, lineList, file.getOriginalFilename()));
     }
 
     /**

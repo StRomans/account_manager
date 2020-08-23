@@ -1,41 +1,117 @@
 <form name="deleteForm" (ngSubmit)="upload()">
     <div class="modal-header">
         <h4 class="modal-title" jhiTranslate="accountManagerApp.transaction.upload.title">Upload Transaction File</h4>
-
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="cancel()">&times;</button>
     </div>
 
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
 
-        <p id="jhi-delete-transaction-heading" jhiTranslate="accountManagerApp.transaction.upload.header" >Déposer un fichier de transactions issu de votre banque</p>
+        <jhi-alert></jhi-alert>
 
-        <div class="form-group">
-            <label for="bankAccount" class="col-form-label" jhiTranslate="accountManagerApp.transaction.upload.bankAccount" >Bank Account</label>
-            <select class="custom-select" id="bankAccount" name="bankAccount"
-                    [(ngModel)]="selectedBankAccount" required [jhiFocus]="true" >
-                <option [ngValue]="null" selected></option>
-                <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <div class="input-group mb-3">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile02" (change)="onFileSelected($event)">
-                    <label class="custom-file-label" for="inputGroupFile02" >{{ selectedFile? selectedFile.name : 'accountManagerApp.transaction.upload.chooseFile' | translate}}</label>
+        <!-- Form to complete before uploading -->
+        <span [class.d-none]="isProcessing || uploadResult">
+            <p id="jhi-delete-transaction-heading" jhiTranslate="accountManagerApp.transaction.upload.header" >Déposer un fichier de transactions issu de votre banque</p>
+
+            <div class="form-group">
+                <label for="bankAccount" class="col-form-label" jhiTranslate="accountManagerApp.transaction.upload.bankAccount" >Bank Account</label>
+                <select class="custom-select" id="bankAccount" name="bankAccount"
+                        [(ngModel)]="selectedBankAccount" required [jhiFocus]="true" >
+                    <option [ngValue]="null" selected></option>
+                    <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile02" (change)="onFileSelected($event)">
+                        <label class="custom-file-label" for="inputGroupFile02" >{{ selectedFile? selectedFile.name : 'accountManagerApp.transaction.upload.chooseFile' | translate}}</label>
+                    </div>
                 </div>
             </div>
-        </div>
+        </span>
+
+        <!-- While uploading -->
+        <span [class.d-none]="!isProcessing">
+            <p jhiTranslate="accountManagerApp.transaction.upload.wait" >Your file is being processed. Please wait...</p>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </span>
+
+        <!-- Upload result -->
+        <span [class.d-none]="!isProcessing && !uploadResult">
+            <span *ngIf="uploadResult?.ignoredTransactions?.length > 0">
+                <div class="alert alert-warning" *ngIf="uploadResult?.ignoredTransactions?.length > 0">
+                    <fa-icon icon="ban"></fa-icon>
+                    <label>{{ uploadResult?.ignoredTransactions?.length }} {{ 'accountManagerApp.transaction.upload.result.ignored' | translate}}</label>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.date">Date</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.amount">Amount</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.label">Label</span></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of uploadResult?.ignoredTransactions">
+                                <td>{{ transaction.date | date:'mediumDate' }}</td>
+                                <td>{{ transaction.amount }} {{ transaction.bankAccount?.currency?.code }}</td>
+                                <td>{{ transaction.label }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </span>
+
+
+            <span *ngIf="uploadResult?.savedTransactions?.length > 0">
+                <div class="alert alert-success">
+                    <fa-icon icon="check"></fa-icon>
+                    <label>{{ uploadResult?.savedTransactions?.length }} {{ 'accountManagerApp.transaction.upload.result.saved' | translate}}</label>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.date">Date</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.amount">Amount</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.label">Label</span></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of uploadResult?.savedTransactions">
+                                <td>{{ transaction.date | date:'mediumDate' }}</td>
+                                <td>{{ transaction.amount }} {{ transaction.bankAccount?.currency?.code }}</td>
+                                <td>{{ transaction.label }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </span>
+        </span>
+
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
-            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
 
-        <button id="jhi-confirm-delete-transaction" type="submit" class="btn btn-primary">
-            <fa-icon icon="check"></fa-icon>&nbsp;<span jhiTranslate="accountManagerApp.transaction.upload.action.validate">Validate</span>
-        </button>
+        <span [class.d-none]="uploadResult">
+            <button type="button" [ngClass]="isProcessing ? 'disabled': ''" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()" [disabled]="isProcessing">
+                <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+            </button>
+
+            <button type="submit" [ngClass]="isProcessing ? 'disabled': ''" class="btn btn-primary" [disabled]="isProcessing">
+                <fa-icon icon="check"></fa-icon>&nbsp;<span jhiTranslate="accountManagerApp.transaction.upload.action.validate">Validate</span>
+            </button>
+        </span>
+
+        <span [class.d-none]="!uploadResult">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="close()">
+                <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="accountManagerApp.transaction.upload.action.close">Close</span>
+            </button>
+        </span>
     </div>
 </form>

@@ -3,6 +3,7 @@ package fr.stromans.service;
 import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.Transaction;
 import fr.stromans.repository.TransactionRepository;
+import fr.stromans.service.dto.UploadTransactionResultDTO;
 import fr.stromans.service.file.loader.IFileLoader;
 import fr.stromans.service.file.loader.OfcFileLoader;
 import org.apache.commons.io.FileUtils;
@@ -87,8 +88,10 @@ public class TransactionService {
      * @param filename of the uploaded {@link java.io.File}
      * @return created Transactions
      */
-    public List<Transaction> processFile(BankAccount bankAccount, List<String> lines, String filename){
+    public UploadTransactionResultDTO processFile(BankAccount bankAccount, List<String> lines, String filename){
         IFileLoader fileLoader = null;
+        UploadTransactionResultDTO resultDTO = new UploadTransactionResultDTO();
+
         if(FilenameUtils.getExtension(filename).equalsIgnoreCase("OFC")){
             fileLoader = new OfcFileLoader(lines);
         }
@@ -97,12 +100,15 @@ public class TransactionService {
         }
 
         List<Transaction> transactionsToCreate = fileLoader.parse();
-        List<Transaction> savedTransactions = new LinkedList<>();
         for (Transaction transaction : transactionsToCreate){
-            transaction.setBankAccount(bankAccount);
-            savedTransactions.add(this.save(transaction));
+            try {
+                transaction.setBankAccount(bankAccount);
+                resultDTO.appendSavedTransaction(this.save(transaction));
+            } catch (Exception e){
+                resultDTO.appendIgnoredTransaction(transaction);
+            }
         }
 
-        return savedTransactions;
+        return resultDTO;
     }
 }
