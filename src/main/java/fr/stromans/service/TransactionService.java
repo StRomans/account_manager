@@ -1,5 +1,6 @@
 package fr.stromans.service;
 
+import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.Transaction;
 import fr.stromans.repository.TransactionRepository;
 import fr.stromans.service.file.loader.IFileLoader;
@@ -79,7 +80,14 @@ public class TransactionService {
         transactionRepository.deleteById(id);
     }
 
-    public List<Transaction> processFile(List<String> lines, String filename){
+    /**
+     * Parse provided lines (coming from a file) to add Transactions on a provided Bank Account
+     * @param bankAccount the {@link BankAccount} on which the {@link Transaction} should be created
+     * @param lines of the uploaded {@link java.io.File}. Stands for a bunch of {@link Transaction}
+     * @param filename of the uploaded {@link java.io.File}
+     * @return created Transactions
+     */
+    public List<Transaction> processFile(BankAccount bankAccount, List<String> lines, String filename){
         IFileLoader fileLoader = null;
         if(FilenameUtils.getExtension(filename).equalsIgnoreCase("OFC")){
             fileLoader = new OfcFileLoader(lines);
@@ -91,6 +99,7 @@ public class TransactionService {
         List<Transaction> transactionsToCreate = fileLoader.parse();
         List<Transaction> savedTransactions = new LinkedList<>();
         for (Transaction transaction : transactionsToCreate){
+            transaction.setBankAccount(bankAccount);
             savedTransactions.add(this.save(transaction));
         }
 

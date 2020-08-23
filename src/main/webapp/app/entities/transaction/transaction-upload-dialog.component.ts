@@ -9,7 +9,7 @@ import { IBankAccount } from '../../shared/model/bank-account.model';
 })
 export class TransactionUploadDialogComponent {
   bankAccounts: IBankAccount[] = [];
-  selectedBankAccount?: IBankAccount;
+  selectedBankAccount!: IBankAccount;
   selectedFile!: File;
 
   constructor(
@@ -23,7 +23,7 @@ export class TransactionUploadDialogComponent {
   }
 
   upload(): void {
-    this.transactionService.upload(this.selectedFile).subscribe(() => {
+    this.transactionService.upload(this.selectedFile, this.selectedBankAccount).subscribe(data => {
       this.eventManager.broadcast('transactionListModification');
       this.activeModal.close();
     });

@@ -8,6 +8,7 @@ import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { ITransaction } from 'app/shared/model/transaction.model';
+import { IBankAccount } from '../../shared/model/bank-account.model';
 
 type EntityResponseType = HttpResponse<ITransaction>;
 type EntityArrayResponseType = HttpResponse<ITransaction[]>;
@@ -49,9 +50,10 @@ export class TransactionService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  upload(file: File): Observable<EntityResponseType> {
+  upload(file: File, bankAccount: IBankAccount): Observable<EntityResponseType> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
+    formData.append('bankAccountId', JSON.stringify(bankAccount.id));
     return this.http.post(`${this.resourceUrl}/upload`, formData, { observe: 'response' });
   }
 

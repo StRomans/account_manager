@@ -1,6 +1,8 @@
 package fr.stromans.web.rest;
 
+import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.Transaction;
+import fr.stromans.service.BankAccountService;
 import fr.stromans.service.TransactionService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 import fr.stromans.service.dto.TransactionCriteria;
@@ -55,9 +57,12 @@ public class TransactionResource {
 
     private final TransactionQueryService transactionQueryService;
 
-    public TransactionResource(TransactionService transactionService, TransactionQueryService transactionQueryService) {
+    private final BankAccountService bankAccountService;
+
+    public TransactionResource(TransactionService transactionService, TransactionQueryService transactionQueryService, BankAccountService bankAccountService) {
         this.transactionService = transactionService;
         this.transactionQueryService = transactionQueryService;
+        this.bankAccountService = bankAccountService;
     }
 
     /**
@@ -106,23 +111,28 @@ public class TransactionResource {
      * @param file the File to process.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
      */
-    @PostMapping("/transactions/upload")
-    public ResponseEntity<List<Transaction>> upload(@RequestParam(value = "file") MultipartFile file) {
+    @PostMapping(value = "/transactions/upload")
+    public ResponseEntity<List<Transaction>> upload(@RequestParam(value = "file") MultipartFile file,
+                                                    @RequestParam(value = "bankAccountId") String bankAccountId) {
         log.debug("REST request to create transactions batch from file : {}", file.getOriginalFilename());
 
+        BankAccount bankAccount = bankAccountService.findOne(Long.parseLong(bankAccountId)).get();
+
         File tempFile = null;
-        List<Transaction> createdTransactions = null;
+        List<String> lineList = null;
         try {
             tempFile = File.createTempFile("upload_transaction_", null);
             FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
-            List<String> lineList = FileUtils.readLines(tempFile, Charset.defaultCharset());
-            createdTransactions = transactionService.processFile(lineList, file.getOriginalFilename());
+            lineList = FileUtils.readLines(tempFile, Charset.defaultCharset());
         } catch (IOException e) {
             log.error("Unable to read file {}", file.getOriginalFilename());
         }
         finally {
             if (null != tempFile) tempFile.delete();
         }
+
+        List<Transaction> createdTransactions = transactionService.processFile(bankAccount, lineList, file.getOriginalFilename());
+
         return ResponseEntity.ok().body(createdTransactions);
     }
 

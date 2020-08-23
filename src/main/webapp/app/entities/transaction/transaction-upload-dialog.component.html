@@ -14,7 +14,7 @@
         <div class="form-group">
             <label for="bankAccount" class="col-form-label" jhiTranslate="accountManagerApp.transaction.upload.bankAccount" >Bank Account</label>
             <select class="custom-select" id="bankAccount" name="bankAccount"
-                    [(ngModel)]="selectedBankAccount" required>
+                    [(ngModel)]="selectedBankAccount" required [jhiFocus]="true" >
                 <option [ngValue]="null" selected></option>
                 <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
             </select>

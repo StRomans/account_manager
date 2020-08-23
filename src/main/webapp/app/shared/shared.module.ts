@@ -8,6 +8,7 @@ import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
 import { ColorPickerComponent } from 'app/shared/color-picker/color-picker.component';
 import { FilterObjectPipe } from 'app/shared/util/filter-object-pipe';
 import { JhiDatePickerComponent } from 'app/shared/date-picker/date-picker-component';
+import { JhiFocusDirective } from 'app/shared/util/jhi-focus.directive';
 
 @NgModule({
   imports: [AccountManagerSharedLibsModule],
@@ -20,6 +21,7 @@ import { JhiDatePickerComponent } from 'app/shared/date-picker/date-picker-compo
     ColorPickerComponent,
     FilterObjectPipe,
     JhiDatePickerComponent,
+    JhiFocusDirective,
   ],
   entryComponents: [LoginModalComponent],
   exports: [
@@ -32,6 +34,7 @@ import { JhiDatePickerComponent } from 'app/shared/date-picker/date-picker-compo
     ColorPickerComponent,
     FilterObjectPipe,
     JhiDatePickerComponent,
+    JhiFocusDirective,
   ],
 })
 export class AccountManagerSharedModule {}

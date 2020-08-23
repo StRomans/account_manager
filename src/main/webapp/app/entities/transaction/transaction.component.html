@@ -115,7 +115,7 @@
                 <tr *ngFor="let transaction of transactions ;trackBy: trackId">
 <!--                    <td><a [routerLink]="['/transaction', transaction.id, 'view']">{{ transaction.id }}</a></td>-->
                     <td>{{ transaction.date | date:'mediumDate' }}</td>
-                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.amount }} {{ transaction.bankAccount?.currency?.code }}</td>
                     <td>{{ transaction.label }}</td>
 <!--                    <td>{{ transaction.identifier }}</td>-->
                     <td>

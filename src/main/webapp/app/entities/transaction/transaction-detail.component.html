@@ -14,7 +14,7 @@
                 </dd>
                 <dt><span jhiTranslate="accountManagerApp.transaction.amount">Amount</span></dt>
                 <dd>
-                    <span>{{ transaction.amount }}</span>
+                    <span>{{ transaction.amount }} {{ transaction.bankAccount?.currency?.code }}</span>
                 </dd>
                 <dt><span jhiTranslate="accountManagerApp.transaction.label">Label</span></dt>
                 <dd>
