@@ -11,7 +11,17 @@
         <!-- Form to complete before uploading -->
         <form name="uploadForm" role="form" novalidate (ngSubmit)="upload()" [formGroup]="uploadForm">
             <span [class.d-none]="isProcessing || isComplete">
-                <p id="jhi-delete-transaction-heading" jhiTranslate="accountManagerApp.transaction.upload.header" >Déposer un fichier de transactions issu de votre banque</p>
+                <div>
+                    <p id="jhi-delete-transaction-heading" jhiTranslate="accountManagerApp.transaction.upload.header" >Upload Transaction File from your Bank.</p>
+
+                    <small class="text-success">
+                        {{ 'accountManagerApp.transaction.upload.format.message' | translate }} :
+                        <ul>
+                            <li>{{ 'accountManagerApp.transaction.upload.format.ofc' | translate }}</li>
+                            <li>{{ 'accountManagerApp.transaction.upload.format.ofx' | translate }}</li>
+                        </ul>
+                    </small>
+                </div>
 
                 <div class="form-group">
                     <label for="bankAccount" class="col-form-label" jhiTranslate="accountManagerApp.transaction.upload.bankAccount" >Bank Account</label>

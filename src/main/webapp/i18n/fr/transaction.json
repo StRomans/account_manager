@@ -20,6 +20,11 @@
       "upload": {
         "title": "Déposer fichier de transactions",
         "header": "Déposer un fichier de transactions issu de votre banque",
+        "format": {
+          "message": "Les formats pris en charges sont",
+          "ofc": "Open Financial Connectivity (OFC)",
+          "ofx": "Open Financial Exchange (OFX)"
+        },
         "bankAccount": "Compte bancaire concerné",
         "chooseFile": "Choisissez un fichier",
         "upload": "Déposer",

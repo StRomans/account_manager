@@ -20,6 +20,11 @@
       "upload": {
         "title": "Upload Transaction File",
         "header": "Upload Transaction File from your Bank",
+        "format": {
+          "message": "Supported types are",
+          "ofc": "Open Financial Connectivity (OFC)",
+          "ofx": "Open Financial Exchange (OFX)"
+        },
         "bankAccount": "Targeted Bank Account",
         "chooseFile": "Choose file",
         "upload": "Upload",
