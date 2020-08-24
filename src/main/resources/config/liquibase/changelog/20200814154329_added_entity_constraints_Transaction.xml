@@ -7,7 +7,7 @@
         Added the constraints for entity Transaction.
     -->
     <changeSet id="20200814154329-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="bank_account_id"
                                  baseTableName="transaction"
                                  constraintName="fk_transaction_bank_account_id"
@@ -19,6 +19,8 @@
                                  constraintName="fk_transaction_sub_category_id"
                                  referencedColumnNames="id"
                                  referencedTableName="sub_category"/>
+
+        <addUniqueConstraint tableName="transaction" columnNames="bank_account_id, identifier"/>
 
     </changeSet>
 </databaseChangeLog>

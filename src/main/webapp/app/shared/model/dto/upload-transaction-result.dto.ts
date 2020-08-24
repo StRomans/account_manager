@@ -6,5 +6,8 @@ export interface IUploadTransactionResultDto {
 }
 
 export class UploadTransactionResultDto implements IUploadTransactionResultDto {
-  constructor(public ignoredTransactions: ITransaction[], public savedTransactions: ITransaction[]) {}
+  constructor(public ignoredTransactions: ITransaction[], public savedTransactions: ITransaction[]) {
+    this.ignoredTransactions = ignoredTransactions || [];
+    this.savedTransactions = savedTransactions || [];
+  }
 }

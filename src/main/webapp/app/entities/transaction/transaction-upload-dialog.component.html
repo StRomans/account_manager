@@ -9,7 +9,7 @@
         <jhi-alert></jhi-alert>
 
         <!-- Form to complete before uploading -->
-        <span [class.d-none]="isProcessing || uploadResult">
+        <span [class.d-none]="isProcessing || isComplete">
             <p id="jhi-delete-transaction-heading" jhiTranslate="accountManagerApp.transaction.upload.header" >Déposer un fichier de transactions issu de votre banque</p>
 
             <div class="form-group">
@@ -39,17 +39,17 @@
         </span>
 
         <!-- Upload result -->
-        <span [class.d-none]="!isProcessing && !uploadResult">
-            <span *ngIf="uploadResult?.savedTransactions?.length == 0 && uploadResult?.ignoredTransactions?.length == 0">
+        <span [class.d-none]="!isComplete">
+            <span *ngIf="ignoredTransactions.length == 0 && savedTransactions.length == 0">
                 <div class="alert alert-warning">
                     <label>{{ 'accountManagerApp.transaction.upload.result.none' | translate}}</label>
                 </div>
             </span>
 
-            <span *ngIf="uploadResult?.ignoredTransactions && uploadResult?.ignoredTransactions?.length > 0">
+            <span *ngIf="ignoredTransactions.length > 0">
                 <div class="alert alert-warning" >
                     <fa-icon icon="ban"></fa-icon>
-                    <label>{{ uploadResult?.ignoredTransactions?.length }} {{ 'accountManagerApp.transaction.upload.result.ignored' | translate}}</label>
+                    <label>{{ ignoredTransactions.length }} {{ 'accountManagerApp.transaction.upload.result.ignored' | translate}}</label>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -62,7 +62,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let transaction of uploadResult?.ignoredTransactions">
+                            <tr *ngFor="let transaction of ignoredTransactions">
                                 <td>{{ transaction.date | date:'mediumDate' }}</td>
                                 <td>{{ transaction.amount }} {{ transaction.bankAccount?.currency?.code }}</td>
                                 <td>{{ transaction.label }}</td>
@@ -72,10 +72,10 @@
                 </div>
             </span>
 
-            <span *ngIf="uploadResult?.savedTransactions && uploadResult?.savedTransactions?.length > 0">
+            <span *ngIf="savedTransactions.length > 0">
                 <div class="alert alert-success">
                     <fa-icon icon="check"></fa-icon>
-                    <label>{{ uploadResult?.savedTransactions?.length }} {{ 'accountManagerApp.transaction.upload.result.saved' | translate}}</label>
+                    <label>{{ savedTransactions.length }} {{ 'accountManagerApp.transaction.upload.result.saved' | translate}}</label>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -88,7 +88,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let transaction of uploadResult?.savedTransactions">
+                            <tr *ngFor="let transaction of savedTransactions">
                                 <td>{{ transaction.date | date:'mediumDate' }}</td>
                                 <td>{{ transaction.amount }} {{ transaction.bankAccount?.currency?.code }}</td>
                                 <td>{{ transaction.label }}</td>
@@ -103,7 +103,7 @@
 
     <div class="modal-footer">
 
-        <span [class.d-none]="uploadResult">
+        <span [class.d-none]="isComplete">
             <button type="button" [ngClass]="isProcessing ? 'disabled': ''" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()" [disabled]="isProcessing">
                 <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
             </button>
@@ -113,7 +113,7 @@
             </button>
         </span>
 
-        <span [class.d-none]="!uploadResult">
+        <span [class.d-none]="!isComplete">
             <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="close()">
                 <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="accountManagerApp.transaction.upload.action.close">Close</span>
             </button>

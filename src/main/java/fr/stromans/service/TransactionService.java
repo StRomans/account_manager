@@ -104,7 +104,13 @@ public class TransactionService {
         for (Transaction transaction : transactionsToCreate){
             try {
                 transaction.setBankAccount(bankAccount);
-                resultDTO.appendSavedTransaction(this.save(transaction));
+                boolean canBeSaved = (null != transaction.getIdentifier() && null == transactionRepository.findOneByBankAccountAndIdentifier(bankAccount, transaction.getIdentifier())) || null == transaction.getIdentifier();
+                if(canBeSaved) {
+                    Transaction savedTransaction = this.save(transaction);
+                    resultDTO.appendSavedTransaction(savedTransaction);
+                } else {
+                    resultDTO.appendIgnoredTransaction(transaction);
+                }
             } catch (Exception e){
                 resultDTO.appendIgnoredTransaction(transaction);
             }
