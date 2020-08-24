@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { IBankAccount } from '../../shared/model/bank-account.model';
 import { ITransaction } from '../../shared/model/transaction.model';
 import { UploadTransactionResultDto } from '../../shared/model/dto/upload-transaction-result.dto';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: './transaction-upload-dialog.component.html',
@@ -12,8 +13,12 @@ import { UploadTransactionResultDto } from '../../shared/model/dto/upload-transa
 })
 export class TransactionUploadDialogComponent {
   bankAccounts: IBankAccount[] = [];
-  selectedBankAccount!: IBankAccount;
-  selectedFile!: File;
+
+  uploadForm = this.fb.group({
+    selectedBankAccount: [null, [Validators.required]],
+    selectedFile: [null, [Validators.required]],
+  });
+
   ignoredTransactions: ITransaction[] = [];
   savedTransactions: ITransaction[] = [];
   isProcessing = false;
@@ -22,7 +27,8 @@ export class TransactionUploadDialogComponent {
   constructor(
     protected transactionService: TransactionService,
     public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder
   ) {
     this.ignoredTransactions = [];
     this.savedTransactions = [];
@@ -36,13 +42,15 @@ export class TransactionUploadDialogComponent {
 
   upload(): void {
     this.isProcessing = true;
-    this.transactionService.upload(this.selectedFile, this.selectedBankAccount).subscribe(data => {
-      this.isProcessing = false;
-      this.isComplete = true;
-      const uploadResult = data.body || new UploadTransactionResultDto([], []);
-      this.ignoredTransactions = uploadResult.ignoredTransactions;
-      this.savedTransactions = uploadResult.savedTransactions;
-    });
+    this.transactionService
+      .upload(this.uploadForm.get('selectedFile')!.value, this.uploadForm.get('selectedBankAccount')!.value)
+      .subscribe(data => {
+        this.isProcessing = false;
+        this.isComplete = true;
+        const uploadResult = data.body || new UploadTransactionResultDto([], []);
+        this.ignoredTransactions = uploadResult.ignoredTransactions;
+        this.savedTransactions = uploadResult.savedTransactions;
+      });
   }
 
   trackById(index: number, item: IBankAccount): any {
@@ -51,7 +59,7 @@ export class TransactionUploadDialogComponent {
 
   onFileSelected(event: Event): void {
     if (event && event.target) {
-      this.selectedFile = event.target['files'].item(0);
+      this.uploadForm.patchValue({ selectedFile: event.target['files'].item(0) });
     }
   }
 

@@ -9,26 +9,40 @@
         <jhi-alert></jhi-alert>
 
         <!-- Form to complete before uploading -->
-        <span [class.d-none]="isProcessing || isComplete">
-            <p id="jhi-delete-transaction-heading" jhiTranslate="accountManagerApp.transaction.upload.header" >Déposer un fichier de transactions issu de votre banque</p>
+        <form name="uploadForm" role="form" novalidate (ngSubmit)="upload()" [formGroup]="uploadForm">
+            <span [class.d-none]="isProcessing || isComplete">
+                <p id="jhi-delete-transaction-heading" jhiTranslate="accountManagerApp.transaction.upload.header" >Déposer un fichier de transactions issu de votre banque</p>
 
-            <div class="form-group">
-                <label for="bankAccount" class="col-form-label" jhiTranslate="accountManagerApp.transaction.upload.bankAccount" >Bank Account</label>
-                <select class="custom-select" id="bankAccount" name="bankAccount"
-                        [(ngModel)]="selectedBankAccount" required [jhiFocus]="true" >
-                    <option [ngValue]="null" selected></option>
-                    <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile02" (change)="onFileSelected($event)">
-                        <label class="custom-file-label" for="inputGroupFile02" >{{ selectedFile? selectedFile.name : 'accountManagerApp.transaction.upload.chooseFile' | translate}}</label>
+                <div class="form-group">
+                    <label for="bankAccount" class="col-form-label" jhiTranslate="accountManagerApp.transaction.upload.bankAccount" >Bank Account</label>
+                    <select id="field_selectedBankAccount" class="custom-select" id="bankAccount" name="bankAccount" formControlName="selectedBankAccount"
+                            required [jhiFocus]="true" >
+                        <option [ngValue]="null" selected></option>
+                        <option [ngValue]="bankAccountOption" *ngFor="let bankAccountOption of bankAccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
+                    </select>
+                    <div *ngIf="uploadForm.get('selectedBankAccount')!.invalid && (uploadForm.get('selectedBankAccount')!.dirty || uploadForm.get('selectedBankAccount')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="uploadForm.get('selectedBankAccount')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
                     </div>
                 </div>
-            </div>
-        </span>
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="field_selectedFile" formControlName="field_selectedFile" (change)="onFileSelected($event)">
+                            <label class="custom-file-label" for="field_selectedFile" >{{ uploadForm.get('selectedFile')?.value ? uploadForm.get('selectedFile')?.value.name : 'accountManagerApp.transaction.upload.chooseFile' | translate}}</label>
+                        </div>
+                    </div>
+                    <div *ngIf="uploadForm.get('selectedFile')!.invalid && (uploadForm.get('selectedFile')!.dirty || uploadForm.get('selectedFile')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="uploadForm.get('selectedFile')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+            </span>
+        </form>
 
         <!-- While uploading -->
         <span [class.d-none]="!isProcessing">
@@ -108,7 +122,7 @@
                 <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
             </button>
 
-            <button type="submit" [ngClass]="isProcessing ? 'disabled': ''" class="btn btn-primary" [disabled]="isProcessing">
+            <button type="submit" [ngClass]="isProcessing ? 'disabled': ''" class="btn btn-primary" [disabled]="uploadForm.invalid || isProcessing">
                 <fa-icon icon="check"></fa-icon>&nbsp;<span jhiTranslate="accountManagerApp.transaction.upload.action.validate">Validate</span>
             </button>
         </span>
