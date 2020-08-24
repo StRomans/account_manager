@@ -40,8 +40,14 @@
 
         <!-- Upload result -->
         <span [class.d-none]="!isProcessing && !uploadResult">
-            <span *ngIf="uploadResult?.ignoredTransactions?.length > 0">
-                <div class="alert alert-warning" *ngIf="uploadResult?.ignoredTransactions?.length > 0">
+            <span *ngIf="uploadResult?.savedTransactions?.length == 0 && uploadResult?.ignoredTransactions?.length == 0">
+                <div class="alert alert-warning">
+                    <label>{{ 'accountManagerApp.transaction.upload.result.none' | translate}}</label>
+                </div>
+            </span>
+
+            <span *ngIf="uploadResult?.ignoredTransactions && uploadResult?.ignoredTransactions?.length > 0">
+                <div class="alert alert-warning" >
                     <fa-icon icon="ban"></fa-icon>
                     <label>{{ uploadResult?.ignoredTransactions?.length }} {{ 'accountManagerApp.transaction.upload.result.ignored' | translate}}</label>
                 </div>
@@ -66,8 +72,7 @@
                 </div>
             </span>
 
-
-            <span *ngIf="uploadResult?.savedTransactions?.length > 0">
+            <span *ngIf="uploadResult?.savedTransactions && uploadResult?.savedTransactions?.length > 0">
                 <div class="alert alert-success">
                     <fa-icon icon="check"></fa-icon>
                     <label>{{ uploadResult?.savedTransactions?.length }} {{ 'accountManagerApp.transaction.upload.result.saved' | translate}}</label>

@@ -96,6 +96,12 @@
         </div>
     </div>
 
+    <p class="mb-0 mt-0 text-secondary text-right">
+        <small>
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </small>
+    </p>
+
     <div class="table-responsive" id="entities" *ngIf="transactions && transactions.length > 0 || fullCriteria">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>

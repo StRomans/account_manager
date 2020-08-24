@@ -5,6 +5,8 @@ import fr.stromans.domain.Transaction;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,11 +28,11 @@ public class OfxFileLoader implements IFileLoader {
     private List<String> content;
     private DateTimeFormatter dateFormatter;
 
-    private OfxFileLoader(List<String> lines){
+    public OfxFileLoader(List<String> lines){
 
         List<String> normalizedLines = new LinkedList<>();
         for (String line: lines) {
-            normalizedLines.add(line.replaceAll("<", "\n<"));
+            normalizedLines.addAll(Arrays.asList(line.replaceAll("<", "\n<").split("\n")));
         }
         this.setContent(normalizedLines);
         this.setDateFormatter(DateTimeFormatter.ofPattern("yyyyMMdd"));

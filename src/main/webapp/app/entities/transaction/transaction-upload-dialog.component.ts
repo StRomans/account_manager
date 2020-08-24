@@ -7,6 +7,7 @@ import { IUploadTransactionResultDto, UploadTransactionResultDto } from '../../s
 
 @Component({
   templateUrl: './transaction-upload-dialog.component.html',
+  styleUrls: ['./transaction-upload-dialog.component.scss'],
 })
 export class TransactionUploadDialogComponent {
   bankAccounts: IBankAccount[] = [];

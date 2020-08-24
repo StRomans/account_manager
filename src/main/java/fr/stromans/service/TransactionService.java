@@ -6,6 +6,7 @@ import fr.stromans.repository.TransactionRepository;
 import fr.stromans.service.dto.UploadTransactionResultDTO;
 import fr.stromans.service.file.loader.IFileLoader;
 import fr.stromans.service.file.loader.OfcFileLoader;
+import fr.stromans.service.file.loader.OfxFileLoader;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -96,7 +97,7 @@ public class TransactionService {
             fileLoader = new OfcFileLoader(lines);
         }
         else if (FilenameUtils.getExtension(filename).equalsIgnoreCase("OFX")){
-            fileLoader = new OfcFileLoader(lines);
+            fileLoader = new OfxFileLoader(lines);
         }
 
         List<Transaction> transactionsToCreate = fileLoader.parse();

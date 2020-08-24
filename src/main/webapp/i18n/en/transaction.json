@@ -29,8 +29,9 @@
           "close": "Close"
         },
         "result": {
-          "ignored": "Transactions have been ignored.",
-          "saved": "Transactions have been created."
+          "ignored": " duplicate transactions have been ignored.",
+          "saved": "transactions have been created.",
+          "none": "Oops ! This file does not seem to contain any transaction..."
         }
       },
       "date": "Date",

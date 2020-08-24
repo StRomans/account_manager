@@ -29,8 +29,9 @@
           "close": "Fermer"
         },
         "result": {
-          "ignored": "transactions ont été ignorées.",
-          "saved": "transactions ont été créées."
+          "ignored": " transactions en doublon ont été ignorées.",
+          "saved": " transactions ont été créées.",
+          "none": "Oups ! Ce fichier ne semble pas contenir de transactions..."
         }
       },
       "date": "Date",
