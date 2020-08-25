@@ -47,6 +47,7 @@
       "subCategory": "Sous-catégorie",
       "category": "Catégorie",
       "search": {
+        "all": "Tous",
         "label": "description",
         "minAmountSearch": "min.",
         "maxAmountSearch": "max.",

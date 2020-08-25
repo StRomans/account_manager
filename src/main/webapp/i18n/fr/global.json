@@ -7,7 +7,7 @@
       "data": {
         "manage": {
           "main": "Alimenter",
-          "transactions": "Consulter mes transactions",
+          "transactions": "Mes opérations",
           "bankAccount": "Mes comptes"
         },
         "classify": {

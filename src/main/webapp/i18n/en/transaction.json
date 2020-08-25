@@ -47,6 +47,7 @@
       "subCategory": "Sub Category",
       "category": "Category",
       "search": {
+        "all": "all",
         "label": "label",
         "minAmountSearch": "min.",
         "maxAmountSearch": "max.",
