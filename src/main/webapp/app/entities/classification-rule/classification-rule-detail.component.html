@@ -8,14 +8,20 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="accountManagerApp.classificationRule.owner">Owner</span></dt>
-                <dd>
+                <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.classificationRule.owner">Owner</span></dt>
+                <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     {{ classificationRule.owner?.login }}
                 </dd>
                 <dt><span jhiTranslate="accountManagerApp.classificationRule.bankAccount">Bank Account</span></dt>
                 <dd>
                     <div *ngIf="classificationRule.bankAccount">
-                        <a [routerLink]="['/bank-account', classificationRule.bankAccount?.id, 'view']">{{ classificationRule.bankAccount?.id }}</a>
+                        <a [routerLink]="['/bank-account', classificationRule.bankAccount?.id, 'view']">{{ classificationRule.bankAccount?.label }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="accountManagerApp.classificationRule.filterRules">Filter Rules</span></dt>
+                <dd>
+                    <div *ngFor="let filterRule of classificationRule.filterRules">
+                        <a [routerLink]="['/filter-rule', filterRule.id, 'view']" >{{ 'accountManagerApp.RuleField.' +  filterRule.field | translate }} {{ 'accountManagerApp.RuleOperator.' + filterRule.operator | translate }} {{ filterRule.stringValue }}</a>
                     </div>
                 </dd>
             </dl>

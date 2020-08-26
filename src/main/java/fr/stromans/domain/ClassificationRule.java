@@ -40,7 +40,7 @@ public class ClassificationRule implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Transaction> transactions = new HashSet<>();
 
-    @OneToMany(mappedBy = "classificationRule", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "classificationRule", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<FilterRule> filterRules = new HashSet<>();
 

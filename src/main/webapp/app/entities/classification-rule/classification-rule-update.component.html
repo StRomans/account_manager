@@ -11,7 +11,7 @@
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.owner" for="field_owner">Owner</label>
                     <select class="form-control" id="field_owner" name="owner" formControlName="owner">
                         <option *ngIf="!editForm.get('owner')!.value" [ngValue]="null" selected></option>
@@ -37,6 +37,52 @@
                            *ngIf="editForm.get('bankAccount')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filterRules" for="field_bankAccount">Filter Rule</label>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.filterRule.field">Field</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.filterRule.operator">Operator</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.filterRule.stringValue">Value</span></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rule of editForm.get('filterRules')!.value; let i = index" >
+                                    <td>
+                                        <select class="form-control" name="field" (change)="changeRule($event, rule)">
+                                            <option value="AMOUNT" [selected]="rule.field === 'AMOUNT'">{{ 'accountManagerApp.RuleField.AMOUNT' | translate }}</option>
+                                            <option value="DATE" [selected]="rule.field === 'DATE'">{{ 'accountManagerApp.RuleField.DATE' | translate }}</option>
+                                            <option value="LABEL" [selected]="rule.field === 'LABEL'">{{ 'accountManagerApp.RuleField.LABEL' | translate }}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="operator" (change)="changeRule($event, rule)">
+                                            <option value="EQUALS" [selected]="rule.operator === 'EQUALS'">{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
+                                            <option value="CONTAINS" [selected]="rule.operator === 'CONTAINS'">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
+                                            <option value="GREATEROREQUALTHAN" [selected]="rule.operator === 'GREATEROREQUALTHAN'">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
+                                            <option value="LESSOREQUALTHAN" [selected]="rule.operator === 'LESSOREQUALTHAN'">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="stringValue" [value]="rule.stringValue" (change)="changeRule($event, rule)">
+                                    </td>
+                                    <td><button type="button" class="btn btn-outline-danger" (click)="removeRule($event, rule)">Remove rule</button></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-success" (click)="addRule($event)">Add rule</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

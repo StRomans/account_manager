@@ -1,4 +1,4 @@
-export const enum RuleField {
+export enum RuleField {
   AMOUNT = 'AMOUNT',
 
   DATE = 'DATE',
