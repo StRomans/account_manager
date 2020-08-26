@@ -2,16 +2,16 @@
   "accountManagerApp": {
     "filterRule": {
       "home": {
-        "title": "FilterRules",
-        "createLabel": "Créer un nouveau Filter Rule",
-        "createOrEditLabel": "Créer ou éditer un Filter Rule",
-        "notFound": "Aucun Filter Rule trouvé"
+        "title": "Filtres personnalisés",
+        "createLabel": "Créer un nouveau Filtre personnalisé",
+        "createOrEditLabel": "Créer ou éditer un Filtre personnalisé",
+        "notFound": "Aucune Filtre personnalisé trouvé"
       },
-      "created": "Un nouveau Filtre personnalis a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Filtre personnalis avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Filtre personnalis avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouveau Filtre personnalisé a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Filtre personnalisé avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Filtre personnalisé avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Filtre personnalis {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer le Filtre personnalisé {{ id }} ?"
       },
       "detail": {
         "title": "Filtre personnalisé"

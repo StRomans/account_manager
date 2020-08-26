@@ -2,9 +2,9 @@
   "accountManagerApp": {
     "RuleField": {
       "null": "",
-      "AMOUNT": "AMOUNT",
-      "DATE": "DATE",
-      "LABEL": "LABEL"
+      "AMOUNT": "Amount",
+      "DATE": "Date",
+      "LABEL": "Label"
     }
   }
 }

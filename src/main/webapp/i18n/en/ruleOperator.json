@@ -2,10 +2,10 @@
   "accountManagerApp": {
     "RuleOperator": {
       "null": "",
-      "EQUALS": "EQUALS",
-      "CONTAINS": "CONTAINS",
-      "GREATEROREQUALTHAN": "GREATEROREQUALTHAN",
-      "LESSOREQUALTHAN": "LESSOREQUALTHAN"
+      "EQUALS": "equals",
+      "CONTAINS": "contains",
+      "GREATEROREQUALTHAN": "is greater or equal than",
+      "LESSOREQUALTHAN": "is less or equal than"
     }
   }
 }
