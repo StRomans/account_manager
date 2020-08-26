@@ -1,0 +1,11 @@
+id;field;operator;string_value
+1;AMOUNT;CONTAINS;Village Liberian Dollar bleeding-edge
+2;LABEL;CONTAINS;Belize Dollar full-range Wyoming
+3;AMOUNT;GREATEROREQUALTHAN;Tuna deposit
+4;AMOUNT;GREATEROREQUALTHAN;Division
+5;DATE;EQUALS;Sports
+6;DATE;CONTAINS;Minnesota Flats AGP
+7;LABEL;EQUALS;Credit Card Account
+8;LABEL;CONTAINS;Ergonomic Soft Table Automotive
+9;LABEL;GREATEROREQUALTHAN;port functionalities
+10;AMOUNT;CONTAINS;Investment Account Cambridgeshire invoice

@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="filterRule">
+            <h2><span jhiTranslate="accountManagerApp.filterRule.detail.title">Filter Rule</span> {{ filterRule.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="accountManagerApp.filterRule.field">Field</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'accountManagerApp.RuleField.' + filterRule.field }}">{{ filterRule.field }}</span>
+                </dd>
+                <dt><span jhiTranslate="accountManagerApp.filterRule.operator">Operator</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'accountManagerApp.RuleOperator.' + filterRule.operator }}">{{ filterRule.operator }}</span>
+                </dd>
+                <dt><span jhiTranslate="accountManagerApp.filterRule.stringValue">String Value</span></dt>
+                <dd>
+                    <span>{{ filterRule.stringValue }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/filter-rule', filterRule.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

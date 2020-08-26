@@ -1,0 +1,11 @@
+{
+  "accountManagerApp": {
+    "RuleOperator": {
+      "null": "",
+      "EQUALS": "EQUALS",
+      "CONTAINS": "CONTAINS",
+      "GREATEROREQUALTHAN": "GREATEROREQUALTHAN",
+      "LESSOREQUALTHAN": "LESSOREQUALTHAN"
+    }
+  }
+}

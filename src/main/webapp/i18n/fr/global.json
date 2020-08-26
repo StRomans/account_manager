@@ -27,6 +27,7 @@
         "category": "Catégories",
         "subCategory": "Sous-catégories",
         "transaction": "Transactions",
+        "filterRule": "Filter Rule",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

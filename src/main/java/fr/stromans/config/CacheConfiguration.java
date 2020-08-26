@@ -55,6 +55,7 @@ public class CacheConfiguration {
             createCache(cm, fr.stromans.domain.Category.class.getName());
             createCache(cm, fr.stromans.domain.SubCategory.class.getName());
             createCache(cm, fr.stromans.domain.Transaction.class.getName());
+            createCache(cm, fr.stromans.domain.FilterRule.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

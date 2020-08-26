@@ -1,0 +1,10 @@
+{
+  "accountManagerApp": {
+    "RuleField": {
+      "null": "",
+      "AMOUNT": "AMOUNT",
+      "DATE": "DATE",
+      "LABEL": "LABEL"
+    }
+  }
+}

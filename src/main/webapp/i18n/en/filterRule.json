@@ -1,0 +1,24 @@
+{
+  "accountManagerApp": {
+    "filterRule": {
+      "home": {
+        "title": "Filter Rules",
+        "createLabel": "Create a new Filter Rule",
+        "createOrEditLabel": "Create or edit a Filter Rule",
+        "notFound": "No Filter Rules found"
+      },
+      "created": "A new Filter Rule is created with identifier {{ param }}",
+      "updated": "A Filter Rule is updated with identifier {{ param }}",
+      "deleted": "A Filter Rule is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Filter Rule {{ id }}?"
+      },
+      "detail": {
+        "title": "Filter Rule"
+      },
+      "field": "Field",
+      "operator": "Operator",
+      "stringValue": "String Value"
+    }
+  }
+}
