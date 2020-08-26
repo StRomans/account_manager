@@ -33,6 +33,9 @@
             <column name="sub_category_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="classification_rule_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>

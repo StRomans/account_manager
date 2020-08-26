@@ -16,6 +16,13 @@
       "relationshipType": "many-to-one",
       "otherEntityField": "label",
       "otherEntityRelationshipName": "transaction"
+    },
+    {
+      "relationshipName": "classificationRule",
+      "otherEntityName": "classificationRule",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "transactions"
     }
   ],
   "fields": [

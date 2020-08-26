@@ -1,7 +1,16 @@
 {
   "fluentMethods": true,
   "clientRootFolder": "",
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipName": "classificationRule",
+      "otherEntityName": "classificationRule",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "filterRules"
+    }
+  ],
   "fields": [
     {
       "fieldName": "field",

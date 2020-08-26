@@ -44,6 +44,8 @@ public class TransactionCriteria implements Serializable, Criteria {
 
     private LongFilter ownerId;
 
+    private LongFilter classificationRuleId;
+
     public TransactionCriteria() {
     }
 
@@ -56,6 +58,7 @@ public class TransactionCriteria implements Serializable, Criteria {
         this.bankAccountId = other.bankAccountId == null ? null : other.bankAccountId.copy();
         this.subCategoryId = other.subCategoryId == null ? null : other.subCategoryId.copy();
         this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
+        this.classificationRuleId = other.classificationRuleId == null ? null : other.classificationRuleId.copy();
     }
 
     @Override
@@ -135,6 +138,14 @@ public class TransactionCriteria implements Serializable, Criteria {
         this.ownerId = ownerId;
     }
 
+    public LongFilter getClassificationRuleId() {
+        return classificationRuleId;
+    }
+
+    public void setClassificationRuleId(LongFilter classificationRuleId) {
+        this.classificationRuleId = classificationRuleId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -154,7 +165,8 @@ public class TransactionCriteria implements Serializable, Criteria {
             Objects.equals(bankAccountId, that.bankAccountId) &&
             Objects.equals(categoryId, that.categoryId) &&
             Objects.equals(subCategoryId, that.subCategoryId) &&
-            Objects.equals(ownerId, that.ownerId);
+            Objects.equals(ownerId, that.ownerId) &&
+            Objects.equals(classificationRuleId, that.classificationRuleId);
     }
 
     @Override
@@ -168,7 +180,8 @@ public class TransactionCriteria implements Serializable, Criteria {
         bankAccountId,
         categoryId,
         subCategoryId,
-        ownerId
+        ownerId,
+        classificationRuleId
         );
     }
 
@@ -185,6 +198,7 @@ public class TransactionCriteria implements Serializable, Criteria {
                 (categoryId != null ? "categoryId=" + categoryId + ", " : "") +
                 (subCategoryId != null ? "subCategoryId=" + subCategoryId + ", " : "") +
                 (ownerId != null ? "bankAccount.owner=" + ownerId + ", " : "") +
+                (classificationRuleId != null ? "classificationRuleId=" + classificationRuleId + ", " : "") +
             "}";
     }
 

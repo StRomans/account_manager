@@ -145,6 +145,11 @@ public class Transaction implements Serializable {
         return classificationRule;
     }
 
+    public Transaction classificationRule(ClassificationRule classificationRule) {
+        this.classificationRule = classificationRule;
+        return this;
+    }
+
     public void setClassificationRule(ClassificationRule classificationRule) {
         this.classificationRule = classificationRule;
     }

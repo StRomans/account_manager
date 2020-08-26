@@ -4,6 +4,7 @@ import fr.stromans.AccountManagerApp;
 import fr.stromans.domain.Transaction;
 import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.SubCategory;
+import fr.stromans.domain.ClassificationRule;
 import fr.stromans.repository.TransactionRepository;
 import fr.stromans.service.TransactionService;
 import fr.stromans.service.dto.TransactionCriteria;
@@ -673,6 +674,26 @@ public class TransactionResourceIT {
 
         // Get all the transactionList where subCategory equals to subCategoryId + 1
         defaultTransactionShouldNotBeFound("subCategoryId.equals=" + (subCategoryId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTransactionsByClassificationRuleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionRepository.saveAndFlush(transaction);
+        ClassificationRule classificationRule = ClassificationRuleResourceIT.createEntity(em);
+        em.persist(classificationRule);
+        em.flush();
+        transaction.setClassificationRule(classificationRule);
+        transactionRepository.saveAndFlush(transaction);
+        Long classificationRuleId = classificationRule.getId();
+
+        // Get all the transactionList where classificationRule equals to classificationRuleId
+        defaultTransactionShouldBeFound("classificationRuleId.equals=" + classificationRuleId);
+
+        // Get all the transactionList where classificationRule equals to classificationRuleId + 1
+        defaultTransactionShouldNotBeFound("classificationRuleId.equals=" + (classificationRuleId + 1));
     }
 
     /**
