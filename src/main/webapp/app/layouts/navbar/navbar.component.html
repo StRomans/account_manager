@@ -50,6 +50,12 @@
                             <span jhiTranslate="global.menu.data.classify.subCategory">Gérer mes sous-catégories</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="classification-rule" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.classificationRule">Règles de classificatio</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li>
@@ -112,15 +118,15 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="filter-rule" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.filterRule">Filter Rule</span>
-                        </a>
-                    </li>
-                    <li>
                         <a class="dropdown-item" routerLink="classification-rule" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.classificationRule">Classification Rule</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="filter-rule" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.filterRule">Filter Rule</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->

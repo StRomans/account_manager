@@ -2,24 +2,24 @@
   "accountManagerApp": {
     "classificationRule": {
       "home": {
-        "title": "ClassificationRules",
-        "createLabel": "Créer un nouveau Classification Rule",
-        "createOrEditLabel": "Créer ou éditer un Classification Rule",
-        "notFound": "Aucun Classification Rule trouvé"
+        "title": "Règles de classement",
+        "createLabel": "Créer une nouvelle règle de classement",
+        "createOrEditLabel": "Créer ou éditer une règle de classement",
+        "notFound": "Aucune règle de classement trouvée"
       },
-      "created": "Un nouveau Classification Rule a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Classification Rule avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Classification Rule avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle règle de classement a été créé avec l'identifiant {{ param }}",
+      "updated": "La règle de classement avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La règle de classement avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Classification Rule {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la règle de classement {{ id }} ?"
       },
       "detail": {
-        "title": "Classification Rule"
+        "title": "Règle de classement"
       },
-      "owner": "Owner",
-      "bankAccounts": "Bank Accounts",
+      "owner": "Propriétaire",
+      "bankAccounts": "Comptes bancaires",
       "transactions": "Transactions",
-      "filterRules": "Filter Rules"
+      "filterRules": "Filtres personnalisés"
     }
   }
 }
