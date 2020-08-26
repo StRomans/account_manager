@@ -1,5 +1,6 @@
 package fr.stromans.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -40,6 +41,10 @@ public class FilterRule implements Serializable {
     @NotNull
     @Column(name = "string_value", nullable = false)
     private String stringValue;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "filterRules", allowSetters = true)
+    private ClassificationRule classificationRule;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -87,6 +92,14 @@ public class FilterRule implements Serializable {
 
     public void setStringValue(String stringValue) {
         this.stringValue = stringValue;
+    }
+
+    public ClassificationRule getClassificationRule() {
+        return classificationRule;
+    }
+
+    public void setClassificationRule(ClassificationRule classificationRule) {
+        this.classificationRule = classificationRule;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

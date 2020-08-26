@@ -28,6 +28,10 @@ import { RouterModule } from '@angular/router';
         path: 'filter-rule',
         loadChildren: () => import('./filter-rule/filter-rule.module').then(m => m.AccountManagerFilterRuleModule),
       },
+      {
+        path: 'classification-rule',
+        loadChildren: () => import('./classification-rule/classification-rule.module').then(m => m.AccountManagerClassificationRuleModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

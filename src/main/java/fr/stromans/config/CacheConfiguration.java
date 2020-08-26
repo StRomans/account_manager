@@ -56,6 +56,10 @@ public class CacheConfiguration {
             createCache(cm, fr.stromans.domain.SubCategory.class.getName());
             createCache(cm, fr.stromans.domain.Transaction.class.getName());
             createCache(cm, fr.stromans.domain.FilterRule.class.getName());
+            createCache(cm, fr.stromans.domain.ClassificationRule.class.getName());
+            createCache(cm, fr.stromans.domain.ClassificationRule.class.getName() + ".bankAccounts");
+            createCache(cm, fr.stromans.domain.ClassificationRule.class.getName() + ".transactions");
+            createCache(cm, fr.stromans.domain.ClassificationRule.class.getName() + ".filterRules");
             // jhipster-needle-ehcache-add-entry
         };
     }

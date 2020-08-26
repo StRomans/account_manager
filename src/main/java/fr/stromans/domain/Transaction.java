@@ -50,6 +50,10 @@ public class Transaction implements Serializable {
     @JsonIgnoreProperties(value = "transactions", allowSetters = true)
     private SubCategory subCategory;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
+    private ClassificationRule classificationRule;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -135,6 +139,14 @@ public class Transaction implements Serializable {
 
     public void setSubCategory(SubCategory subCategory) {
         this.subCategory = subCategory;
+    }
+
+    public ClassificationRule getClassificationRule() {
+        return classificationRule;
+    }
+
+    public void setClassificationRule(ClassificationRule classificationRule) {
+        this.classificationRule = classificationRule;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

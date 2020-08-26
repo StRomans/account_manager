@@ -1,0 +1,25 @@
+{
+  "accountManagerApp": {
+    "classificationRule": {
+      "home": {
+        "title": "ClassificationRules",
+        "createLabel": "Créer un nouveau Classification Rule",
+        "createOrEditLabel": "Créer ou éditer un Classification Rule",
+        "notFound": "Aucun Classification Rule trouvé"
+      },
+      "created": "Un nouveau Classification Rule a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Classification Rule avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Classification Rule avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Classification Rule {{ id }} ?"
+      },
+      "detail": {
+        "title": "Classification Rule"
+      },
+      "owner": "Owner",
+      "bankAccounts": "Bank Accounts",
+      "transactions": "Transactions",
+      "filterRules": "Filter Rules"
+    }
+  }
+}

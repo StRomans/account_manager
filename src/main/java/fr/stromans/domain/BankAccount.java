@@ -1,5 +1,6 @@
 package fr.stromans.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -42,6 +43,11 @@ public class BankAccount extends AbstractAuditingEntity implements Serializable 
 
     @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Transaction> transactions = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnore
+    private Set<ClassificationRule> classificationRules = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -97,6 +103,14 @@ public class BankAccount extends AbstractAuditingEntity implements Serializable 
 
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public Set<ClassificationRule> getClassificationRules() {
+        return classificationRules;
+    }
+
+    public void setClassificationRules(Set<ClassificationRule> classificationRules) {
+        this.classificationRules = classificationRules;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

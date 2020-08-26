@@ -1,0 +1,44 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "owner",
+      "otherEntityName": "user",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "login",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "classificationRule"
+    },
+    {
+      "relationshipName": "bankAccounts",
+      "otherEntityName": "bankAccount",
+      "relationshipType": "many-to-many",
+      "ownerSide": false,
+      "otherEntityRelationshipName": "classificationRules"
+    },
+    {
+      "relationshipName": "transactions",
+      "otherEntityName": "transaction",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "classificationRule"
+    },
+    {
+      "relationshipName": "filterRules",
+      "otherEntityName": "filterRule",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "classificationRule"
+    }
+  ],
+  "fields": [],
+  "changelogDate": "20200826064641",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "serviceClass",
+  "entityTableName": "classification_rule",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": true,
+  "pagination": "infinite-scroll"
+}
