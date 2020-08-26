@@ -9,6 +9,10 @@ import { IClassificationRule, ClassificationRule } from 'app/shared/model/classi
 import { ClassificationRuleService } from './classification-rule.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
+import { IBankAccount } from 'app/shared/model/bank-account.model';
+import { BankAccountService } from 'app/entities/bank-account/bank-account.service';
+
+type SelectableEntity = IUser | IBankAccount;
 
 @Component({
   selector: 'jhi-classification-rule-update',
@@ -17,15 +21,18 @@ import { UserService } from 'app/core/user/user.service';
 export class ClassificationRuleUpdateComponent implements OnInit {
   isSaving = false;
   users: IUser[] = [];
+  bankaccounts: IBankAccount[] = [];
 
   editForm = this.fb.group({
     id: [],
     owner: [null, Validators.required],
+    bankAccount: [null, Validators.required],
   });
 
   constructor(
     protected classificationRuleService: ClassificationRuleService,
     protected userService: UserService,
+    protected bankAccountService: BankAccountService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -35,6 +42,8 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       this.updateForm(classificationRule);
 
       this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+
+      this.bankAccountService.query().subscribe((res: HttpResponse<IBankAccount[]>) => (this.bankaccounts = res.body || []));
     });
   }
 
@@ -42,6 +51,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: classificationRule.id,
       owner: classificationRule.owner,
+      bankAccount: classificationRule.bankAccount,
     });
   }
 
@@ -64,6 +74,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       ...new ClassificationRule(),
       id: this.editForm.get(['id'])!.value,
       owner: this.editForm.get(['owner'])!.value,
+      bankAccount: this.editForm.get(['bankAccount'])!.value,
     };
   }
 
@@ -83,7 +94,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IUser): any {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 }

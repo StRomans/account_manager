@@ -18,6 +18,9 @@
             <column name="owner_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="bank_account_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -42,6 +45,7 @@
                   tableName="classification_rule">
             <column name="id" type="numeric"/>
             <column name="owner_id" type="numeric"/>
+            <column name="bank_account_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

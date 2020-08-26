@@ -28,7 +28,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
 
     private LongFilter ownerId;
 
-    private LongFilter bankAccountsId;
+    private LongFilter bankAccountId;
 
     private LongFilter transactionsId;
 
@@ -40,7 +40,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
     public ClassificationRuleCriteria(ClassificationRuleCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
-        this.bankAccountsId = other.bankAccountsId == null ? null : other.bankAccountsId.copy();
+        this.bankAccountId = other.bankAccountId == null ? null : other.bankAccountId.copy();
         this.transactionsId = other.transactionsId == null ? null : other.transactionsId.copy();
         this.filterRulesId = other.filterRulesId == null ? null : other.filterRulesId.copy();
     }
@@ -66,12 +66,12 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         this.ownerId = ownerId;
     }
 
-    public LongFilter getBankAccountsId() {
-        return bankAccountsId;
+    public LongFilter getBankAccountId() {
+        return bankAccountId;
     }
 
-    public void setBankAccountsId(LongFilter bankAccountsId) {
-        this.bankAccountsId = bankAccountsId;
+    public void setBankAccountId(LongFilter bankAccountId) {
+        this.bankAccountId = bankAccountId;
     }
 
     public LongFilter getTransactionsId() {
@@ -103,7 +103,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(ownerId, that.ownerId) &&
-            Objects.equals(bankAccountsId, that.bankAccountsId) &&
+            Objects.equals(bankAccountId, that.bankAccountId) &&
             Objects.equals(transactionsId, that.transactionsId) &&
             Objects.equals(filterRulesId, that.filterRulesId);
     }
@@ -113,7 +113,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         ownerId,
-        bankAccountsId,
+        bankAccountId,
         transactionsId,
         filterRulesId
         );
@@ -125,7 +125,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         return "ClassificationRuleCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
-                (bankAccountsId != null ? "bankAccountsId=" + bankAccountsId + ", " : "") +
+                (bankAccountId != null ? "bankAccountId=" + bankAccountId + ", " : "") +
                 (transactionsId != null ? "transactionsId=" + transactionsId + ", " : "") +
                 (filterRulesId != null ? "filterRulesId=" + filterRulesId + ", " : "") +
             "}";

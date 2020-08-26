@@ -12,9 +12,10 @@
       "otherEntityRelationshipName": "classificationRule"
     },
     {
-      "relationshipName": "bankAccounts",
+      "relationshipName": "bankAccount",
       "otherEntityName": "bankAccount",
-      "relationshipType": "many-to-many",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
       "ownerSide": false,
       "otherEntityRelationshipName": "classificationRules"
     },

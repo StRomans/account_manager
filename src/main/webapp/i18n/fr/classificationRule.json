@@ -17,7 +17,7 @@
         "title": "Règle de classement"
       },
       "owner": "Propriétaire",
-      "bankAccounts": "Comptes bancaires",
+      "bankAccount": "Compte bancaire",
       "transactions": "Transactions",
       "filterRules": "Filtres personnalisés"
     }

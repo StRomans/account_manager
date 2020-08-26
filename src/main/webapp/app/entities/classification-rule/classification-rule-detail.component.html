@@ -12,6 +12,12 @@
                 <dd>
                     {{ classificationRule.owner?.login }}
                 </dd>
+                <dt><span jhiTranslate="accountManagerApp.classificationRule.bankAccount">Bank Account</span></dt>
+                <dd>
+                    <div *ngIf="classificationRule.bankAccount">
+                        <a [routerLink]="['/bank-account', classificationRule.bankAccount?.id, 'view']">{{ classificationRule.bankAccount?.id }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

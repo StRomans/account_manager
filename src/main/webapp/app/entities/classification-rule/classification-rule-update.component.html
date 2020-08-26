@@ -24,6 +24,20 @@
                         This field is required.
                     </small>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.bankAccount" for="field_bankAccount">Bank Account</label>
+                    <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount">
+                        <option *ngIf="!editForm.get('bankAccount')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.id }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('bankAccount')!.invalid && (editForm.get('bankAccount')!.dirty || editForm.get('bankAccount')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('bankAccount')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
             </div>
 
             <div>

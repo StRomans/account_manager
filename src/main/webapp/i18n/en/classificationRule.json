@@ -17,7 +17,7 @@
         "title": "Classification Rule"
       },
       "owner": "Owner",
-      "bankAccounts": "Bank Accounts",
+      "bankAccount": "Bank Account",
       "transactions": "Transactions",
       "filterRules": "Filter Rules"
     }

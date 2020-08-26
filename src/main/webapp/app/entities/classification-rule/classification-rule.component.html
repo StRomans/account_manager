@@ -23,7 +23,9 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="owner.login"><span jhiTranslate="accountManagerApp.classificationRule.owner">Owner</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bankAccount.id"><span jhiTranslate="accountManagerApp.classificationRule.bankAccount">Bank Account</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  ><span jhiTranslate="accountManagerApp.classificationRule.filterRules">Filter Rules</span> </th>
+                    <th scope="col"  jhiSortBy="owner.login" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.classificationRule.owner">Owner</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -31,6 +33,16 @@
                 <tr *ngFor="let classificationRule of classificationRules ;trackBy: trackId">
                     <td><a [routerLink]="['/classification-rule', classificationRule.id, 'view']">{{ classificationRule.id }}</a></td>
                     <td>
+                        <div *ngIf="classificationRule.bankAccount">
+                            <a [routerLink]="['/bank-account', classificationRule.bankAccount?.id, 'view']" >{{ classificationRule.bankAccount?.label }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngFor="let filterRule of classificationRule.filterRules ;trackBy: trackId">
+                            <a [routerLink]="['/filter-rule', filterRule.id, 'view']" >{{ 'accountManagerApp.RuleField.' +  filterRule.field | translate }} {{ 'accountManagerApp.RuleOperator.' + filterRule.operator | translate }} {{ filterRule.stringValue }}</a>
+                        </div>
+                    </td>
+                    <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         {{ classificationRule.owner?.login }}
                     </td>
                     <td class="text-right">

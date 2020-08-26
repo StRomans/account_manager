@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.criteria.JoinType;
 
+import fr.stromans.security.AuthoritiesConstants;
+import fr.stromans.security.SecurityUtils;
+import io.github.jhipster.service.filter.LongFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -33,8 +36,11 @@ public class ClassificationRuleQueryService extends QueryService<ClassificationR
 
     private final ClassificationRuleRepository classificationRuleRepository;
 
-    public ClassificationRuleQueryService(ClassificationRuleRepository classificationRuleRepository) {
+    private final UserService userService;
+
+    public ClassificationRuleQueryService(ClassificationRuleRepository classificationRuleRepository, UserService userService) {
         this.classificationRuleRepository = classificationRuleRepository;
+        this.userService = userService;
     }
 
     /**
@@ -80,6 +86,13 @@ public class ClassificationRuleQueryService extends QueryService<ClassificationR
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<ClassificationRule> createSpecification(ClassificationRuleCriteria criteria) {
+        if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) && userService.findCurrentUser().isPresent()) {
+            User loggedUser = userService.findCurrentUser().get();
+            LongFilter ownerIdFilter = new LongFilter();
+            ownerIdFilter.setEquals(loggedUser.getId());
+            criteria.setOwnerId(ownerIdFilter);
+        }
+
         Specification<ClassificationRule> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
@@ -89,9 +102,9 @@ public class ClassificationRuleQueryService extends QueryService<ClassificationR
                 specification = specification.and(buildSpecification(criteria.getOwnerId(),
                     root -> root.join(ClassificationRule_.owner, JoinType.LEFT).get(User_.id)));
             }
-            if (criteria.getBankAccountsId() != null) {
-                specification = specification.and(buildSpecification(criteria.getBankAccountsId(),
-                    root -> root.join(ClassificationRule_.bankAccounts, JoinType.LEFT).get(BankAccount_.id)));
+            if (criteria.getBankAccountId() != null) {
+                specification = specification.and(buildSpecification(criteria.getBankAccountId(),
+                    root -> root.join(ClassificationRule_.bankAccount, JoinType.LEFT).get(BankAccount_.id)));
             }
             if (criteria.getTransactionsId() != null) {
                 specification = specification.and(buildSpecification(criteria.getTransactionsId(),

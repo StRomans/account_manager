@@ -67,6 +67,16 @@ public class ClassificationRuleResourceIT {
         em.persist(user);
         em.flush();
         classificationRule.setOwner(user);
+        // Add required entity
+        BankAccount bankAccount;
+        if (TestUtil.findAll(em, BankAccount.class).isEmpty()) {
+            bankAccount = BankAccountResourceIT.createEntity(em);
+            em.persist(bankAccount);
+            em.flush();
+        } else {
+            bankAccount = TestUtil.findAll(em, BankAccount.class).get(0);
+        }
+        classificationRule.setBankAccount(bankAccount);
         return classificationRule;
     }
     /**
@@ -82,6 +92,16 @@ public class ClassificationRuleResourceIT {
         em.persist(user);
         em.flush();
         classificationRule.setOwner(user);
+        // Add required entity
+        BankAccount bankAccount;
+        if (TestUtil.findAll(em, BankAccount.class).isEmpty()) {
+            bankAccount = BankAccountResourceIT.createUpdatedEntity(em);
+            em.persist(bankAccount);
+            em.flush();
+        } else {
+            bankAccount = TestUtil.findAll(em, BankAccount.class).get(0);
+        }
+        classificationRule.setBankAccount(bankAccount);
         return classificationRule;
     }
 
@@ -190,21 +210,17 @@ public class ClassificationRuleResourceIT {
 
     @Test
     @Transactional
-    public void getAllClassificationRulesByBankAccountsIsEqualToSomething() throws Exception {
-        // Initialize the database
+    public void getAllClassificationRulesByBankAccountIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        BankAccount bankAccount = classificationRule.getBankAccount();
         classificationRuleRepository.saveAndFlush(classificationRule);
-        BankAccount bankAccounts = BankAccountResourceIT.createEntity(em);
-        em.persist(bankAccounts);
-        em.flush();
-        classificationRule.addBankAccounts(bankAccounts);
-        classificationRuleRepository.saveAndFlush(classificationRule);
-        Long bankAccountsId = bankAccounts.getId();
+        Long bankAccountId = bankAccount.getId();
 
-        // Get all the classificationRuleList where bankAccounts equals to bankAccountsId
-        defaultClassificationRuleShouldBeFound("bankAccountsId.equals=" + bankAccountsId);
+        // Get all the classificationRuleList where bankAccount equals to bankAccountId
+        defaultClassificationRuleShouldBeFound("bankAccountId.equals=" + bankAccountId);
 
-        // Get all the classificationRuleList where bankAccounts equals to bankAccountsId + 1
-        defaultClassificationRuleShouldNotBeFound("bankAccountsId.equals=" + (bankAccountsId + 1));
+        // Get all the classificationRuleList where bankAccount equals to bankAccountId + 1
+        defaultClassificationRuleShouldNotBeFound("bankAccountId.equals=" + (bankAccountId + 1));
     }
 
 

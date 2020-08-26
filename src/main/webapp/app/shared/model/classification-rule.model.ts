@@ -6,7 +6,7 @@ import { IFilterRule } from 'app/shared/model/filter-rule.model';
 export interface IClassificationRule {
   id?: number;
   owner?: IUser;
-  bankAccounts?: IBankAccount[];
+  bankAccount?: IBankAccount;
   transactions?: ITransaction[];
   filterRules?: IFilterRule[];
 }
@@ -15,7 +15,7 @@ export class ClassificationRule implements IClassificationRule {
   constructor(
     public id?: number,
     public owner?: IUser,
-    public bankAccounts?: IBankAccount[],
+    public bankAccount?: IBankAccount,
     public transactions?: ITransaction[],
     public filterRules?: IFilterRule[]
   ) {}

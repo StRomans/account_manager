@@ -1,6 +1,5 @@
 package fr.stromans.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,16 +31,16 @@ public class ClassificationRule implements Serializable {
     @JsonIgnoreProperties(value = "classificationRules", allowSetters = true)
     private User owner;
 
-    @ManyToMany(mappedBy = "classificationRules")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnore
-    private Set<BankAccount> bankAccounts = new HashSet<>();
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = "classificationRules", allowSetters = true)
+    private BankAccount bankAccount;
 
     @OneToMany(mappedBy = "classificationRule")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Transaction> transactions = new HashSet<>();
 
-    @OneToMany(mappedBy = "classificationRule")
+    @OneToMany(mappedBy = "classificationRule", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<FilterRule> filterRules = new HashSet<>();
 
@@ -67,29 +66,17 @@ public class ClassificationRule implements Serializable {
         this.owner = user;
     }
 
-    public Set<BankAccount> getBankAccounts() {
-        return bankAccounts;
+    public BankAccount getBankAccount() {
+        return bankAccount;
     }
 
-    public ClassificationRule bankAccounts(Set<BankAccount> bankAccounts) {
-        this.bankAccounts = bankAccounts;
+    public ClassificationRule bankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
         return this;
     }
 
-    public ClassificationRule addBankAccounts(BankAccount bankAccount) {
-        this.bankAccounts.add(bankAccount);
-        //bankAccount.getClassificationRules().add(this);
-        return this;
-    }
-
-    public ClassificationRule removeBankAccounts(BankAccount bankAccount) {
-        this.bankAccounts.remove(bankAccount);
-        //bankAccount.getClassificationRules().remove(this);
-        return this;
-    }
-
-    public void setBankAccounts(Set<BankAccount> bankAccounts) {
-        this.bankAccounts = bankAccounts;
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     public Set<Transaction> getTransactions() {
@@ -103,13 +90,13 @@ public class ClassificationRule implements Serializable {
 
     public ClassificationRule addTransactions(Transaction transaction) {
         this.transactions.add(transaction);
-        //transaction.setClassificationRule(this);
+        transaction.setClassificationRule(this);
         return this;
     }
 
     public ClassificationRule removeTransactions(Transaction transaction) {
         this.transactions.remove(transaction);
-        //transaction.setClassificationRule(null);
+        transaction.setClassificationRule(null);
         return this;
     }
 
@@ -128,13 +115,13 @@ public class ClassificationRule implements Serializable {
 
     public ClassificationRule addFilterRules(FilterRule filterRule) {
         this.filterRules.add(filterRule);
-        //filterRule.setClassificationRule(this);
+        filterRule.setClassificationRule(this);
         return this;
     }
 
     public ClassificationRule removeFilterRules(FilterRule filterRule) {
         this.filterRules.remove(filterRule);
-        //filterRule.setClassificationRule(null);
+        filterRule.setClassificationRule(null);
         return this;
     }
 

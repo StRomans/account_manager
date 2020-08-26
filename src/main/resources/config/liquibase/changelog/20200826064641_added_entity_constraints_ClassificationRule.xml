@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
+        <addForeignKeyConstraint baseColumnNames="bank_account_id"
+                                 baseTableName="classification_rule"
+                                 constraintName="fk_classification_rule_bank_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bank_account"/>
+
     </changeSet>
 </databaseChangeLog>
