@@ -18,7 +18,8 @@
       },
       "field": "Field",
       "operator": "Operator",
-      "stringValue": "String Value"
+      "stringValue": "String Value",
+      "classificationRule": "Classification Rule"
     }
   }
 }

@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 
 import { IFilterRule, FilterRule } from 'app/shared/model/filter-rule.model';
 import { FilterRuleService } from './filter-rule.service';
+import { IClassificationRule } from 'app/shared/model/classification-rule.model';
+import { ClassificationRuleService } from 'app/entities/classification-rule/classification-rule.service';
 
 @Component({
   selector: 'jhi-filter-rule-update',
@@ -14,19 +16,30 @@ import { FilterRuleService } from './filter-rule.service';
 })
 export class FilterRuleUpdateComponent implements OnInit {
   isSaving = false;
+  classificationrules: IClassificationRule[] = [];
 
   editForm = this.fb.group({
     id: [],
     field: [null, [Validators.required]],
     operator: [null, [Validators.required]],
     stringValue: [null, [Validators.required]],
+    classificationRule: [null, Validators.required],
   });
 
-  constructor(protected filterRuleService: FilterRuleService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected filterRuleService: FilterRuleService,
+    protected classificationRuleService: ClassificationRuleService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ filterRule }) => {
       this.updateForm(filterRule);
+
+      this.classificationRuleService
+        .query()
+        .subscribe((res: HttpResponse<IClassificationRule[]>) => (this.classificationrules = res.body || []));
     });
   }
 
@@ -36,6 +49,7 @@ export class FilterRuleUpdateComponent implements OnInit {
       field: filterRule.field,
       operator: filterRule.operator,
       stringValue: filterRule.stringValue,
+      classificationRule: filterRule.classificationRule,
     });
   }
 
@@ -60,6 +74,7 @@ export class FilterRuleUpdateComponent implements OnInit {
       field: this.editForm.get(['field'])!.value,
       operator: this.editForm.get(['operator'])!.value,
       stringValue: this.editForm.get(['stringValue'])!.value,
+      classificationRule: this.editForm.get(['classificationRule'])!.value,
     };
   }
 
@@ -77,5 +92,9 @@ export class FilterRuleUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IClassificationRule): any {
+    return item.id;
   }
 }

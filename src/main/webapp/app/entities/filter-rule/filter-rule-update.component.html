@@ -53,6 +53,20 @@
                         </small>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.classificationRule" for="field_classificationRule">Classification Rule</label>
+                    <select class="form-control" id="field_classificationRule" name="classificationRule" formControlName="classificationRule">
+                        <option *ngIf="!editForm.get('classificationRule')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="classificationRuleOption.id === editForm.get('classificationRule')!.value?.id ? editForm.get('classificationRule')!.value : classificationRuleOption" *ngFor="let classificationRuleOption of classificationrules; trackBy: trackById">{{ classificationRuleOption.id }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('classificationRule')!.invalid && (editForm.get('classificationRule')!.dirty || editForm.get('classificationRule')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('classificationRule')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
             </div>
 
             <div>

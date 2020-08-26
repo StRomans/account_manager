@@ -7,18 +7,19 @@
         "createOrEditLabel": "Créer ou éditer un Filter Rule",
         "notFound": "Aucun Filter Rule trouvé"
       },
-      "created": "Un nouveau Filter Rule a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Filter Rule avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Filter Rule avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouveau Filtre personnalis a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Filtre personnalis avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Filtre personnalis avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Filter Rule {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer le Filtre personnalis {{ id }} ?"
       },
       "detail": {
-        "title": "Filter Rule"
+        "title": "Filtre personnalisé"
       },
-      "field": "Field",
-      "operator": "Operator",
-      "stringValue": "String Value"
+      "field": "Champ",
+      "operator": "Opérateur",
+      "stringValue": "Valeur",
+      "classificationRule": "Règle de classement"
     }
   }
 }

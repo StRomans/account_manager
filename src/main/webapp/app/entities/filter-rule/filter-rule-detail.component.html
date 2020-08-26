@@ -20,6 +20,12 @@
                 <dd>
                     <span>{{ filterRule.stringValue }}</span>
                 </dd>
+                <dt><span jhiTranslate="accountManagerApp.filterRule.classificationRule">Classification Rule</span></dt>
+                <dd>
+                    <div *ngIf="filterRule.classificationRule">
+                        <a [routerLink]="['/classification-rule', filterRule.classificationRule?.id, 'view']">{{ filterRule.classificationRule?.id }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

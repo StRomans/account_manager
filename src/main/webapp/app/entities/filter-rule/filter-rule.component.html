@@ -26,6 +26,7 @@
                     <th scope="col"  jhiSortBy="field"><span jhiTranslate="accountManagerApp.filterRule.field">Field</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="operator"><span jhiTranslate="accountManagerApp.filterRule.operator">Operator</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="stringValue"><span jhiTranslate="accountManagerApp.filterRule.stringValue">String Value</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="classificationRule.id"><span jhiTranslate="accountManagerApp.filterRule.classificationRule">Classification Rule</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -35,6 +36,11 @@
                     <td jhiTranslate="{{ 'accountManagerApp.RuleField.' + filterRule.field }}">{{ filterRule.field }}</td>
                     <td jhiTranslate="{{ 'accountManagerApp.RuleOperator.' + filterRule.operator }}">{{ filterRule.operator }}</td>
                     <td>{{ filterRule.stringValue }}</td>
+                    <td>
+                        <div *ngIf="filterRule.classificationRule">
+                            <a [routerLink]="['/classification-rule', filterRule.classificationRule?.id, 'view']" >{{ filterRule.classificationRule?.id }}</a>
+                        </div>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

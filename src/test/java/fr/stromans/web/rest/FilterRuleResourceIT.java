@@ -2,6 +2,7 @@ package fr.stromans.web.rest;
 
 import fr.stromans.AccountManagerApp;
 import fr.stromans.domain.FilterRule;
+import fr.stromans.domain.ClassificationRule;
 import fr.stromans.repository.FilterRuleRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,16 @@ public class FilterRuleResourceIT {
             .field(DEFAULT_FIELD)
             .operator(DEFAULT_OPERATOR)
             .stringValue(DEFAULT_STRING_VALUE);
+        // Add required entity
+        ClassificationRule classificationRule;
+        if (TestUtil.findAll(em, ClassificationRule.class).isEmpty()) {
+            classificationRule = ClassificationRuleResourceIT.createEntity(em);
+            em.persist(classificationRule);
+            em.flush();
+        } else {
+            classificationRule = TestUtil.findAll(em, ClassificationRule.class).get(0);
+        }
+        filterRule.setClassificationRule(classificationRule);
         return filterRule;
     }
     /**
@@ -76,6 +87,16 @@ public class FilterRuleResourceIT {
             .field(UPDATED_FIELD)
             .operator(UPDATED_OPERATOR)
             .stringValue(UPDATED_STRING_VALUE);
+        // Add required entity
+        ClassificationRule classificationRule;
+        if (TestUtil.findAll(em, ClassificationRule.class).isEmpty()) {
+            classificationRule = ClassificationRuleResourceIT.createUpdatedEntity(em);
+            em.persist(classificationRule);
+            em.flush();
+        } else {
+            classificationRule = TestUtil.findAll(em, ClassificationRule.class).get(0);
+        }
+        filterRule.setClassificationRule(classificationRule);
         return filterRule;
     }
 
