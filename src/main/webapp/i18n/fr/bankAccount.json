@@ -4,7 +4,7 @@
       "home": {
         "title": "Comptes Bancaires",
         "createLabel": "Créer un nouveau compte bancaire",
-        "createOrEditLabel": "Créer ou éditer un compte bancaire",
+        "createOrEditLabel": "Créer ou modifier un compte bancaire",
         "notFound": "Aucun compte bancaire trouvé",
         "search": "Rechercher un compte bancaire"
       },

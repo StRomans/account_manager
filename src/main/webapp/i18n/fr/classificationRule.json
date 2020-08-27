@@ -4,7 +4,7 @@
       "home": {
         "title": "Règles de classement",
         "createLabel": "Créer une nouvelle règle de classement",
-        "createOrEditLabel": "Créer ou éditer une règle de classement",
+        "createOrEditLabel": "Créer ou modifier une règle de classement",
         "notFound": "Aucune règle de classement trouvée"
       },
       "created": "Une nouvelle règle de classement a été créé avec l'identifiant {{ param }}",
@@ -19,7 +19,12 @@
       "owner": "Propriétaire",
       "bankAccount": "Compte bancaire",
       "transactions": "Transactions",
-      "filterRules": "Filtres personnalisés"
+      "filterRules": "Filtres personnalisés",
+      "filter": {
+        "header": "Les transactions respectant les conditions suivantes",
+        "add": "Condition",
+        "footer": "Seront classées dans"
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
       "home": {
         "title": "Sous-catégories",
         "createLabel": "Créer une nouvelle sous-catégorie",
-        "createOrEditLabel": "Créer ou éditer une sous-catégorie",
+        "createOrEditLabel": "Créer ou modifier une sous-catégorie",
         "notFound": "Aucune sous-catégorie trouvée"
       },
       "created": "Une nouvelle sous-catégorie a été créée avec l'identifiant {{ param }}",

@@ -4,7 +4,7 @@
       "home": {
         "title": "Catégories",
         "createLabel": "Créer une nouvelle catégorie",
-        "createOrEditLabel": "Créer ou éditer une catégorie",
+        "createOrEditLabel": "Créer ou modifier une catégorie",
         "notFound": "Aucune catégorie trouvée"
       },
       "created": "Une nouvelle catégorie a été créé avec l'identifiant {{ param }}",

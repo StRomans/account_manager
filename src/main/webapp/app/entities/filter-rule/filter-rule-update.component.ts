@@ -36,6 +36,12 @@ export class FilterRuleUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ filterRule }) => {
       this.updateForm(filterRule);
+      if (history.state.classificationRuleId) {
+        this.classificationRuleService
+          .find(history.state.classificationRuleId)
+          .subscribe(classificationRule => this.editForm.patchValue({ classificationRule: classificationRule.body }));
+        this.editForm.get('classificationRule')?.disable();
+      }
 
       this.classificationRuleService
         .query()

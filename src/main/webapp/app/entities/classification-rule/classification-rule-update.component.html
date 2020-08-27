@@ -29,7 +29,7 @@
                     <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.bankAccount" for="field_bankAccount">Bank Account</label>
                     <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount">
                         <option *ngIf="!editForm.get('bankAccount')!.value" [ngValue]="null" selected></option>
-                        <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.id }}</option>
+                        <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
                     </select>
                 </div>
                 <div *ngIf="editForm.get('bankAccount')!.invalid && (editForm.get('bankAccount')!.dirty || editForm.get('bankAccount')!.touched)">
@@ -40,49 +40,45 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filterRules" for="field_bankAccount">Filter Rule</label>
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.header" for="field_bankAccount">Transactions matching the following conditions</label>
+
+                    <button type="button" class="btn btn-sm btn-outline-primary float-right mb-2" [routerLink]="[ '/filter-rule', 'new' ]" [state]="{classificationRuleId: editForm.get('id')!.value}">
+                        <fa-icon icon="plus" class="align-middle mr-1"></fa-icon><span class="d-none d-md-inline" jhiTranslate="accountManagerApp.classificationRule.filter.add">Add rule</span>
+                    </button>
+
                     <div class="table-responsive">
                         <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col"><span jhiTranslate="accountManagerApp.filterRule.field">Field</span></th>
-                                <th scope="col"><span jhiTranslate="accountManagerApp.filterRule.operator">Operator</span></th>
-                                <th scope="col"><span jhiTranslate="accountManagerApp.filterRule.stringValue">Value</span></th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
                             <tbody>
-                                <tr *ngFor="let rule of editForm.get('filterRules')!.value; let i = index" >
+                                <tr *ngFor="let filterRule of editForm.get('filterRules')!.value; let i = index" >
                                     <td>
-                                        <select class="form-control" name="field" (change)="changeRule($event, rule)">
-                                            <option value="AMOUNT" [selected]="rule.field === 'AMOUNT'">{{ 'accountManagerApp.RuleField.AMOUNT' | translate }}</option>
-                                            <option value="DATE" [selected]="rule.field === 'DATE'">{{ 'accountManagerApp.RuleField.DATE' | translate }}</option>
-                                            <option value="LABEL" [selected]="rule.field === 'LABEL'">{{ 'accountManagerApp.RuleField.LABEL' | translate }}</option>
-                                        </select>
+                                        {{ 'accountManagerApp.RuleField.' + filterRule.field | translate}}
                                     </td>
                                     <td>
-                                        <select class="form-control" name="operator" (change)="changeRule($event, rule)">
-                                            <option value="EQUALS" [selected]="rule.operator === 'EQUALS'">{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
-                                            <option value="CONTAINS" [selected]="rule.operator === 'CONTAINS'">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
-                                            <option value="GREATEROREQUALTHAN" [selected]="rule.operator === 'GREATEROREQUALTHAN'">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
-                                            <option value="LESSOREQUALTHAN" [selected]="rule.operator === 'LESSOREQUALTHAN'">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
-                                        </select>
+                                        {{'accountManagerApp.RuleOperator.' + filterRule.operator | translate}}
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="stringValue" [value]="rule.stringValue" (change)="changeRule($event, rule)">
+                                        {{filterRule.stringValue}}
                                     </td>
-                                    <td><button type="button" class="btn btn-outline-danger" (click)="removeRule($event, rule)">Remove rule</button></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-success" (click)="addRule($event)">Add rule</button>
+                                    <td class="text-right">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" [routerLink]="['/filter-rule', filterRule.id, 'edit']"><fa-icon class="align-middle" icon="pencil-alt"></fa-icon></button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteRule(filterRule)"><fa-icon class="align-middle" icon="times"></fa-icon></button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.footer" for="field_bankAccount">Will be classified as </label>
+<!--                    <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount">-->
+<!--                        <option *ngIf="!editForm.get('bankAccount')!.value" [ngValue]="null" selected></option>-->
+<!--                        <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>-->
+<!--                    </select>-->
                 </div>
             </div>
 

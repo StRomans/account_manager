@@ -19,7 +19,12 @@
       "owner": "Owner",
       "bankAccount": "Bank Account",
       "transactions": "Transactions",
-      "filterRules": "Filter Rules"
+      "filterRules": "Filter Rules",
+      "filter": {
+        "header": "Transactions matching the following conditions",
+        "add": "Condition",
+        "footer": "Will be classified as "
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
       "home": {
         "title": "Transactions",
         "createLabel": "Créer une nouvelle transaction",
-        "createOrEditLabel": "Créer ou éditer une transaction",
+        "createOrEditLabel": "Créer ou modifier une transaction",
         "notFound": "Aucune transaction trouvée",
         "uploadFile": "Uploader un fichier"
       },

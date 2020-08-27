@@ -9,7 +9,7 @@
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
 
-        <p id="jhi-delete-filterRule-heading" jhiTranslate="accountManagerApp.filterRule.delete.question" [translateValues]="{ id: filterRule.id }">Are you sure you want to delete this Filter Rule?</p>
+        <p id="jhi-delete-filterRule-heading" jhiTranslate="accountManagerApp.filterRule.delete.question" [translateValues]="{ field: 'accountManagerApp.RuleField.' + filterRule.field | translate, operator: 'accountManagerApp.RuleOperator.' + filterRule.operator | translate, stringValue: filterRule.stringValue }">Are you sure you want to delete this Filter Rule?</p>
     </div>
 
     <div class="modal-footer">

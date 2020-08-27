@@ -1,6 +1,8 @@
 package fr.stromans.web.rest;
 
+import fr.stromans.domain.ClassificationRule;
 import fr.stromans.domain.FilterRule;
+import fr.stromans.repository.ClassificationRuleRepository;
 import fr.stromans.repository.FilterRuleRepository;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 
@@ -42,8 +44,11 @@ public class FilterRuleResource {
 
     private final FilterRuleRepository filterRuleRepository;
 
-    public FilterRuleResource(FilterRuleRepository filterRuleRepository) {
+    private final ClassificationRuleRepository classificationRuleRepository;
+
+    public FilterRuleResource(FilterRuleRepository filterRuleRepository, ClassificationRuleRepository classificationRuleRepository) {
         this.filterRuleRepository = filterRuleRepository;
+        this.classificationRuleRepository = classificationRuleRepository;
     }
 
     /**
@@ -60,6 +65,9 @@ public class FilterRuleResource {
             throw new BadRequestAlertException("A new filterRule cannot already have an ID", ENTITY_NAME, "idexists");
         }
         FilterRule result = filterRuleRepository.save(filterRule);
+        ClassificationRule classificationRule = classificationRuleRepository.findById(filterRule.getClassificationRule().getId()).get();
+        classificationRule.addFilterRules(result);
+        classificationRuleRepository.save(classificationRule);
         return ResponseEntity.created(new URI("/api/filter-rules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -122,7 +130,11 @@ public class FilterRuleResource {
     @DeleteMapping("/filter-rules/{id}")
     public ResponseEntity<Void> deleteFilterRule(@PathVariable Long id) {
         log.debug("REST request to delete FilterRule : {}", id);
-        filterRuleRepository.deleteById(id);
+        FilterRule ruleToDelete = filterRuleRepository.findById(id).get();
+        ClassificationRule classificationRule = classificationRuleRepository.findById(ruleToDelete.getClassificationRule().getId()).get();
+        classificationRule.removeFilterRules(ruleToDelete);
+        classificationRuleRepository.save(classificationRule);
+        filterRuleRepository.delete(ruleToDelete);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

@@ -40,7 +40,7 @@ public class ClassificationRule implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Transaction> transactions = new HashSet<>();
 
-    @OneToMany(mappedBy = "classificationRule", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "classificationRule", fetch = FetchType.EAGER, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<FilterRule> filterRules = new HashSet<>();
 
@@ -121,7 +121,7 @@ public class ClassificationRule implements Serializable {
 
     public ClassificationRule removeFilterRules(FilterRule filterRule) {
         this.filterRules.remove(filterRule);
-        filterRule.setClassificationRule(null);
+        //filterRule.setClassificationRule(null);
         return this;
     }
 

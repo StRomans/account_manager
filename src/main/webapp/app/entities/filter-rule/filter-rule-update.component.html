@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" [class.d-none]="this.editForm.get('classificationRule')?.disabled">
                     <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.classificationRule" for="field_classificationRule">Classification Rule</label>
                     <select class="form-control" id="field_classificationRule" name="classificationRule" formControlName="classificationRule">
                         <option *ngIf="!editForm.get('classificationRule')!.value" [ngValue]="null" selected></option>
