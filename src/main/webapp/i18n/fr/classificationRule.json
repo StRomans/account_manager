@@ -19,7 +19,7 @@
       "owner": "Propriétaire",
       "bankAccount": "Compte bancaire",
       "transactions": "Transactions",
-      "filterRules": "Filtres personnalisés",
+      "filterRules": "Conditions d'application",
       "filter": {
         "header": "Les transactions respectant les conditions suivantes",
         "add": "Condition",
