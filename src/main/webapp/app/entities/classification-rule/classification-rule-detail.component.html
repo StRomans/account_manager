@@ -24,6 +24,12 @@
                         <a [routerLink]="['/filter-rule', filterRule.id, 'view']" >{{ 'accountManagerApp.RuleField.' +  filterRule.field | translate }} {{ 'accountManagerApp.RuleOperator.' + filterRule.operator | translate }} {{ filterRule.stringValue }}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="accountManagerApp.classificationRule.subCategory">Sub Category</span></dt>
+                <dd>
+                    <div *ngIf="classificationRule.subCategory">
+                        <a [routerLink]="['/sub-category', classificationRule.subCategory?.id, 'view']">{{ classificationRule.subCategory?.label }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

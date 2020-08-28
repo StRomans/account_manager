@@ -58,7 +58,7 @@
                                                 <fa-icon class="align-middle" icon="times"></fa-icon>
                                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                                             </button>
-                                        </div>
+                </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -66,13 +66,19 @@
                     </div>
                 </div>
 
-<!--                <div class="form-group">-->
-<!--                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.footer" for="field_bankAccount">Will be classified as </label>-->
-<!--                    <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount">-->
-<!--                        <option *ngIf="!editForm.get('bankAccount')!.value" [ngValue]="null" selected></option>-->
-<!--                        <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>-->
-<!--                    </select>-->
-<!--                </div>-->
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.subCategory" for="field_subCategory">Sub Category</label>
+                    <select class="form-control" id="field_subCategory" name="subCategory" formControlName="subCategory">
+                        <option *ngIf="!editForm.get('subCategory')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="subCategoryOption.id === editForm.get('subCategory')!.value?.id ? editForm.get('subCategory')!.value : subCategoryOption" *ngFor="let subCategoryOption of subcategories; trackBy: trackById">{{ subCategoryOption.label }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('subCategory')!.invalid && (editForm.get('subCategory')!.dirty || editForm.get('subCategory')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('subCategory')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
             </div>
 
             <div>

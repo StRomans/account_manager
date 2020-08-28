@@ -44,6 +44,11 @@ public class ClassificationRule implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<FilterRule> filterRules = new HashSet<>();
 
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+    @NotNull
+    @JsonIgnoreProperties(value = "classificationRules", allowSetters = true)
+    private SubCategory subCategory;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -132,6 +137,19 @@ public class ClassificationRule implements Serializable {
         for (FilterRule newFilterRule : filterRules){
             this.addFilterRules(newFilterRule);
         }
+    }
+
+    public SubCategory getSubCategory() {
+        return subCategory;
+    }
+
+    public ClassificationRule subCategory(SubCategory subCategory) {
+        this.subCategory = subCategory;
+        return this;
+    }
+
+    public void setSubCategory(SubCategory subCategory) {
+        this.subCategory = subCategory;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

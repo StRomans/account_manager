@@ -14,8 +14,10 @@ import { BankAccountService } from 'app/entities/bank-account/bank-account.servi
 import { IFilterRule } from '../../shared/model/filter-rule.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterRuleUpdateEmbeddedComponent } from '../filter-rule/filter-rule-update-embedded.component';
+import { ISubCategory } from 'app/shared/model/sub-category.model';
+import { SubCategoryService } from 'app/entities/sub-category/sub-category.service';
 
-type SelectableEntity = IUser | IBankAccount;
+type SelectableEntity = IUser | IBankAccount | ISubCategory;
 
 @Component({
   selector: 'jhi-classification-rule-update',
@@ -25,18 +27,21 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   isSaving = false;
   users: IUser[] = [];
   bankaccounts: IBankAccount[] = [];
+  subcategories: ISubCategory[] = [];
 
   editForm = this.fb.group({
     id: [],
     owner: [null, null],
     bankAccount: [null, Validators.required],
     filterRules: [null, ClassificationRuleUpdateComponent.filterRulesRequired],
+    subCategory: [null, Validators.required],
   });
 
   constructor(
     protected classificationRuleService: ClassificationRuleService,
     protected userService: UserService,
     protected bankAccountService: BankAccountService,
+    protected subCategoryService: SubCategoryService,
     protected activatedRoute: ActivatedRoute,
     protected modalService: NgbModal,
     private fb: FormBuilder
@@ -57,6 +62,8 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
 
       this.bankAccountService.query().subscribe((res: HttpResponse<IBankAccount[]>) => (this.bankaccounts = res.body || []));
+
+      this.subCategoryService.query().subscribe((res: HttpResponse<ISubCategory[]>) => (this.subcategories = res.body || []));
     });
   }
 
@@ -66,6 +73,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       owner: classificationRule.bankAccount?.owner,
       bankAccount: classificationRule.bankAccount,
       filterRules: classificationRule.filterRules || [],
+      subCategory: classificationRule.subCategory,
     });
   }
 
@@ -90,6 +98,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       owner: this.editForm.get(['owner'])!.value,
       bankAccount: this.editForm.get(['bankAccount'])!.value,
       filterRules: this.editForm.get(['filterRules'])!.value,
+      subCategory: this.editForm.get(['subCategory'])!.value,
     };
   }
 

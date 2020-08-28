@@ -114,6 +114,10 @@ public class ClassificationRuleQueryService extends QueryService<ClassificationR
                 specification = specification.and(buildSpecification(criteria.getFilterRulesId(),
                     root -> root.join(ClassificationRule_.filterRules, JoinType.LEFT).get(FilterRule_.id)));
             }
+            if (criteria.getSubCategoryId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSubCategoryId(),
+                    root -> root.join(ClassificationRule_.subCategory, JoinType.LEFT).get(SubCategory_.id)));
+            }
         }
         return specification;
     }

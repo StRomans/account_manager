@@ -6,6 +6,7 @@ import fr.stromans.domain.User;
 import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.Transaction;
 import fr.stromans.domain.FilterRule;
+import fr.stromans.domain.SubCategory;
 import fr.stromans.repository.ClassificationRuleRepository;
 import fr.stromans.service.ClassificationRuleService;
 import fr.stromans.service.dto.ClassificationRuleCriteria;
@@ -77,6 +78,16 @@ public class ClassificationRuleResourceIT {
             bankAccount = TestUtil.findAll(em, BankAccount.class).get(0);
         }
         classificationRule.setBankAccount(bankAccount);
+        // Add required entity
+        SubCategory subCategory;
+        if (TestUtil.findAll(em, SubCategory.class).isEmpty()) {
+            subCategory = SubCategoryResourceIT.createEntity(em);
+            em.persist(subCategory);
+            em.flush();
+        } else {
+            subCategory = TestUtil.findAll(em, SubCategory.class).get(0);
+        }
+        classificationRule.setSubCategory(subCategory);
         return classificationRule;
     }
     /**
@@ -102,6 +113,16 @@ public class ClassificationRuleResourceIT {
             bankAccount = TestUtil.findAll(em, BankAccount.class).get(0);
         }
         classificationRule.setBankAccount(bankAccount);
+        // Add required entity
+        SubCategory subCategory;
+        if (TestUtil.findAll(em, SubCategory.class).isEmpty()) {
+            subCategory = SubCategoryResourceIT.createUpdatedEntity(em);
+            em.persist(subCategory);
+            em.flush();
+        } else {
+            subCategory = TestUtil.findAll(em, SubCategory.class).get(0);
+        }
+        classificationRule.setSubCategory(subCategory);
         return classificationRule;
     }
 
@@ -261,6 +282,22 @@ public class ClassificationRuleResourceIT {
 
         // Get all the classificationRuleList where filterRules equals to filterRulesId + 1
         defaultClassificationRuleShouldNotBeFound("filterRulesId.equals=" + (filterRulesId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesBySubCategoryIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        SubCategory subCategory = classificationRule.getSubCategory();
+        classificationRuleRepository.saveAndFlush(classificationRule);
+        Long subCategoryId = subCategory.getId();
+
+        // Get all the classificationRuleList where subCategory equals to subCategoryId
+        defaultClassificationRuleShouldBeFound("subCategoryId.equals=" + subCategoryId);
+
+        // Get all the classificationRuleList where subCategory equals to subCategoryId + 1
+        defaultClassificationRuleShouldNotBeFound("subCategoryId.equals=" + (subCategoryId + 1));
     }
 
     /**

@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="bank_account"/>
 
+        <addForeignKeyConstraint baseColumnNames="sub_category_id"
+                                 baseTableName="classification_rule"
+                                 constraintName="fk_classification_rule_sub_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sub_category"/>
+
     </changeSet>
 </databaseChangeLog>

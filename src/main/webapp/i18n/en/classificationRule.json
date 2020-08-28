@@ -20,6 +20,8 @@
       "bankAccount": "Bank Account",
       "transactions": "Transactions",
       "filterRules": "Filter Rules",
+      "category": "Category",
+      "subCategory": "Sub Category",
       "filter": {
         "header": "Transactions matching the following conditions",
         "add": "Condition",

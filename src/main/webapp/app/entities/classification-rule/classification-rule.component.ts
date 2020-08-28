@@ -13,6 +13,7 @@ import { ClassificationRuleDeleteDialogComponent } from './classification-rule-d
 @Component({
   selector: 'jhi-classification-rule',
   templateUrl: './classification-rule.component.html',
+  styleUrls: ['./classification-rule.component.scss'],
 })
 export class ClassificationRuleComponent implements OnInit, OnDestroy {
   classificationRules: IClassificationRule[];

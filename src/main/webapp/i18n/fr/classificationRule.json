@@ -20,6 +20,8 @@
       "bankAccount": "Compte bancaire",
       "transactions": "Transactions",
       "filterRules": "Conditions d'application",
+      "category": "Catégorie",
+      "subCategory": "Sous catégorie",
       "filter": {
         "header": "Les transactions respectant les conditions suivantes",
         "add": "Condition",

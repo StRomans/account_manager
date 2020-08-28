@@ -17,7 +17,8 @@
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"],
       "ownerSide": false,
-      "otherEntityRelationshipName": "classificationRules"
+      "otherEntityRelationshipName": "classificationRules",
+      "otherEntityField": "label"
     },
     {
       "relationshipName": "transactions",
@@ -29,6 +30,14 @@
       "relationshipName": "filterRules",
       "otherEntityName": "filterRule",
       "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "classificationRule"
+    },
+    {
+      "relationshipName": "subCategory",
+      "otherEntityName": "subCategory",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "label",
       "otherEntityRelationshipName": "classificationRule"
     }
   ],

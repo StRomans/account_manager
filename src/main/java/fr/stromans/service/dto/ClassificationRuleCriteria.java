@@ -34,6 +34,8 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
 
     private LongFilter filterRulesId;
 
+    private LongFilter subCategoryId;
+
     public ClassificationRuleCriteria() {
     }
 
@@ -43,6 +45,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         this.bankAccountId = other.bankAccountId == null ? null : other.bankAccountId.copy();
         this.transactionsId = other.transactionsId == null ? null : other.transactionsId.copy();
         this.filterRulesId = other.filterRulesId == null ? null : other.filterRulesId.copy();
+        this.subCategoryId = other.subCategoryId == null ? null : other.subCategoryId.copy();
     }
 
     @Override
@@ -90,6 +93,14 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         this.filterRulesId = filterRulesId;
     }
 
+    public LongFilter getSubCategoryId() {
+        return subCategoryId;
+    }
+
+    public void setSubCategoryId(LongFilter subCategoryId) {
+        this.subCategoryId = subCategoryId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -105,7 +116,8 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
             Objects.equals(ownerId, that.ownerId) &&
             Objects.equals(bankAccountId, that.bankAccountId) &&
             Objects.equals(transactionsId, that.transactionsId) &&
-            Objects.equals(filterRulesId, that.filterRulesId);
+            Objects.equals(filterRulesId, that.filterRulesId) &&
+            Objects.equals(subCategoryId, that.subCategoryId);
     }
 
     @Override
@@ -115,7 +127,8 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         ownerId,
         bankAccountId,
         transactionsId,
-        filterRulesId
+        filterRulesId,
+        subCategoryId
         );
     }
 
@@ -128,6 +141,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
                 (bankAccountId != null ? "bankAccountId=" + bankAccountId + ", " : "") +
                 (transactionsId != null ? "transactionsId=" + transactionsId + ", " : "") +
                 (filterRulesId != null ? "filterRulesId=" + filterRulesId + ", " : "") +
+                (subCategoryId != null ? "subCategoryId=" + subCategoryId + ", " : "") +
             "}";
     }
 
