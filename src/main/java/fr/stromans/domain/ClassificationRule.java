@@ -31,7 +31,7 @@ public class ClassificationRule implements Serializable {
     @JsonIgnoreProperties(value = "classificationRules", allowSetters = true)
     private User owner;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     @NotNull
     @JsonIgnoreProperties(value = "classificationRules", allowSetters = true)
     private BankAccount bankAccount;

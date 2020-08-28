@@ -3,15 +3,15 @@
     "filterRule": {
       "home": {
         "title": "Filtres personnalisés",
-        "createLabel": "Créer un nouveau filtre personnalisé",
-        "createOrEditLabel": "Créer ou modifier un filtre personnalisé",
+        "createLabel": "Ajouter une nouvelle condition",
+        "createOrEditLabel": "Créer ou modifier une condition",
         "notFound": "Aucune filtre personnalisé trouvé"
       },
       "created": "Un nouveau filtre personnalisé a été créé avec l'identifiant {{ param }}",
       "updated": "Le filtre personnalisé avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le filtre personnalisé avec l'identifiant {{ param }} a été supprimé",
+      "deleted": "La condition avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le filtre personnalisé suivant ?<br/> <span class='text-danger'>{{ field }} {{ operator }} {{ stringValue }}</span>"
+        "question": "Etes-vous certain de vouloir supprimer la condition suivante ?<br/> <span class='text-danger'>{{ field }} {{ operator }} {{ stringValue }}</span>"
       },
       "detail": {
         "title": "Filtre personnalisé"
