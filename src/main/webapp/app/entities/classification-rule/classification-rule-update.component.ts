@@ -16,8 +16,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterRuleUpdateEmbeddedComponent } from '../filter-rule/filter-rule-update-embedded.component';
 import { ISubCategory } from 'app/shared/model/sub-category.model';
 import { SubCategoryService } from 'app/entities/sub-category/sub-category.service';
+import { ICategory } from '../../shared/model/category.model';
+import { CategoryService } from '../category/category.service';
 
-type SelectableEntity = IUser | IBankAccount | ISubCategory;
+type SelectableEntity = IUser | IBankAccount | ISubCategory | ICategory;
 
 @Component({
   selector: 'jhi-classification-rule-update',
@@ -28,6 +30,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   users: IUser[] = [];
   bankaccounts: IBankAccount[] = [];
   subcategories: ISubCategory[] = [];
+  categories: ICategory[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -42,6 +45,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     protected userService: UserService,
     protected bankAccountService: BankAccountService,
     protected subCategoryService: SubCategoryService,
+    protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
     protected modalService: NgbModal,
     private fb: FormBuilder
@@ -64,6 +68,8 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       this.bankAccountService.query().subscribe((res: HttpResponse<IBankAccount[]>) => (this.bankaccounts = res.body || []));
 
       this.subCategoryService.query().subscribe((res: HttpResponse<ISubCategory[]>) => (this.subcategories = res.body || []));
+
+      this.categoryService.query().subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body || []));
     });
   }
 

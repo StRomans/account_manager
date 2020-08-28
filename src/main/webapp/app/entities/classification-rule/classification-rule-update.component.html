@@ -25,7 +25,7 @@
                     </small>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mt-4">
                     <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.header" for="field_bankAccount">Transactions matching the following conditions</label>
 
                     <button type="button" class="btn btn-sm btn-info float-right mb-2" (click)="addFilterRule()">
@@ -34,7 +34,7 @@
                     </button>
 
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table mb-0">
                             <tbody>
                                 <tr *ngFor="let filterRule of editForm.get('filterRules')!.value; let i = index" >
                                     <td>
@@ -58,7 +58,7 @@
                                                 <fa-icon class="align-middle" icon="times"></fa-icon>
                                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                                             </button>
-                </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -67,11 +67,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.subCategory" for="field_subCategory">Sub Category</label>
+                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.footer" for="field_subCategory">Sub Category</label>
                     <select class="form-control" id="field_subCategory" name="subCategory" formControlName="subCategory">
-                        <option *ngIf="!editForm.get('subCategory')!.value" [ngValue]="null" selected></option>
-                        <option [ngValue]="subCategoryOption.id === editForm.get('subCategory')!.value?.id ? editForm.get('subCategory')!.value : subCategoryOption" *ngFor="let subCategoryOption of subcategories; trackBy: trackById">{{ subCategoryOption.label }}</option>
+                        <optgroup *ngFor="let categoryOption of categories; trackBy: trackById" label="{{categoryOption.label}}">
+                            <option *ngFor="let subCategoryOption of subcategories | filterObject:'category.id':categoryOption?.id; "
+                                    [ngValue]="subCategoryOption.id === editForm.get('subCategory')!.value?.id ? editForm.get('subCategory')!.value : subCategoryOption">
+                                {{ subCategoryOption.label }}
+                            </option>
+                        </optgroup>
                     </select>
+
                 </div>
                 <div *ngIf="editForm.get('subCategory')!.invalid && (editForm.get('subCategory')!.dirty || editForm.get('subCategory')!.touched)">
                     <small class="form-text text-danger"
