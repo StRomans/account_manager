@@ -1,5 +1,6 @@
 package fr.stromans.web.rest;
 
+import fr.stromans.domain.Category;
 import fr.stromans.domain.SubCategory;
 import fr.stromans.service.SubCategoryService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,6 +96,9 @@ public class SubCategoryResource {
     public ResponseEntity<List<SubCategory>> getAllSubCategories(SubCategoryCriteria criteria) {
         log.debug("REST request to get SubCategories by criteria: {}", criteria);
         List<SubCategory> entityList = subCategoryQueryService.findByCriteria(criteria);
+
+        Collections.sort(entityList, Comparator.comparing(SubCategory::getLabel));
+
         return ResponseEntity.ok().body(entityList);
     }
 

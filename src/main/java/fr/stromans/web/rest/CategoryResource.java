@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,6 +95,9 @@ public class CategoryResource {
     public ResponseEntity<List<Category>> getAllCategories(CategoryCriteria criteria) {
         log.debug("REST request to get Categories by criteria: {}", criteria);
         List<Category> entityList = categoryQueryService.findByCriteria(criteria);
+
+        Collections.sort(entityList, Comparator.comparing(Category::getLabel));
+
         return ResponseEntity.ok().body(entityList);
     }
 

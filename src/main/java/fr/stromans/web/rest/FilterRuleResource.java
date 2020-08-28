@@ -2,6 +2,7 @@ package fr.stromans.web.rest;
 
 import fr.stromans.domain.ClassificationRule;
 import fr.stromans.domain.FilterRule;
+import fr.stromans.domain.SubCategory;
 import fr.stromans.repository.ClassificationRuleRepository;
 import fr.stromans.repository.FilterRuleRepository;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,6 +108,9 @@ public class FilterRuleResource {
         log.debug("REST request to get a page of FilterRules");
         Page<FilterRule> page = filterRuleRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        Collections.sort(page.getContent(), Comparator.comparing(FilterRule::getField));
+
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

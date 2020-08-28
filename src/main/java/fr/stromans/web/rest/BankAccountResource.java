@@ -1,6 +1,7 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.BankAccount;
+import fr.stromans.domain.FilterRule;
 import fr.stromans.domain.User;
 import fr.stromans.security.AuthoritiesConstants;
 import fr.stromans.security.SecurityUtils;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,6 +106,9 @@ public class BankAccountResource {
     public ResponseEntity<List<BankAccount>> getAllBankAccounts(BankAccountCriteria criteria) {
         log.debug("REST request to get BankAccounts by criteria: {}", criteria);
         List<BankAccount> entityList = bankAccountQueryService.findByCriteria(criteria);
+
+        Collections.sort(entityList, Comparator.comparing(BankAccount::getLabel));
+
         return ResponseEntity.ok().body(entityList);
     }
 
