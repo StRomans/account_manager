@@ -40,7 +40,7 @@ public class ClassificationRule implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Transaction> transactions = new HashSet<>();
 
-    @OneToMany(mappedBy = "classificationRule", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "classificationRule", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<FilterRule> filterRules = new HashSet<>();
 
@@ -121,12 +121,17 @@ public class ClassificationRule implements Serializable {
 
     public ClassificationRule removeFilterRules(FilterRule filterRule) {
         this.filterRules.remove(filterRule);
-        //filterRule.setClassificationRule(null);
+        filterRule.setClassificationRule(null);
         return this;
     }
 
     public void setFilterRules(Set<FilterRule> filterRules) {
-        this.filterRules = filterRules;
+        for (FilterRule oldFilterRule : this.filterRules){
+            this.removeFilterRules(oldFilterRule);
+        }
+        for (FilterRule newFilterRule : filterRules){
+            this.addFilterRules(newFilterRule);
+        }
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

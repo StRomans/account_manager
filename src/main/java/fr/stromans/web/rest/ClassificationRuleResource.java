@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,10 +74,9 @@ public class ClassificationRuleResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated classificationRule,
      * or with status {@code 400 (Bad Request)} if the classificationRule is not valid,
      * or with status {@code 500 (Internal Server Error)} if the classificationRule couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/classification-rules")
-    public ResponseEntity<ClassificationRule> updateClassificationRule(@Valid @RequestBody ClassificationRule classificationRule) throws URISyntaxException {
+    public ResponseEntity<ClassificationRule> updateClassificationRule(@Valid @RequestBody ClassificationRule classificationRule) {
         log.debug("REST request to update ClassificationRule : {}", classificationRule);
         if (classificationRule.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

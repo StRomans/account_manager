@@ -42,7 +42,7 @@ public class FilterRule implements Serializable {
     @Column(name = "string_value", nullable = false)
     private String stringValue;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH})
+    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "filterRules", allowSetters = true)
     private ClassificationRule classificationRule;

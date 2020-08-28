@@ -1,0 +1,73 @@
+<form>
+    <div class="modal-header">
+        <h4 class="modal-title" jhiTranslate="accountManagerApp.filterRule.home.createOrEditLabel">Create or edit a Filter Rule</h4>
+    </div>
+
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <form name="editForm" role="form" novalidate (ngSubmit)="close()" [formGroup]="editForm">
+            <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <label for="id" jhiTranslate="global.field.id">ID</label>
+                <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.field" for="field_field">Field</label>
+                <select class="form-control" name="field" formControlName="field" id="field_field">
+                    <option value="AMOUNT">{{ 'accountManagerApp.RuleField.AMOUNT' | translate }}</option>
+                    <option value="DATE">{{ 'accountManagerApp.RuleField.DATE' | translate }}</option>
+                    <option value="LABEL">{{ 'accountManagerApp.RuleField.LABEL' | translate }}</option>
+                </select>
+                <div *ngIf="editForm.get('field')!.invalid && (editForm.get('field')!.dirty || editForm.get('field')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('field')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.operator" for="field_operator">Operator</label>
+                <select class="form-control" name="operator" formControlName="operator" id="field_operator">
+                    <option value="EQUALS">{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
+                    <option value="CONTAINS">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
+                    <option value="GREATEROREQUALTHAN">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
+                    <option value="LESSOREQUALTHAN">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
+                </select>
+                <div *ngIf="editForm.get('operator')!.invalid && (editForm.get('operator')!.dirty || editForm.get('operator')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('operator')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.stringValue" for="field_stringValue">String Value</label>
+                <input type="text" class="form-control" name="stringValue" id="field_stringValue"
+                       formControlName="stringValue"/>
+                <div *ngIf="editForm.get('stringValue')!.invalid && (editForm.get('stringValue')!.dirty || editForm.get('stringValue')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('stringValue')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <div>
+            <button type="button" id="cancel-save" class="btn btn-secondary" (click)="cancel()">
+                <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+            </button>
+
+            <button type="button" id="save-entity" [disabled]="editForm.invalid" (click)="close()" class="btn btn-primary">
+                <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { IBankAccount } from 'app/shared/model/bank-account.model';
 import { BankAccountService } from 'app/entities/bank-account/bank-account.service';
 import { IFilterRule } from '../../shared/model/filter-rule.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FilterRuleDeleteDialogComponent } from '../filter-rule/filter-rule-delete-dialog.component';
+import { FilterRuleUpdateEmbeddedComponent } from '../filter-rule/filter-rule-update-embedded.component';
 
 type SelectableEntity = IUser | IBankAccount;
 
@@ -28,9 +28,9 @@ export class ClassificationRuleUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    owner: [null, Validators.required],
+    owner: [null, null],
     bankAccount: [null, Validators.required],
-    filterRules: [null, Validators.required],
+    filterRules: [null, ClassificationRuleUpdateComponent.filterRulesRequired],
   });
 
   constructor(
@@ -41,6 +41,14 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     protected modalService: NgbModal,
     private fb: FormBuilder
   ) {}
+
+  /**
+   * Make sure filterRules are required
+   * @param control filterRules form control
+   */
+  public static filterRulesRequired(control: AbstractControl): any {
+    return control.value?.length > 0 ? null : { required: false };
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ classificationRule }) => {
@@ -55,9 +63,9 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   updateForm(classificationRule: IClassificationRule): void {
     this.editForm.patchValue({
       id: classificationRule.id,
-      owner: classificationRule.owner,
+      owner: classificationRule.bankAccount?.owner,
       bankAccount: classificationRule.bankAccount,
-      filterRules: classificationRule.filterRules,
+      filterRules: classificationRule.filterRules || [],
     });
   }
 
@@ -81,6 +89,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       owner: this.editForm.get(['owner'])!.value,
       bankAccount: this.editForm.get(['bankAccount'])!.value,
+      filterRules: this.editForm.get(['filterRules'])!.value,
     };
   }
 
@@ -104,15 +113,68 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     return item.id;
   }
 
-  deleteRule(filterRule: IFilterRule): void {
-    const modalRef = this.modalService.open(FilterRuleDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.filterRule = filterRule;
-    modalRef.result.then(() => this.removeRuleFromList(filterRule));
-    this.ngOnInit();
+  /**
+   * Start Editing session with : opening modal an initializing form
+   * @param filterRule the filterRule to edit
+   */
+  editFilerRule(filterRule: IFilterRule): void {
+    const modalRef = this.modalService.open(FilterRuleUpdateEmbeddedComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.updateForm(filterRule);
+    modalRef.result.then(
+      // on close
+      resultFilterRule => this.updateEditedFilterRule(filterRule, resultFilterRule),
+      // on dismiss
+      () => {}
+    );
   }
 
-  removeRuleFromList(filterRule: IFilterRule): void {
+  /**
+   * Close Editing session with : Update filterRule list according to editing result
+   * @param originalfilterRule the filterRule before editing
+   * @param editedFilterRule  the filterRule after editing
+   */
+  updateEditedFilterRule(originalfilterRule: IFilterRule, editedFilterRule: IFilterRule): void {
+    const allFilterRules = this.editForm.get('filterRules')?.value;
+    const index = allFilterRules.indexOf(originalfilterRule);
+
+    allFilterRules[index] = editedFilterRule;
+    this.editForm.patchValue({ filterRules: allFilterRules });
+    this.editForm.controls.filterRules.updateValueAndValidity();
+  }
+
+  /**
+   * Open modal with empty Filter Rule Form
+   */
+  addFilterRule(): void {
+    const modalRef = this.modalService.open(FilterRuleUpdateEmbeddedComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.result.then(
+      // on close
+      filterRule => this.appendCreatedFilterRule(filterRule),
+      // on dismiss
+      () => {}
+    );
+  }
+
+  /**
+   * Append created filter Rule
+   * @param createdFilterRule the filter Rule to append to the list
+   */
+  appendCreatedFilterRule(createdFilterRule: IFilterRule): void {
+    this.editForm.get('filterRules')?.value.push(createdFilterRule);
+    this.editForm.controls.filterRules.updateValueAndValidity();
+  }
+
+  /**
+   * Remove selected Filter Rule from list
+   * @param filterRule the filter Rule to remove
+   */
+  removeFilterRule(filterRule: IFilterRule): void {
     const index = this.editForm.get('filterRules')?.value.indexOf(filterRule);
     this.editForm.get('filterRules')?.value.splice(index, 1);
+    this.editForm.controls.filterRules.updateValueAndValidity();
+  }
+
+  setOwnerFromBankAccount(bankAccount: IBankAccount): void {
+    this.editForm.patchValue({ owner: bankAccount?.owner });
   }
 }

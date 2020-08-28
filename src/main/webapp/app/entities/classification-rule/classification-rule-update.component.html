@@ -11,23 +11,9 @@
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
 
-                <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
-                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.owner" for="field_owner">Owner</label>
-                    <select class="form-control" id="field_owner" name="owner" formControlName="owner">
-                        <option *ngIf="!editForm.get('owner')!.value" [ngValue]="null" selected></option>
-                        <option [ngValue]="userOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : userOption" *ngFor="let userOption of users; trackBy: trackById">{{ userOption.login }}</option>
-                    </select>
-                </div>
-                <div *ngIf="editForm.get('owner')!.invalid && (editForm.get('owner')!.dirty || editForm.get('owner')!.touched)">
-                    <small class="form-text text-danger"
-                           *ngIf="editForm.get('owner')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                    </small>
-                </div>
-
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.bankAccount" for="field_bankAccount">Bank Account</label>
-                    <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount">
+                    <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount" (change)="setOwnerFromBankAccount(editForm.get('bankAccount')!.value)">
                         <option *ngIf="!editForm.get('bankAccount')!.value" [ngValue]="null" selected></option>
                         <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>
                     </select>
@@ -42,7 +28,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.header" for="field_bankAccount">Transactions matching the following conditions</label>
 
-                    <button type="button" class="btn btn-sm btn-outline-primary float-right mb-2" [routerLink]="[ '/filter-rule', 'new' ]" [state]="{classificationRuleId: editForm.get('id')!.value}">
+                    <button type="button" class="btn btn-sm btn-outline-primary float-right mb-2" (click)="addFilterRule()">
                         <fa-icon icon="plus" class="align-middle mr-1"></fa-icon><span class="d-none d-md-inline" jhiTranslate="accountManagerApp.classificationRule.filter.add">Add rule</span>
                     </button>
 
@@ -61,10 +47,10 @@
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" [routerLink]="['/filter-rule', filterRule.id, 'edit']"><fa-icon class="align-middle" icon="pencil-alt"></fa-icon></button>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="editFilerRule(filterRule)"><fa-icon class="align-middle" icon="pencil-alt"></fa-icon></button>
                                         </div>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteRule(filterRule)"><fa-icon class="align-middle" icon="times"></fa-icon></button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeFilterRule(filterRule)"><fa-icon class="align-middle" icon="times"></fa-icon></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -73,13 +59,13 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.footer" for="field_bankAccount">Will be classified as </label>
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" jhiTranslate="accountManagerApp.classificationRule.filter.footer" for="field_bankAccount">Will be classified as </label>-->
 <!--                    <select class="form-control" id="field_bankAccount" name="bankAccount" formControlName="bankAccount">-->
 <!--                        <option *ngIf="!editForm.get('bankAccount')!.value" [ngValue]="null" selected></option>-->
 <!--                        <option [ngValue]="bankAccountOption.id === editForm.get('bankAccount')!.value?.id ? editForm.get('bankAccount')!.value : bankAccountOption" *ngFor="let bankAccountOption of bankaccounts; trackBy: trackById">{{ bankAccountOption.label }}</option>-->
 <!--                    </select>-->
-                </div>
+<!--                </div>-->
             </div>
 
             <div>
