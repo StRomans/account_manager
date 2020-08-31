@@ -10,6 +10,8 @@ import { createRequestOption } from 'app/shared/util/request-util';
 import { ITransaction } from 'app/shared/model/transaction.model';
 import { IBankAccount } from '../../shared/model/bank-account.model';
 import { IUploadTransactionResultDto } from '../../shared/model/dto/upload-transaction-result.dto';
+import { IClassificationRule } from '../../shared/model/classification-rule.model';
+import { IClassificationRuleResultDto } from '../../shared/model/dto/classification-rule-result-dto';
 
 type EntityResponseType = HttpResponse<ITransaction>;
 type EntityArrayResponseType = HttpResponse<ITransaction[]>;
@@ -56,6 +58,11 @@ export class TransactionService {
     formData.append('file', file, file.name);
     formData.append('bankAccountId', JSON.stringify(bankAccount.id));
     return this.http.post<IUploadTransactionResultDto>(`${this.resourceUrl}/upload`, formData, { observe: 'response' });
+  }
+
+  public estimateClassification(classificationRule: IClassificationRule): Observable<HttpResponse<IClassificationRuleResultDto>> {
+    const copy: IClassificationRule = Object.assign({}, classificationRule);
+    return this.http.post<IClassificationRuleResultDto>(`${this.resourceUrl}/classification/estimate`, copy, { observe: 'response' });
   }
 
   protected convertDateFromClient(transaction: ITransaction): ITransaction {

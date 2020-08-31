@@ -27,6 +27,12 @@
         "header": "Les transactions respectant les conditions suivantes",
         "add": "Condition",
         "footer": "Seront classées dans"
+      },
+      "estimate": {
+        "option": "Appliquer aux transactions existantes",
+        "title": "Transactions éligibles",
+        "found": "transactions trouvées.",
+        "transactions": "transactions (non classées) peuvent être classées par cette règle"
       }
     }
   }

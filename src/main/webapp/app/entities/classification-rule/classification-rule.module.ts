@@ -7,6 +7,7 @@ import { ClassificationRuleDetailComponent } from './classification-rule-detail.
 import { ClassificationRuleUpdateComponent } from './classification-rule-update.component';
 import { ClassificationRuleDeleteDialogComponent } from './classification-rule-delete-dialog.component';
 import { classificationRuleRoute } from './classification-rule.route';
+import { ClassificationRuleResultDtoDialogComponent } from './dto/classification-rule-result-dto-dialog.component';
 
 @NgModule({
   imports: [AccountManagerSharedModule, RouterModule.forChild(classificationRuleRoute)],
@@ -15,7 +16,8 @@ import { classificationRuleRoute } from './classification-rule.route';
     ClassificationRuleDetailComponent,
     ClassificationRuleUpdateComponent,
     ClassificationRuleDeleteDialogComponent,
+    ClassificationRuleResultDtoDialogComponent,
   ],
-  entryComponents: [ClassificationRuleDeleteDialogComponent],
+  entryComponents: [ClassificationRuleDeleteDialogComponent, ClassificationRuleResultDtoDialogComponent],
 })
 export class AccountManagerClassificationRuleModule {}

@@ -1,0 +1,43 @@
+<form>
+    <div class="modal-header">
+        <h4 class="modal-title" jhiTranslate="accountManagerApp.classificationRule.estimate.title">Transactions impactées par cette règle</h4>
+    </div>
+
+    <div class="modal-body">
+        <span>
+            <span>
+                <div class="alert alert-success">
+                    <fa-icon icon="check"></fa-icon>
+                    <label>{{ unclassifiedTransactions.length }} {{ 'accountManagerApp.classificationRule.estimate.found' | translate }}</label>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.date">Date</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.amount">Amount</span></th>
+                                <th scope="col"><span jhiTranslate="accountManagerApp.transaction.label">Label</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of unclassifiedTransactions">
+                                <td>{{ transaction.date | date:'mediumDate' }}</td>
+                                <td>{{ transaction.amount }} {{ transaction.bankAccount?.currency?.code }}</td>
+                                <td>{{ transaction.label }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </span>
+        </span>
+
+    </div>
+
+    <div class="modal-footer">
+        <span>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="close()">
+                <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.close">Close</span>
+            </button>
+        </span>
+    </div>
+</form>

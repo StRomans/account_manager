@@ -1,9 +1,11 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.BankAccount;
+import fr.stromans.domain.ClassificationRule;
 import fr.stromans.domain.Transaction;
 import fr.stromans.service.BankAccountService;
 import fr.stromans.service.TransactionService;
+import fr.stromans.service.dto.ClassificationRuleResultDto;
 import fr.stromans.service.dto.UploadTransactionResultDTO;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 import fr.stromans.service.dto.TransactionCriteria;
@@ -39,6 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing {@link fr.stromans.domain.Transaction}.
@@ -148,6 +151,14 @@ public class TransactionResource {
         Page<Transaction> page = transactionQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @PostMapping("/transactions/classification/estimate")
+    public ResponseEntity<ClassificationRuleResultDto> findAllToClassify(@Valid @RequestBody ClassificationRule classificationRule){
+        log.debug("REST request to get all Transactions to classify by classificationRule: {}", classificationRule);
+        ClassificationRuleResultDto resultDto = new ClassificationRuleResultDto();
+        resultDto.setTransactionsToClassify(transactionService.findAllToClassify(classificationRule));
+        return ResponseEntity.ok().body(resultDto);
     }
 
     /**

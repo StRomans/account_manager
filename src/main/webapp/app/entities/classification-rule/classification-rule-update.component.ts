@@ -18,6 +18,9 @@ import { ISubCategory } from 'app/shared/model/sub-category.model';
 import { SubCategoryService } from 'app/entities/sub-category/sub-category.service';
 import { ICategory } from '../../shared/model/category.model';
 import { CategoryService } from '../category/category.service';
+import { TransactionService } from '../transaction/transaction.service';
+import { ClassificationRuleResultDto, IClassificationRuleResultDto } from '../../shared/model/dto/classification-rule-result-dto';
+import { ClassificationRuleResultDtoDialogComponent } from './dto/classification-rule-result-dto-dialog.component';
 
 type SelectableEntity = IUser | IBankAccount | ISubCategory | ICategory;
 
@@ -31,6 +34,8 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   bankaccounts: IBankAccount[] = [];
   subcategories: ISubCategory[] = [];
   categories: ICategory[] = [];
+  applyUnclassifiedTransactions: Boolean;
+  classificationResultDto?: IClassificationRuleResultDto;
 
   editForm = this.fb.group({
     id: [],
@@ -44,13 +49,16 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   constructor(
     protected classificationRuleService: ClassificationRuleService,
     protected userService: UserService,
+    protected transactionService: TransactionService,
     protected bankAccountService: BankAccountService,
     protected subCategoryService: SubCategoryService,
     protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
     protected modalService: NgbModal,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.applyUnclassifiedTransactions = true;
+  }
 
   /**
    * Make sure filterRules are required
@@ -71,7 +79,23 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       this.subCategoryService.query().subscribe((res: HttpResponse<ISubCategory[]>) => (this.subcategories = res.body || []));
 
       this.categoryService.query().subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body || []));
+
+      this.estimateClassificationImpact();
     });
+  }
+
+  /**
+   * Evaluate # of transactions to classify
+   */
+  estimateClassificationImpact(): void {
+    if (this.applyUnclassifiedTransactions && this.editForm.valid) {
+      this.transactionService
+        .estimateClassification(this.createFromForm())
+        .subscribe(
+          (res: HttpResponse<IClassificationRuleResultDto>) =>
+            (this.classificationResultDto = res.body || new ClassificationRuleResultDto([]))
+        );
+    }
   }
 
   updateForm(classificationRule: IClassificationRule): void {
@@ -158,6 +182,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     allFilterRules[index] = editedFilterRule;
     this.editForm.patchValue({ filterRules: allFilterRules });
     this.editForm.controls.filterRules.updateValueAndValidity();
+    this.estimateClassificationImpact();
   }
 
   /**
@@ -180,6 +205,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   appendCreatedFilterRule(createdFilterRule: IFilterRule): void {
     this.editForm.get('filterRules')?.value.push(createdFilterRule);
     this.editForm.controls.filterRules.updateValueAndValidity();
+    this.estimateClassificationImpact();
   }
 
   /**
@@ -190,9 +216,21 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     const index = this.editForm.get('filterRules')?.value.indexOf(filterRule);
     this.editForm.get('filterRules')?.value.splice(index, 1);
     this.editForm.controls.filterRules.updateValueAndValidity();
+    this.estimateClassificationImpact();
   }
 
   setOwnerFromBankAccount(bankAccount: IBankAccount): void {
     this.editForm.patchValue({ owner: bankAccount?.owner });
+    this.estimateClassificationImpact();
+  }
+
+  changeApplyUnclassifiedTransactions(): void {
+    this.applyUnclassifiedTransactions = !this.applyUnclassifiedTransactions;
+    this.estimateClassificationImpact();
+  }
+
+  viewTransactionsToClassify(): void {
+    const modalRef = this.modalService.open(ClassificationRuleResultDtoDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.unclassifiedTransactions = this.classificationResultDto?.transactionsToClassify || [];
   }
 }
