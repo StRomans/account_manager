@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         <div *ngFor="let filterRule of classificationRule.filterRules ;">
-                            {{ 'accountManagerApp.RuleField.' +  filterRule?.field | translate }} {{ 'accountManagerApp.RuleOperator.' + filterRule?.operator | translate }} {{ filterRule?.stringValue }}
+                            {{ 'accountManagerApp.RuleField.' +  filterRule?.field | translate }} {{ 'accountManagerApp.RuleOperator.' + filterRule?.operator | translate }} {{ filterRule.stringValue }}{{ filterRule.numberValue }}{{ filterRule.dateValue | date:'mediumDate' }}
                         </div>
                     </td>
                     <td>

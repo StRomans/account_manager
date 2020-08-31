@@ -44,7 +44,7 @@
                                         {{'accountManagerApp.RuleOperator.' + filterRule.operator | translate}}
                                     </td>
                                     <td>
-                                        {{filterRule.stringValue}}
+                                        {{ filterRule.stringValue }}{{ filterRule.numberValue }}{{ filterRule.dateValue | date:'mediumDate' }}
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">

@@ -19,6 +19,8 @@
       "field": "Champ",
       "operator": "Opérateur",
       "stringValue": "Valeur",
+      "numberValue": "Valeur",
+      "dateValue": "Valeur",
       "classificationRule": "Règle de classement"
     }
   }

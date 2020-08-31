@@ -16,7 +16,8 @@
 
             <div class="form-group">
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.field" for="field_field">Field</label>
-                <select class="form-control" name="field" formControlName="field" id="field_field">
+                <select class="form-control" name="field" formControlName="field" id="field_field" (change)="refreshValidatorsOnFieldChange()">
+                    <option></option>
                     <option value="AMOUNT">{{ 'accountManagerApp.RuleField.AMOUNT' | translate }}</option>
                     <option value="DATE">{{ 'accountManagerApp.RuleField.DATE' | translate }}</option>
                     <option value="LABEL">{{ 'accountManagerApp.RuleField.LABEL' | translate }}</option>
@@ -32,10 +33,11 @@
             <div class="form-group">
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.operator" for="field_operator">Operator</label>
                 <select class="form-control" name="operator" formControlName="operator" id="field_operator">
+                    <option></option>
                     <option value="EQUALS">{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
-                    <option value="CONTAINS">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
-                    <option value="GREATEROREQUALTHAN">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
-                    <option value="LESSOREQUALTHAN">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
+                    <option value="CONTAINS" *ngIf="editForm.get('field')!.value === 'LABEL'">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
+                    <option value="GREATEROREQUALTHAN" *ngIf="editForm.get('field')!.value !== 'LABEL'">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
+                    <option value="LESSOREQUALTHAN" *ngIf="editForm.get('field')!.value !== 'LABEL'">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
                 </select>
                 <div *ngIf="editForm.get('operator')!.invalid && (editForm.get('operator')!.dirty || editForm.get('operator')!.touched)">
                     <small class="form-text text-danger"
@@ -45,13 +47,42 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" *ngIf="editForm.get('field')!.value === 'LABEL'">
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.stringValue" for="field_stringValue">String Value</label>
                 <input type="text" class="form-control" name="stringValue" id="field_stringValue"
-                       formControlName="stringValue"/>
+                       formControlName="stringValue" />
                 <div *ngIf="editForm.get('stringValue')!.invalid && (editForm.get('stringValue')!.dirty || editForm.get('stringValue')!.touched)">
                     <small class="form-text text-danger"
                            *ngIf="editForm.get('stringValue')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="editForm.get('field')!.value === 'AMOUNT'">
+                <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.numberValue" for="field_numberValue">Number Value</label>
+                <input type="number" class="form-control" name="numberValue" id="field_numberValue" formControlName="numberValue" />
+                <div *ngIf="editForm.get('numberValue')!.invalid && (editForm.get('numberValue')!.dirty || editForm.get('numberValue')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('numberValue')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                    <small class="form-text text-danger"
+                           [hidden]="!editForm.get('numberValue')?.errors?.number" jhiTranslate="entity.validation.number">
+                        This field should be a number.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="editForm.get('field')!.value === 'DATE'">
+                <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.dateValue" for="field_dateValue">Date Value</label>
+                <div class="input-group">
+                    <input id="field_dateValue" type="text" class="form-control" name="dateValue" ngbDatepicker #dateDp="ngbDatepicker" formControlName="dateValue" />
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                    </span>
+                </div>
+                <div *ngIf="editForm.get('dateValue')!.invalid && (editForm.get('dateValue')!.dirty || editForm.get('dateValue')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('dateValue')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>
@@ -65,7 +96,7 @@
                 <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
             </button>
 
-            <button type="button" id="save-entity" [disabled]="editForm.invalid" (click)="close()" class="btn btn-primary">
+            <button type="button" id="save-entity" [disabled]="editForm.invalid"  (click)="close()" class="btn btn-primary">
                 <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
             </button>
         </div>

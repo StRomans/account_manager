@@ -18,7 +18,9 @@
       },
       "field": "Field",
       "operator": "Operator",
-      "stringValue": "String Value",
+      "stringValue": "Value",
+      "numberValue": "Value",
+      "dateValue": "Value",
       "classificationRule": "Classification Rule"
     }
   }

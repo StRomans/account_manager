@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import fr.stromans.domain.enumeration.RuleField;
 
@@ -38,9 +40,14 @@ public class FilterRule implements Serializable {
     @Column(name = "operator", nullable = false)
     private RuleOperator operator;
 
-    @NotNull
-    @Column(name = "string_value", nullable = false)
+    @Column(name = "string_value")
     private String stringValue;
+
+    @Column(name = "number_value", precision = 21, scale = 2)
+    private BigDecimal numberValue;
+
+    @Column(name = "date_value")
+    private LocalDate dateValue;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -93,6 +100,32 @@ public class FilterRule implements Serializable {
 
     public void setStringValue(String stringValue) {
         this.stringValue = stringValue;
+    }
+
+    public void setNumberValue(BigDecimal numberValue) {
+        this.numberValue = numberValue;
+    }
+
+    public BigDecimal getNumberValue() {
+        return numberValue;
+    }
+
+    public FilterRule numberValue(BigDecimal numberValue) {
+        this.numberValue = numberValue;
+        return this;
+    }
+
+    public LocalDate getDateValue() {
+        return dateValue;
+    }
+
+    public FilterRule dateValue(LocalDate dateValue) {
+        this.dateValue = dateValue;
+        return this;
+    }
+
+    public void setDateValue(LocalDate dateValue) {
+        this.dateValue = dateValue;
     }
 
     public ClassificationRule getClassificationRule() {

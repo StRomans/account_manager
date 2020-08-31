@@ -64,7 +64,7 @@ public class TransactionService {
 
             if(RuleField.AMOUNT.equals((filterRule.getField()))){
                 TransactionCriteria amountCriteria = new TransactionCriteria();
-                BigDecimal value = BigDecimal.valueOf(Long.valueOf(filterRule.getStringValue()));
+                BigDecimal value = filterRule.getNumberValue();
                 BigDecimalFilter amountFilter = new BigDecimalFilter();
                 if(RuleOperator.EQUALS.equals(filterRule.getOperator())) amountFilter.setEquals(value);
                 if(RuleOperator.LESSOREQUALTHAN.equals(filterRule.getOperator())) amountFilter.setLessThanOrEqual(value);
@@ -74,7 +74,7 @@ public class TransactionService {
             }
             else if (RuleField.DATE.equals((filterRule.getField()))){
                 TransactionCriteria dateCriteria = new TransactionCriteria();
-                LocalDate value = LocalDate.parse((filterRule.getStringValue()));
+                LocalDate value = filterRule.getDateValue();
                 LocalDateFilter dateFilter = new LocalDateFilter();
                 if(RuleOperator.EQUALS.equals(filterRule.getOperator())) dateFilter.setEquals(value);
                 if(RuleOperator.LESSOREQUALTHAN.equals(filterRule.getOperator())) dateFilter.setLessThanOrEqual(value);

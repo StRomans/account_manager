@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity FilterRule.
     -->
@@ -21,9 +21,9 @@
             <column name="operator" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="string_value" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="string_value" type="varchar(255)"/>
+            <column name="number_value" type="decimal(21,2)"/>
+            <column name="date_value" type="date"/>
             <column name="classification_rule_id" type="bigint">
                 <constraints nullable="false" />
             </column>
