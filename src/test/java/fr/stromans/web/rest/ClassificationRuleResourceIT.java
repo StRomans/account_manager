@@ -38,6 +38,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class ClassificationRuleResourceIT {
 
+    private static final Integer DEFAULT_PRIORITY = 1;
+    private static final Integer UPDATED_PRIORITY = 2;
+    private static final Integer SMALLER_PRIORITY = 1 - 1;
+
     @Autowired
     private ClassificationRuleRepository classificationRuleRepository;
 
@@ -62,7 +66,8 @@ public class ClassificationRuleResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ClassificationRule createEntity(EntityManager em) {
-        ClassificationRule classificationRule = new ClassificationRule();
+        ClassificationRule classificationRule = new ClassificationRule()
+            .priority(DEFAULT_PRIORITY);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -97,7 +102,8 @@ public class ClassificationRuleResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ClassificationRule createUpdatedEntity(EntityManager em) {
-        ClassificationRule classificationRule = new ClassificationRule();
+        ClassificationRule classificationRule = new ClassificationRule()
+            .priority(UPDATED_PRIORITY);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -145,6 +151,7 @@ public class ClassificationRuleResourceIT {
         List<ClassificationRule> classificationRuleList = classificationRuleRepository.findAll();
         assertThat(classificationRuleList).hasSize(databaseSizeBeforeCreate + 1);
         ClassificationRule testClassificationRule = classificationRuleList.get(classificationRuleList.size() - 1);
+        assertThat(testClassificationRule.getPriority()).isEqualTo(DEFAULT_PRIORITY);
     }
 
     @Test
@@ -169,6 +176,25 @@ public class ClassificationRuleResourceIT {
 
     @Test
     @Transactional
+    public void checkPriorityIsRequired() throws Exception {
+        int databaseSizeBeforeTest = classificationRuleRepository.findAll().size();
+        // set the field null
+        classificationRule.setPriority(null);
+
+        // Create the ClassificationRule, which fails.
+
+
+        restClassificationRuleMockMvc.perform(post("/api/classification-rules").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(classificationRule)))
+            .andExpect(status().isBadRequest());
+
+        List<ClassificationRule> classificationRuleList = classificationRuleRepository.findAll();
+        assertThat(classificationRuleList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllClassificationRules() throws Exception {
         // Initialize the database
         classificationRuleRepository.saveAndFlush(classificationRule);
@@ -177,7 +203,8 @@ public class ClassificationRuleResourceIT {
         restClassificationRuleMockMvc.perform(get("/api/classification-rules?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(classificationRule.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(classificationRule.getId().intValue())))
+            .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)));
     }
     
     @Test
@@ -190,7 +217,8 @@ public class ClassificationRuleResourceIT {
         restClassificationRuleMockMvc.perform(get("/api/classification-rules/{id}", classificationRule.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(classificationRule.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(classificationRule.getId().intValue()))
+            .andExpect(jsonPath("$.priority").value(DEFAULT_PRIORITY));
     }
 
 
@@ -210,6 +238,111 @@ public class ClassificationRuleResourceIT {
 
         defaultClassificationRuleShouldBeFound("id.lessThanOrEqual=" + id);
         defaultClassificationRuleShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsEqualToSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority equals to DEFAULT_PRIORITY
+        defaultClassificationRuleShouldBeFound("priority.equals=" + DEFAULT_PRIORITY);
+
+        // Get all the classificationRuleList where priority equals to UPDATED_PRIORITY
+        defaultClassificationRuleShouldNotBeFound("priority.equals=" + UPDATED_PRIORITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority not equals to DEFAULT_PRIORITY
+        defaultClassificationRuleShouldNotBeFound("priority.notEquals=" + DEFAULT_PRIORITY);
+
+        // Get all the classificationRuleList where priority not equals to UPDATED_PRIORITY
+        defaultClassificationRuleShouldBeFound("priority.notEquals=" + UPDATED_PRIORITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsInShouldWork() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority in DEFAULT_PRIORITY or UPDATED_PRIORITY
+        defaultClassificationRuleShouldBeFound("priority.in=" + DEFAULT_PRIORITY + "," + UPDATED_PRIORITY);
+
+        // Get all the classificationRuleList where priority equals to UPDATED_PRIORITY
+        defaultClassificationRuleShouldNotBeFound("priority.in=" + UPDATED_PRIORITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority is not null
+        defaultClassificationRuleShouldBeFound("priority.specified=true");
+
+        // Get all the classificationRuleList where priority is null
+        defaultClassificationRuleShouldNotBeFound("priority.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority is greater than or equal to DEFAULT_PRIORITY
+        defaultClassificationRuleShouldBeFound("priority.greaterThanOrEqual=" + DEFAULT_PRIORITY);
+
+        // Get all the classificationRuleList where priority is greater than or equal to (DEFAULT_PRIORITY + 1)
+        defaultClassificationRuleShouldNotBeFound("priority.greaterThanOrEqual=" + (DEFAULT_PRIORITY + 1));
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority is less than or equal to DEFAULT_PRIORITY
+        defaultClassificationRuleShouldBeFound("priority.lessThanOrEqual=" + DEFAULT_PRIORITY);
+
+        // Get all the classificationRuleList where priority is less than or equal to SMALLER_PRIORITY
+        defaultClassificationRuleShouldNotBeFound("priority.lessThanOrEqual=" + SMALLER_PRIORITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsLessThanSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority is less than DEFAULT_PRIORITY
+        defaultClassificationRuleShouldNotBeFound("priority.lessThan=" + DEFAULT_PRIORITY);
+
+        // Get all the classificationRuleList where priority is less than (DEFAULT_PRIORITY + 1)
+        defaultClassificationRuleShouldBeFound("priority.lessThan=" + (DEFAULT_PRIORITY + 1));
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByPriorityIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where priority is greater than DEFAULT_PRIORITY
+        defaultClassificationRuleShouldNotBeFound("priority.greaterThan=" + DEFAULT_PRIORITY);
+
+        // Get all the classificationRuleList where priority is greater than SMALLER_PRIORITY
+        defaultClassificationRuleShouldBeFound("priority.greaterThan=" + SMALLER_PRIORITY);
     }
 
 
@@ -307,7 +440,8 @@ public class ClassificationRuleResourceIT {
         restClassificationRuleMockMvc.perform(get("/api/classification-rules?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(classificationRule.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(classificationRule.getId().intValue())))
+            .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)));
 
         // Check, that the count call also returns 1
         restClassificationRuleMockMvc.perform(get("/api/classification-rules/count?sort=id,desc&" + filter))
@@ -353,6 +487,8 @@ public class ClassificationRuleResourceIT {
         ClassificationRule updatedClassificationRule = classificationRuleRepository.findById(classificationRule.getId()).get();
         // Disconnect from session so that the updates on updatedClassificationRule are not directly saved in db
         em.detach(updatedClassificationRule);
+        updatedClassificationRule
+            .priority(UPDATED_PRIORITY);
 
         restClassificationRuleMockMvc.perform(put("/api/classification-rules").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
@@ -363,6 +499,7 @@ public class ClassificationRuleResourceIT {
         List<ClassificationRule> classificationRuleList = classificationRuleRepository.findAll();
         assertThat(classificationRuleList).hasSize(databaseSizeBeforeUpdate);
         ClassificationRule testClassificationRule = classificationRuleList.get(classificationRuleList.size() - 1);
+        assertThat(testClassificationRule.getPriority()).isEqualTo(UPDATED_PRIORITY);
     }
 
     @Test

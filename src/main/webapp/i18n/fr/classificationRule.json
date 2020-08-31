@@ -16,6 +16,7 @@
       "detail": {
         "title": "Règle de classement"
       },
+      "priority": "Priorité",
       "owner": "Propriétaire",
       "bankAccount": "Compte bancaire",
       "transactions": "Transactions",

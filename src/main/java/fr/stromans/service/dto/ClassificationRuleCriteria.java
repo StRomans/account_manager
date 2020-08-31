@@ -26,6 +26,8 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private IntegerFilter priority;
+
     private LongFilter ownerId;
 
     private LongFilter bankAccountId;
@@ -41,6 +43,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
 
     public ClassificationRuleCriteria(ClassificationRuleCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.priority = other.priority == null ? null : other.priority.copy();
         this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
         this.bankAccountId = other.bankAccountId == null ? null : other.bankAccountId.copy();
         this.transactionsId = other.transactionsId == null ? null : other.transactionsId.copy();
@@ -59,6 +62,14 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public IntegerFilter getPriority() {
+        return priority;
+    }
+
+    public void setPriority(IntegerFilter priority) {
+        this.priority = priority;
     }
 
     public LongFilter getOwnerId() {
@@ -113,6 +124,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         final ClassificationRuleCriteria that = (ClassificationRuleCriteria) o;
         return
             Objects.equals(id, that.id) &&
+            Objects.equals(priority, that.priority) &&
             Objects.equals(ownerId, that.ownerId) &&
             Objects.equals(bankAccountId, that.bankAccountId) &&
             Objects.equals(transactionsId, that.transactionsId) &&
@@ -124,6 +136,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
         id,
+        priority,
         ownerId,
         bankAccountId,
         transactionsId,
@@ -137,6 +150,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
     public String toString() {
         return "ClassificationRuleCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (priority != null ? "priority=" + priority + ", " : "") +
                 (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
                 (bankAccountId != null ? "bankAccountId=" + bankAccountId + ", " : "") +
                 (transactionsId != null ? "transactionsId=" + transactionsId + ", " : "") +

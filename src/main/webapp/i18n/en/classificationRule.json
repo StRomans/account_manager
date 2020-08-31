@@ -16,6 +16,7 @@
       "detail": {
         "title": "Classification Rule"
       },
+      "priority": "Priority",
       "owner": "Owner",
       "bankAccount": "Bank Account",
       "transactions": "Transactions",

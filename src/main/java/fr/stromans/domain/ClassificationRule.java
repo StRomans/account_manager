@@ -26,6 +26,12 @@ public class ClassificationRule implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
+    @Min(value = 1)
+    @Max(value = 100)
+    @Column(name = "priority", nullable = false)
+    private Integer priority;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "classificationRules", allowSetters = true)
@@ -56,6 +62,19 @@ public class ClassificationRule implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public ClassificationRule priority(Integer priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public User getOwner() {
@@ -174,6 +193,7 @@ public class ClassificationRule implements Serializable {
     public String toString() {
         return "ClassificationRule{" +
             "id=" + getId() +
+            ", priority=" + getPriority() +
             "}";
     }
 }

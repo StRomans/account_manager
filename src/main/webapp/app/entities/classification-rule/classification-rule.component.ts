@@ -36,7 +36,7 @@ export class ClassificationRuleComponent implements OnInit, OnDestroy {
     this.links = {
       last: 0,
     };
-    this.predicate = 'id';
+    this.predicate = 'priority';
     this.ascending = true;
   }
 

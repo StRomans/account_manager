@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(ClassificationRuleService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new ClassificationRule(0);
+      elemDefault = new ClassificationRule(0, 0);
     });
 
     describe('Service methods', () => {
@@ -52,7 +52,12 @@ describe('Service Tests', () => {
       });
 
       it('should update a ClassificationRule', () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            priority: 1,
+          },
+          elemDefault
+        );
 
         const expected = Object.assign({}, returnedFromService);
 
@@ -64,7 +69,12 @@ describe('Service Tests', () => {
       });
 
       it('should return a list of ClassificationRule', () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            priority: 1,
+          },
+          elemDefault
+        );
 
         const expected = Object.assign({}, returnedFromService);
 

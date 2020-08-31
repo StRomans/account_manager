@@ -6,6 +6,7 @@ import { ISubCategory } from 'app/shared/model/sub-category.model';
 
 export interface IClassificationRule {
   id?: number;
+  priority?: number;
   owner?: IUser;
   bankAccount?: IBankAccount;
   transactions?: ITransaction[];
@@ -16,6 +17,7 @@ export interface IClassificationRule {
 export class ClassificationRule implements IClassificationRule {
   constructor(
     public id?: number,
+    public priority?: number,
     public owner?: IUser,
     public bankAccount?: IBankAccount,
     public transactions?: ITransaction[],

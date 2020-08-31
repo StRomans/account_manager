@@ -25,9 +25,10 @@ export class FilterRuleUpdateEmbeddedComponent {
    * Activate/Deactivate validators depending on selected 'Field' value
    */
   public refreshValidatorsOnFieldChange(): any {
-    this.editForm.get('stringValue')?.setValue(null);
-    this.editForm.get('numberValue')?.setValue(null);
-    this.editForm.get('dateValue')?.setValue(null);
+    if (this.editForm.get('field')?.value !== 'LABEL') this.editForm.get('stringValue')?.setValue(null);
+    if (this.editForm.get('field')?.value !== 'AMOUNT') this.editForm.get('numberValue')?.setValue(null);
+    if (this.editForm.get('field')?.value !== 'DATE') this.editForm.get('dateValue')?.setValue(null);
+
     this.editForm.get('stringValue')?.setValidators(null);
     this.editForm.get('numberValue')?.setValidators(null);
     this.editForm.get('dateValue')?.setValidators(null);

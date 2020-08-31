@@ -8,6 +8,10 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="accountManagerApp.classificationRule.priority">Priority</span></dt>
+                <dd>
+                    <span>{{ classificationRule.priority }}</span>
+                </dd>
                 <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.classificationRule.owner">Owner</span></dt>
                 <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     {{ classificationRule.owner?.login }}

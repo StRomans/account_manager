@@ -15,6 +15,9 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="priority" type="integer">
+                <constraints nullable="false" />
+            </column>
             <column name="owner_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -47,6 +50,7 @@
                   separator=";"
                   tableName="classification_rule">
             <column name="id" type="numeric"/>
+            <column name="priority" type="numeric"/>
             <column name="owner_id" type="numeric"/>
             <column name="bank_account_id" type="numeric"/>
             <column name="sub_category_id" type="numeric"/>

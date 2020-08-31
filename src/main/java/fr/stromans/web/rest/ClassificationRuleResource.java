@@ -1,6 +1,7 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.ClassificationRule;
+import fr.stromans.domain.FilterRule;
 import fr.stromans.domain.Transaction;
 import fr.stromans.service.ClassificationRuleService;
 import fr.stromans.service.TransactionService;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,6 +116,7 @@ public class ClassificationRuleResource {
         log.debug("REST request to get ClassificationRules by criteria: {}", criteria);
         Page<ClassificationRule> page = classificationRuleQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

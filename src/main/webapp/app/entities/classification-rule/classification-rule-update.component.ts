@@ -34,6 +34,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    priority: [null, [Validators.required, Validators.min(1), Validators.max(100)]],
     owner: [null, null],
     bankAccount: [null, Validators.required],
     filterRules: [null, ClassificationRuleUpdateComponent.filterRulesRequired],
@@ -76,6 +77,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   updateForm(classificationRule: IClassificationRule): void {
     this.editForm.patchValue({
       id: classificationRule.id,
+      priority: classificationRule.priority,
       owner: classificationRule.bankAccount?.owner,
       bankAccount: classificationRule.bankAccount,
       filterRules: classificationRule.filterRules || [],
@@ -101,6 +103,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     return {
       ...new ClassificationRule(),
       id: this.editForm.get(['id'])!.value,
+      priority: this.editForm.get(['priority'])!.value,
       owner: this.editForm.get(['owner'])!.value,
       bankAccount: this.editForm.get(['bankAccount'])!.value,
       filterRules: this.editForm.get(['filterRules'])!.value,

@@ -19,6 +19,7 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="priority"><span jhiTranslate="accountManagerApp.classificationRule.priority">Priority</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="bankAccount.id"><span jhiTranslate="accountManagerApp.classificationRule.bankAccount">Bank Account</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  ><span jhiTranslate="accountManagerApp.classificationRule.filterRules">Conditions</span> </th>
                     <th scope="col"  jhiSortBy="subCategory.category.label"><span jhiTranslate="accountManagerApp.classificationRule.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
@@ -30,6 +31,7 @@
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
                 <tr *ngFor="let classificationRule of classificationRules ;trackBy: trackId">
                     <td><a [routerLink]="['/classification-rule', classificationRule.id, 'view']">{{ classificationRule.id }}</a></td>
+                    <td>{{ classificationRule.priority }}</td>
                     <td>
                         <div *ngIf="classificationRule.bankAccount">
                             <a [routerLink]="['/bank-account', classificationRule.bankAccount?.id, 'view']" >{{ classificationRule.bankAccount?.label }}</a>
