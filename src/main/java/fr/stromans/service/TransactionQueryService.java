@@ -80,6 +80,46 @@ public class TransactionQueryService extends QueryService<Transaction> {
         return transactionRepository.count(specification);
     }
 
+    protected Specification<Transaction> createSpecification(List<TransactionCriteria> criterias) {
+        Specification<Transaction> specification = this.createSpecification(new TransactionCriteria());
+
+        for(TransactionCriteria criteria : criterias){
+            if (criteria.getId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getId(), Transaction_.id));
+            }
+            if (criteria.getDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDate(), Transaction_.date));
+            }
+            if (criteria.getAmount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getAmount(), Transaction_.amount));
+            }
+            if (criteria.getLabel() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLabel(), Transaction_.label));
+            }
+            if (criteria.getIdentifier() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getIdentifier(), Transaction_.identifier));
+            }
+            if (criteria.getBankAccountId() != null) {
+                specification = specification.and(buildSpecification(criteria.getBankAccountId(),
+                    root -> root.join(Transaction_.bankAccount, JoinType.LEFT).get(BankAccount_.id)));
+            }
+            if (criteria.getCategoryId() != null) {
+                specification = specification.and(buildSpecification(criteria.getCategoryId(),
+                    root -> root.join(Transaction_.subCategory, JoinType.LEFT).get(SubCategory_.category).get(Category_.id)));
+            }
+            if (criteria.getSubCategoryId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSubCategoryId(),
+                    root -> root.join(Transaction_.subCategory, JoinType.LEFT).get(SubCategory_.id)));
+            }
+            if (criteria.getOwnerId() != null) {
+                specification = specification.and(buildSpecification(criteria.getOwnerId(),
+                    root -> root.join(Transaction_.bankAccount, JoinType.LEFT).get(BankAccount_.owner).get(User_.id)));
+            }
+        }
+
+        return specification;
+    }
+
     /**
      * Function to convert {@link TransactionCriteria} to a {@link Specification}
      * @param criteria The object which holds all the filters, which the entities should match.
