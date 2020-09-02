@@ -48,6 +48,10 @@
       "fieldValidateRules": ["required", "min", "max"],
       "fieldValidateRulesMin": "1",
       "fieldValidateRulesMax": 100
+    },
+    {
+      "fieldName": "applyToUnclassified",
+      "fieldType": "Boolean"
     }
   ],
   "changelogDate": "20200826064641",

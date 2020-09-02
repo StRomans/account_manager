@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,10 +91,12 @@ public class ClassificationRuleResource {
         }
         ClassificationRule result = classificationRuleService.save(classificationRule);
 
-        List<Transaction> transactionsToClassify = transactionService.findAllToClassify(result);
-        for(Transaction transaction : transactionsToClassify){
-            transaction.setSubCategory(result.getSubCategory());
-            transactionService.save(transaction);
+        if(result.isApplyToUnclassified()){
+            List<Transaction> transactionsToClassify = transactionService.findAllToClassify(result);
+            for(Transaction transaction : transactionsToClassify){
+                transaction.setSubCategory(result.getSubCategory());
+                transactionService.save(transaction);
+            }
         }
 
         return ResponseEntity.ok()
@@ -116,7 +116,6 @@ public class ClassificationRuleResource {
         log.debug("REST request to get ClassificationRules by criteria: {}", criteria);
         Page<ClassificationRule> page = classificationRuleQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

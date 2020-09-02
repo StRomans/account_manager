@@ -12,6 +12,10 @@
                 <dd>
                     <span>{{ classificationRule.priority }}</span>
                 </dd>
+                <dt><span jhiTranslate="accountManagerApp.classificationRule.applyToUnclassified">Apply To Unclassified</span></dt>
+                <dd>
+                    <span>{{ classificationRule.applyToUnclassified }}</span>
+                </dd>
                 <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="accountManagerApp.classificationRule.owner">Owner</span></dt>
                 <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     {{ classificationRule.owner?.login }}

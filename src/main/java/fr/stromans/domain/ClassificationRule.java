@@ -32,6 +32,9 @@ public class ClassificationRule implements Serializable {
     @Column(name = "priority", nullable = false)
     private Integer priority;
 
+    @Column(name = "apply_to_unclassified")
+    private Boolean applyToUnclassified;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = "classificationRules", allowSetters = true)
@@ -75,6 +78,19 @@ public class ClassificationRule implements Serializable {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public Boolean isApplyToUnclassified() {
+        return applyToUnclassified;
+    }
+
+    public ClassificationRule applyToUnclassified(Boolean applyToUnclassified) {
+        this.applyToUnclassified = applyToUnclassified;
+        return this;
+    }
+
+    public void setApplyToUnclassified(Boolean applyToUnclassified) {
+        this.applyToUnclassified = applyToUnclassified;
     }
 
     public User getOwner() {
@@ -194,6 +210,7 @@ public class ClassificationRule implements Serializable {
         return "ClassificationRule{" +
             "id=" + getId() +
             ", priority=" + getPriority() +
+            ", applyToUnclassified='" + isApplyToUnclassified() + "'" +
             "}";
     }
 }

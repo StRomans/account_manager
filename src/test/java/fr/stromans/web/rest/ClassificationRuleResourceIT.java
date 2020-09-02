@@ -42,6 +42,9 @@ public class ClassificationRuleResourceIT {
     private static final Integer UPDATED_PRIORITY = 2;
     private static final Integer SMALLER_PRIORITY = 1 - 1;
 
+    private static final Boolean DEFAULT_APPLY_TO_UNCLASSIFIED = false;
+    private static final Boolean UPDATED_APPLY_TO_UNCLASSIFIED = true;
+
     @Autowired
     private ClassificationRuleRepository classificationRuleRepository;
 
@@ -67,7 +70,8 @@ public class ClassificationRuleResourceIT {
      */
     public static ClassificationRule createEntity(EntityManager em) {
         ClassificationRule classificationRule = new ClassificationRule()
-            .priority(DEFAULT_PRIORITY);
+            .priority(DEFAULT_PRIORITY)
+            .applyToUnclassified(DEFAULT_APPLY_TO_UNCLASSIFIED);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -103,7 +107,8 @@ public class ClassificationRuleResourceIT {
      */
     public static ClassificationRule createUpdatedEntity(EntityManager em) {
         ClassificationRule classificationRule = new ClassificationRule()
-            .priority(UPDATED_PRIORITY);
+            .priority(UPDATED_PRIORITY)
+            .applyToUnclassified(UPDATED_APPLY_TO_UNCLASSIFIED);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -152,6 +157,7 @@ public class ClassificationRuleResourceIT {
         assertThat(classificationRuleList).hasSize(databaseSizeBeforeCreate + 1);
         ClassificationRule testClassificationRule = classificationRuleList.get(classificationRuleList.size() - 1);
         assertThat(testClassificationRule.getPriority()).isEqualTo(DEFAULT_PRIORITY);
+        assertThat(testClassificationRule.isApplyToUnclassified()).isEqualTo(DEFAULT_APPLY_TO_UNCLASSIFIED);
     }
 
     @Test
@@ -204,7 +210,8 @@ public class ClassificationRuleResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(classificationRule.getId().intValue())))
-            .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)));
+            .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)))
+            .andExpect(jsonPath("$.[*].applyToUnclassified").value(hasItem(DEFAULT_APPLY_TO_UNCLASSIFIED.booleanValue())));
     }
     
     @Test
@@ -218,7 +225,8 @@ public class ClassificationRuleResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(classificationRule.getId().intValue()))
-            .andExpect(jsonPath("$.priority").value(DEFAULT_PRIORITY));
+            .andExpect(jsonPath("$.priority").value(DEFAULT_PRIORITY))
+            .andExpect(jsonPath("$.applyToUnclassified").value(DEFAULT_APPLY_TO_UNCLASSIFIED.booleanValue()));
     }
 
 
@@ -348,6 +356,58 @@ public class ClassificationRuleResourceIT {
 
     @Test
     @Transactional
+    public void getAllClassificationRulesByApplyToUnclassifiedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where applyToUnclassified equals to DEFAULT_APPLY_TO_UNCLASSIFIED
+        defaultClassificationRuleShouldBeFound("applyToUnclassified.equals=" + DEFAULT_APPLY_TO_UNCLASSIFIED);
+
+        // Get all the classificationRuleList where applyToUnclassified equals to UPDATED_APPLY_TO_UNCLASSIFIED
+        defaultClassificationRuleShouldNotBeFound("applyToUnclassified.equals=" + UPDATED_APPLY_TO_UNCLASSIFIED);
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByApplyToUnclassifiedIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where applyToUnclassified not equals to DEFAULT_APPLY_TO_UNCLASSIFIED
+        defaultClassificationRuleShouldNotBeFound("applyToUnclassified.notEquals=" + DEFAULT_APPLY_TO_UNCLASSIFIED);
+
+        // Get all the classificationRuleList where applyToUnclassified not equals to UPDATED_APPLY_TO_UNCLASSIFIED
+        defaultClassificationRuleShouldBeFound("applyToUnclassified.notEquals=" + UPDATED_APPLY_TO_UNCLASSIFIED);
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByApplyToUnclassifiedIsInShouldWork() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where applyToUnclassified in DEFAULT_APPLY_TO_UNCLASSIFIED or UPDATED_APPLY_TO_UNCLASSIFIED
+        defaultClassificationRuleShouldBeFound("applyToUnclassified.in=" + DEFAULT_APPLY_TO_UNCLASSIFIED + "," + UPDATED_APPLY_TO_UNCLASSIFIED);
+
+        // Get all the classificationRuleList where applyToUnclassified equals to UPDATED_APPLY_TO_UNCLASSIFIED
+        defaultClassificationRuleShouldNotBeFound("applyToUnclassified.in=" + UPDATED_APPLY_TO_UNCLASSIFIED);
+    }
+
+    @Test
+    @Transactional
+    public void getAllClassificationRulesByApplyToUnclassifiedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        classificationRuleRepository.saveAndFlush(classificationRule);
+
+        // Get all the classificationRuleList where applyToUnclassified is not null
+        defaultClassificationRuleShouldBeFound("applyToUnclassified.specified=true");
+
+        // Get all the classificationRuleList where applyToUnclassified is null
+        defaultClassificationRuleShouldNotBeFound("applyToUnclassified.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllClassificationRulesByOwnerIsEqualToSomething() throws Exception {
         // Get already existing entity
         User owner = classificationRule.getOwner();
@@ -441,7 +501,8 @@ public class ClassificationRuleResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(classificationRule.getId().intValue())))
-            .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)));
+            .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)))
+            .andExpect(jsonPath("$.[*].applyToUnclassified").value(hasItem(DEFAULT_APPLY_TO_UNCLASSIFIED.booleanValue())));
 
         // Check, that the count call also returns 1
         restClassificationRuleMockMvc.perform(get("/api/classification-rules/count?sort=id,desc&" + filter))
@@ -488,7 +549,8 @@ public class ClassificationRuleResourceIT {
         // Disconnect from session so that the updates on updatedClassificationRule are not directly saved in db
         em.detach(updatedClassificationRule);
         updatedClassificationRule
-            .priority(UPDATED_PRIORITY);
+            .priority(UPDATED_PRIORITY)
+            .applyToUnclassified(UPDATED_APPLY_TO_UNCLASSIFIED);
 
         restClassificationRuleMockMvc.perform(put("/api/classification-rules").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
@@ -500,6 +562,7 @@ public class ClassificationRuleResourceIT {
         assertThat(classificationRuleList).hasSize(databaseSizeBeforeUpdate);
         ClassificationRule testClassificationRule = classificationRuleList.get(classificationRuleList.size() - 1);
         assertThat(testClassificationRule.getPriority()).isEqualTo(UPDATED_PRIORITY);
+        assertThat(testClassificationRule.isApplyToUnclassified()).isEqualTo(UPDATED_APPLY_TO_UNCLASSIFIED);
     }
 
     @Test

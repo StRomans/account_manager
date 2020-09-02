@@ -34,12 +34,13 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   bankaccounts: IBankAccount[] = [];
   subcategories: ISubCategory[] = [];
   categories: ICategory[] = [];
-  applyUnclassifiedTransactions: Boolean;
   classificationResultDto?: IClassificationRuleResultDto;
+  nbTransactionsToClassify: number;
 
   editForm = this.fb.group({
     id: [],
     priority: [null, [Validators.required, Validators.min(1), Validators.max(100)]],
+    applyToUnclassified: [null, null],
     owner: [null, null],
     bankAccount: [null, Validators.required],
     filterRules: [null, ClassificationRuleUpdateComponent.filterRulesRequired],
@@ -57,7 +58,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     protected modalService: NgbModal,
     private fb: FormBuilder
   ) {
-    this.applyUnclassifiedTransactions = true;
+    this.nbTransactionsToClassify = 0;
   }
 
   /**
@@ -88,12 +89,14 @@ export class ClassificationRuleUpdateComponent implements OnInit {
    * Evaluate # of transactions to classify
    */
   estimateClassificationImpact(): void {
-    if (this.applyUnclassifiedTransactions && this.editForm.valid) {
+    if (this.editForm.get('applyToUnclassified')!.value && this.editForm.valid) {
       this.transactionService
         .estimateClassification(this.createFromForm())
         .subscribe(
-          (res: HttpResponse<IClassificationRuleResultDto>) =>
-            (this.classificationResultDto = res.body || new ClassificationRuleResultDto([]))
+          (res: HttpResponse<IClassificationRuleResultDto>) => (
+            (this.classificationResultDto = res.body || new ClassificationRuleResultDto([])),
+            (this.nbTransactionsToClassify = this.classificationResultDto?.transactionsToClassify?.length || 0)
+          )
         );
     }
   }
@@ -102,6 +105,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: classificationRule.id,
       priority: classificationRule.priority,
+      applyToUnclassified: classificationRule.applyToUnclassified,
       owner: classificationRule.bankAccount?.owner,
       bankAccount: classificationRule.bankAccount,
       filterRules: classificationRule.filterRules || [],
@@ -132,6 +136,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       bankAccount: this.editForm.get(['bankAccount'])!.value,
       filterRules: this.editForm.get(['filterRules'])!.value,
       subCategory: this.editForm.get(['subCategory'])!.value,
+      applyToUnclassified: this.editForm.get(['applyToUnclassified'])!.value,
     };
   }
 
@@ -225,7 +230,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
   }
 
   changeApplyUnclassifiedTransactions(): void {
-    this.applyUnclassifiedTransactions = !this.applyUnclassifiedTransactions;
+    // this.applyUnclassifiedTransactions = !this.applyUnclassifiedTransactions;
     this.estimateClassificationImpact();
   }
 

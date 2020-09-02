@@ -101,6 +101,9 @@ public class ClassificationRuleQueryService extends QueryService<ClassificationR
             if (criteria.getPriority() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPriority(), ClassificationRule_.priority));
             }
+            if (criteria.getApplyToUnclassified() != null) {
+                specification = specification.and(buildSpecification(criteria.getApplyToUnclassified(), ClassificationRule_.applyToUnclassified));
+            }
             if (criteria.getOwnerId() != null) {
                 specification = specification.and(buildSpecification(criteria.getOwnerId(),
                     root -> root.join(ClassificationRule_.owner, JoinType.LEFT).get(User_.id)));

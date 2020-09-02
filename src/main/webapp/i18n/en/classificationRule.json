@@ -17,6 +17,7 @@
         "title": "Classification Rule"
       },
       "priority": "Priority",
+      "applyToUnclassified": "Apply To Unclassified",
       "owner": "Owner",
       "bankAccount": "Bank Account",
       "transactions": "Transactions",

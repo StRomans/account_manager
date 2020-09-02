@@ -7,6 +7,7 @@ import { ISubCategory } from 'app/shared/model/sub-category.model';
 export interface IClassificationRule {
   id?: number;
   priority?: number;
+  applyToUnclassified?: boolean;
   owner?: IUser;
   bankAccount?: IBankAccount;
   transactions?: ITransaction[];
@@ -18,10 +19,13 @@ export class ClassificationRule implements IClassificationRule {
   constructor(
     public id?: number,
     public priority?: number,
+    public applyToUnclassified?: boolean,
     public owner?: IUser,
     public bankAccount?: IBankAccount,
     public transactions?: ITransaction[],
     public filterRules?: IFilterRule[],
     public subCategory?: ISubCategory
-  ) {}
+  ) {
+    this.applyToUnclassified = this.applyToUnclassified || false;
+  }
 }

@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(ClassificationRuleService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new ClassificationRule(0, 0);
+      elemDefault = new ClassificationRule(0, 0, false);
     });
 
     describe('Service methods', () => {
@@ -55,6 +55,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             priority: 1,
+            applyToUnclassified: true,
           },
           elemDefault
         );
@@ -72,6 +73,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             priority: 1,
+            applyToUnclassified: true,
           },
           elemDefault
         );

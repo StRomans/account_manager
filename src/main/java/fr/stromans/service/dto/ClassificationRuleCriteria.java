@@ -28,6 +28,8 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
 
     private IntegerFilter priority;
 
+    private BooleanFilter applyToUnclassified;
+
     private LongFilter ownerId;
 
     private LongFilter bankAccountId;
@@ -44,6 +46,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
     public ClassificationRuleCriteria(ClassificationRuleCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.priority = other.priority == null ? null : other.priority.copy();
+        this.applyToUnclassified = other.applyToUnclassified == null ? null : other.applyToUnclassified.copy();
         this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
         this.bankAccountId = other.bankAccountId == null ? null : other.bankAccountId.copy();
         this.transactionsId = other.transactionsId == null ? null : other.transactionsId.copy();
@@ -70,6 +73,14 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
 
     public void setPriority(IntegerFilter priority) {
         this.priority = priority;
+    }
+
+    public BooleanFilter getApplyToUnclassified() {
+        return applyToUnclassified;
+    }
+
+    public void setApplyToUnclassified(BooleanFilter applyToUnclassified) {
+        this.applyToUnclassified = applyToUnclassified;
     }
 
     public LongFilter getOwnerId() {
@@ -125,6 +136,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(priority, that.priority) &&
+            Objects.equals(applyToUnclassified, that.applyToUnclassified) &&
             Objects.equals(ownerId, that.ownerId) &&
             Objects.equals(bankAccountId, that.bankAccountId) &&
             Objects.equals(transactionsId, that.transactionsId) &&
@@ -137,6 +149,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         priority,
+        applyToUnclassified,
         ownerId,
         bankAccountId,
         transactionsId,
@@ -151,6 +164,7 @@ public class ClassificationRuleCriteria implements Serializable, Criteria {
         return "ClassificationRuleCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (priority != null ? "priority=" + priority + ", " : "") +
+                (applyToUnclassified != null ? "applyToUnclassified=" + applyToUnclassified + ", " : "") +
                 (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
                 (bankAccountId != null ? "bankAccountId=" + bankAccountId + ", " : "") +
                 (transactionsId != null ? "transactionsId=" + transactionsId + ", " : "") +

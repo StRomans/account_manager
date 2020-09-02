@@ -111,12 +111,12 @@
 
                 <div class="form-group form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" (change)="changeApplyUnclassifiedTransactions()"
-                               [checked]="applyUnclassifiedTransactions">
+                        <input class="form-check-input" type="checkbox" name="applyToUnclassified" id="field_applyToUnclassified"
+                               formControlName="applyToUnclassified">
                         <span jhiTranslate="accountManagerApp.classificationRule.estimate.option"
-                              [translateValues]="{ nb: classificationResultDto?.transactionsToClassify?.length }">Apply to unclassified transactions</span>
+                              [translateValues]="{ nb: nbTransactionsToClassify }">Apply to unclassified transactions</span>
                         <button type="button" class="btn btn-sm btn-outline-info" (click)="viewTransactionsToClassify()"
-                                *ngIf="classificationResultDto?.transactionsToClassify!.length > 0">
+                                *ngIf="nbTransactionsToClassify > 0">
                             <fa-icon icon="eye"></fa-icon>&nbsp;<span jhiTranslate="entity.action.view">View</span>
                         </button>
                     </label>

@@ -23,13 +23,14 @@
       "filterRules": "Conditions d'application",
       "category": "Catégorie",
       "subCategory": "Sous catégorie",
+      "applyToUnclassified": "Apply To Unclassified",
       "filter": {
         "header": "Les transactions respectant les conditions suivantes",
         "add": "Condition",
         "footer": "Seront classées dans"
       },
       "estimate": {
-        "option": "Appliquer aux {{nb}} transactions existantes",
+        "option": "Appliquer aux {{nb}} transactions correspondantes",
         "title": "Transactions éligibles",
         "found": "transactions trouvées."
       }

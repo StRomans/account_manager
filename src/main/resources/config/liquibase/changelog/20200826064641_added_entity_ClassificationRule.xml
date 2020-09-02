@@ -18,6 +18,9 @@
             <column name="priority" type="integer">
                 <constraints nullable="false" />
             </column>
+            <column name="apply_to_unclassified" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="owner_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -51,6 +54,7 @@
                   tableName="classification_rule">
             <column name="id" type="numeric"/>
             <column name="priority" type="numeric"/>
+            <column name="apply_to_unclassified" type="boolean"/>
             <column name="owner_id" type="numeric"/>
             <column name="bank_account_id" type="numeric"/>
             <column name="sub_category_id" type="numeric"/>
