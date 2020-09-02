@@ -99,6 +99,9 @@ public class Transaction implements Serializable {
     }
 
     public void setLabel(String label) {
+        if(null != label){
+            label = label.toUpperCase();
+        }
         this.label = label;
     }
 

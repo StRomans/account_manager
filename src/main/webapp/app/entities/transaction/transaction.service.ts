@@ -12,6 +12,7 @@ import { IBankAccount } from '../../shared/model/bank-account.model';
 import { IUploadTransactionResultDto } from '../../shared/model/dto/upload-transaction-result.dto';
 import { IClassificationRule } from '../../shared/model/classification-rule.model';
 import { IClassificationRuleResultDto } from '../../shared/model/dto/classification-rule-result-dto';
+import { ClassificationRuleService } from '../classification-rule/classification-rule.service';
 
 type EntityResponseType = HttpResponse<ITransaction>;
 type EntityArrayResponseType = HttpResponse<ITransaction[]>;
@@ -20,7 +21,7 @@ type EntityArrayResponseType = HttpResponse<ITransaction[]>;
 export class TransactionService {
   public resourceUrl = SERVER_API_URL + 'api/transactions';
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient, protected classificationRuleService: ClassificationRuleService) {}
 
   create(transaction: ITransaction): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(transaction);
@@ -61,7 +62,7 @@ export class TransactionService {
   }
 
   public estimateClassification(classificationRule: IClassificationRule): Observable<HttpResponse<IClassificationRuleResultDto>> {
-    const copy: IClassificationRule = Object.assign({}, classificationRule);
+    const copy: IClassificationRule = this.classificationRuleService.convertDateFromClient(classificationRule);
     return this.http.post<IClassificationRuleResultDto>(`${this.resourceUrl}/classification/estimate`, copy, { observe: 'response' });
   }
 

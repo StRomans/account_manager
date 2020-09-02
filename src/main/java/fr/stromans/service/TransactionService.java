@@ -3,6 +3,7 @@ package fr.stromans.service;
 import fr.stromans.domain.*;
 import fr.stromans.domain.enumeration.RuleField;
 import fr.stromans.domain.enumeration.RuleOperator;
+import fr.stromans.repository.ClassificationRuleRepository;
 import fr.stromans.repository.TransactionRepository;
 import fr.stromans.service.dto.TransactionCriteria;
 import fr.stromans.service.dto.UploadTransactionResultDTO;
@@ -28,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,9 +46,12 @@ public class TransactionService {
 
     private final TransactionQueryService transactionQueryService;
 
-    public TransactionService(TransactionRepository transactionRepository, TransactionQueryService transactionQueryService) {
+    private final ClassificationRuleRepository classificationRuleRepository;
+
+    public TransactionService(TransactionRepository transactionRepository, TransactionQueryService transactionQueryService, ClassificationRuleRepository classificationRuleRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionQueryService = transactionQueryService;
+        this.classificationRuleRepository = classificationRuleRepository;
     }
 
     public List<Transaction> findAllToClassify(ClassificationRule classificationRule) {
@@ -113,7 +118,19 @@ public class TransactionService {
      */
     public Transaction save(Transaction transaction) {
         log.debug("Request to save Transaction : {}", transaction);
-        return transactionRepository.save(transaction);
+        Transaction savedTransation = transactionRepository.save(transaction);
+
+        if(null == savedTransation.getSubCategory()){
+            List<ClassificationRule> rules = classificationRuleRepository.findAllByBankAccountOrderByPriorityDesc(transaction.getBankAccount());
+            for(ClassificationRule rule : rules){
+                if(this.findAllToClassify(rule).contains(savedTransation)){
+                    savedTransation.setSubCategory(rule.getSubCategory());
+                    return transactionRepository.save(savedTransation);
+                }
+            }
+        }
+
+        return savedTransation;
     }
 
     /**

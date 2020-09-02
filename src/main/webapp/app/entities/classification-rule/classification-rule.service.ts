@@ -20,14 +20,14 @@ export class ClassificationRuleService {
   constructor(protected http: HttpClient, protected filterRuleService: FilterRuleService) {}
 
   create(classificationRule: IClassificationRule): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(classificationRule);
+    const copy: IClassificationRule = this.convertDateFromClient(classificationRule);
     return this.http
       .post<IClassificationRule>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   update(classificationRule: IClassificationRule): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(classificationRule);
+    const copy: IClassificationRule = this.convertDateFromClient(classificationRule);
     return this.http
       .put<IClassificationRule>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
@@ -50,20 +50,20 @@ export class ClassificationRuleService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  protected convertDateFromClient(classificationRule: IClassificationRule): IClassificationRule {
+  public convertDateFromClient(classificationRule: IClassificationRule): IClassificationRule {
     if (classificationRule.filterRules) {
-      classificationRule.filterRules.forEach((filterRule: IFilterRule, index, filterRules) => {
-        filterRules[index] = this.filterRuleService.convertDateFromClient(filterRule);
+      const filterRuleCopy: IFilterRule[] = [];
+      classificationRule.filterRules.forEach((filterRule: IFilterRule) => {
+        filterRuleCopy.push(this.filterRuleService.convertDateFromClient(filterRule));
       });
-
-      const copy: IClassificationRule = Object.assign({}, classificationRule, {});
+      const copy: IClassificationRule = Object.assign({}, classificationRule, { filterRules: filterRuleCopy });
       return copy;
     } else {
       return classificationRule;
     }
   }
 
-  protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
+  public convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
       res.body.filterRules?.forEach((filterRule: IFilterRule) => {
         filterRule.dateValue = filterRule.dateValue ? moment(filterRule.dateValue) : undefined;
@@ -72,7 +72,7 @@ export class ClassificationRuleService {
     return res;
   }
 
-  protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+  public convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((classificationRule: IClassificationRule) => {
         classificationRule?.filterRules?.forEach((filterRule: IFilterRule) => {

@@ -1,5 +1,6 @@
 package fr.stromans.repository;
 
+import fr.stromans.domain.BankAccount;
 import fr.stromans.domain.ClassificationRule;
 
 import org.springframework.data.jpa.repository.*;
@@ -16,4 +17,6 @@ public interface ClassificationRuleRepository extends JpaRepository<Classificati
 
     @Query("select classificationRule from ClassificationRule classificationRule where classificationRule.owner.login = ?#{principal.username}")
     List<ClassificationRule> findByOwnerIsCurrentUser();
+
+    List<ClassificationRule> findAllByBankAccountOrderByPriorityDesc(BankAccount bankAccount);
 }
