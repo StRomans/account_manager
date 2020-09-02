@@ -29,10 +29,9 @@
         "footer": "Seront classées dans"
       },
       "estimate": {
-        "option": "Appliquer aux transactions existantes",
+        "option": "Appliquer aux {{nb}} transactions existantes",
         "title": "Transactions éligibles",
-        "found": "transactions trouvées.",
-        "transactions": "transactions (non classées) peuvent être classées par cette règle"
+        "found": "transactions trouvées."
       }
     }
   }

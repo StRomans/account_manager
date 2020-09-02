@@ -112,21 +112,14 @@
                 <div class="form-group form-check">
                     <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" (change)="changeApplyUnclassifiedTransactions()"
-                               [checked]="applyUnclassifiedTransactions"><span jhiTranslate="accountManagerApp.classificationRule.estimate.option">Apply to unclassified transactions</span>
-                    </label>
-                </div>
-                <div *ngIf="applyUnclassifiedTransactions && classificationResultDto" class="row">
-                    <div  class="alert alert-dismissible col-10"
-                         [ngClass]="classificationResultDto?.transactionsToClassify?.length == 0 ? 'alert-warning': 'alert-success'">
-                        {{ classificationResultDto?.transactionsToClassify?.length }}
-                        <span jhiTranslate="accountManagerApp.classificationRule.estimate.found">Transactions found.</span>
-                    </div>
-                    <div class="text-center alert col-2 ">
-                        <button *ngIf="classificationResultDto?.transactionsToClassify!.length > 0"
-                                type="button" class="btn btn-success text-right" (click)="viewTransactionsToClassify()">
+                               [checked]="applyUnclassifiedTransactions">
+                        <span jhiTranslate="accountManagerApp.classificationRule.estimate.option"
+                              [translateValues]="{ nb: classificationResultDto?.transactionsToClassify?.length }">Apply to unclassified transactions</span>
+                        <button type="button" class="btn btn-sm btn-outline-info" (click)="viewTransactionsToClassify()"
+                                *ngIf="classificationResultDto?.transactionsToClassify!.length > 0">
                             <fa-icon icon="eye"></fa-icon>&nbsp;<span jhiTranslate="entity.action.view">View</span>
                         </button>
-                    </div>
+                    </label>
                 </div>
             </div>
 

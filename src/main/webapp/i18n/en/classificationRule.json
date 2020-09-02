@@ -29,7 +29,7 @@
         "footer": "Will be classified as "
       },
       "estimate": {
-        "option": "Apply to unclassified transactions",
+        "option": "Apply to {{nb}} unclassified transactions",
         "title": "Transactions that may be affected by this rule",
         "found": "Transactions found."
       }
