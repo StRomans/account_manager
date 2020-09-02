@@ -97,8 +97,8 @@ public class TransactionService {
             else if (RuleField.LABEL.equals((filterRule.getField()))){
                 TransactionCriteria labelCriteria = new TransactionCriteria();
                 StringFilter labelFilter = new StringFilter();
-                if(RuleOperator.EQUALS.equals(filterRule.getOperator())) labelFilter.setEquals(filterRule.getStringValue());
-                if(RuleOperator.CONTAINS.equals(filterRule.getOperator())) labelFilter.setContains(filterRule.getStringValue());
+                if(RuleOperator.EQUALS.equals(filterRule.getOperator())) labelFilter.setEquals(filterRule.getStringValue().toUpperCase());
+                if(RuleOperator.CONTAINS.equals(filterRule.getOperator())) labelFilter.setContains(filterRule.getStringValue().toUpperCase());
                 labelCriteria.setLabel(labelFilter);
                 criterias.add(labelCriteria);
             }
