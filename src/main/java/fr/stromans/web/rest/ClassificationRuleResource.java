@@ -1,10 +1,7 @@
 package fr.stromans.web.rest;
 
 import fr.stromans.domain.ClassificationRule;
-import fr.stromans.domain.FilterRule;
-import fr.stromans.domain.Transaction;
 import fr.stromans.service.ClassificationRuleService;
-import fr.stromans.service.TransactionService;
 import fr.stromans.web.rest.errors.BadRequestAlertException;
 import fr.stromans.service.dto.ClassificationRuleCriteria;
 import fr.stromans.service.ClassificationRuleQueryService;
@@ -46,14 +43,10 @@ public class ClassificationRuleResource {
 
     private final ClassificationRuleQueryService classificationRuleQueryService;
 
-    private final TransactionService transactionService;
-
     public ClassificationRuleResource(ClassificationRuleService classificationRuleService,
-                                      ClassificationRuleQueryService classificationRuleQueryService,
-                                      TransactionService transactionService) {
+                                      ClassificationRuleQueryService classificationRuleQueryService) {
         this.classificationRuleService = classificationRuleService;
         this.classificationRuleQueryService = classificationRuleQueryService;
-        this.transactionService = transactionService;
     }
 
     /**
@@ -70,6 +63,7 @@ public class ClassificationRuleResource {
             throw new BadRequestAlertException("A new classificationRule cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ClassificationRule result = classificationRuleService.save(classificationRule);
+
         return ResponseEntity.created(new URI("/api/classification-rules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -90,14 +84,6 @@ public class ClassificationRuleResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ClassificationRule result = classificationRuleService.save(classificationRule);
-
-        if(result.isApplyToUnclassified()){
-            List<Transaction> transactionsToClassify = transactionService.findAllToClassify(result);
-            for(Transaction transaction : transactionsToClassify){
-                transaction.setSubCategory(result.getSubCategory());
-                transactionService.save(transaction);
-            }
-        }
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, classificationRule.getId().toString()))

@@ -52,8 +52,15 @@ public class TransactionService {
     public List<Transaction> findAllToClassify(ClassificationRule classificationRule) {
 
         List<TransactionCriteria> criterias = new ArrayList<>();
-        TransactionCriteria bankCriteria = new TransactionCriteria();
+        // Filter on unclassified transactions
+        TransactionCriteria unclassifiedCriteria = new TransactionCriteria();
+        LongFilter subCategoryFilter = new LongFilter();
+        subCategoryFilter.setSpecified(false);
+        unclassifiedCriteria.setSubCategoryId(subCategoryFilter);
+        criterias.add(unclassifiedCriteria);
+
         // Filter on Bank Account
+        TransactionCriteria bankCriteria = new TransactionCriteria();
         LongFilter bankFilter = new LongFilter();
         bankFilter.setEquals(classificationRule.getBankAccount().getId());
         bankCriteria.setBankAccountId(bankFilter);

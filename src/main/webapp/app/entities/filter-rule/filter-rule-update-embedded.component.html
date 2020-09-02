@@ -34,10 +34,10 @@
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.operator" for="field_operator">Operator</label>
                 <select class="form-control" name="operator" formControlName="operator" id="field_operator">
                     <option></option>
-                    <option value="EQUALS">{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
-                    <option value="CONTAINS" *ngIf="editForm.get('field')!.value === 'LABEL'">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
-                    <option value="GREATEROREQUALTHAN" *ngIf="editForm.get('field')!.value !== 'LABEL'">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
-                    <option value="LESSOREQUALTHAN" *ngIf="editForm.get('field')!.value !== 'LABEL'">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
+                    <option value="EQUALS"                                                                      >{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
+                    <option value="CONTAINS"            [class.d-none]="editForm.get('field')!.value !== 'LABEL'">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
+                    <option value="GREATEROREQUALTHAN"  [class.d-none]="editForm.get('field')!.value === 'LABEL'">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
+                    <option value="LESSOREQUALTHAN"     [class.d-none]="editForm.get('field')!.value === 'LABEL'">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
                 </select>
                 <div *ngIf="editForm.get('operator')!.invalid && (editForm.get('operator')!.dirty || editForm.get('operator')!.touched)">
                     <small class="form-text text-danger"

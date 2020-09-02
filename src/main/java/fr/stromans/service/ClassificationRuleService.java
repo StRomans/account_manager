@@ -1,6 +1,7 @@
 package fr.stromans.service;
 
 import fr.stromans.domain.ClassificationRule;
+import fr.stromans.domain.Transaction;
 import fr.stromans.repository.ClassificationRuleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,8 +25,11 @@ public class ClassificationRuleService {
 
     private final ClassificationRuleRepository classificationRuleRepository;
 
-    public ClassificationRuleService(ClassificationRuleRepository classificationRuleRepository) {
+    private final TransactionService transactionService;
+
+    public ClassificationRuleService(ClassificationRuleRepository classificationRuleRepository, TransactionService transactionService) {
         this.classificationRuleRepository = classificationRuleRepository;
+        this.transactionService = transactionService;
     }
 
     /**
@@ -35,7 +40,17 @@ public class ClassificationRuleService {
      */
     public ClassificationRule save(ClassificationRule classificationRule) {
         log.debug("Request to save ClassificationRule : {}", classificationRule);
-        return classificationRuleRepository.save(classificationRule);
+        classificationRule = classificationRuleRepository.save(classificationRule);
+
+        if(classificationRule.isApplyToUnclassified()){
+            List<Transaction> transactionsToClassify = transactionService.findAllToClassify(classificationRule);
+            for(Transaction transaction : transactionsToClassify){
+                transaction.setSubCategory(classificationRule.getSubCategory());
+                transactionService.save(transaction);
+            }
+        }
+
+        return classificationRule;
     }
 
     /**
