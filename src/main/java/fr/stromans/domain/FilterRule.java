@@ -100,7 +100,7 @@ public class FilterRule implements Serializable {
 
     public void setStringValue(String stringValue) {
         if(null != stringValue){
-            stringValue = stringValue.toUpperCase();
+            stringValue = stringValue.trim().toUpperCase();
         }
         this.stringValue = stringValue;
     }

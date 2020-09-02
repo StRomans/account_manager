@@ -100,7 +100,7 @@ public class Transaction implements Serializable {
 
     public void setLabel(String label) {
         if(null != label){
-            label = label.toUpperCase();
+            label = label.trim().toUpperCase();
         }
         this.label = label;
     }
