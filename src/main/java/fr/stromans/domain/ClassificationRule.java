@@ -213,4 +213,8 @@ public class ClassificationRule implements Serializable {
             ", applyToUnclassified='" + isApplyToUnclassified() + "'" +
             "}";
     }
+
+    public boolean isMatching(Transaction transaction){
+        return this.getFilterRules().stream().allMatch(filterRule -> filterRule.isMatching(transaction));
+    }
 }

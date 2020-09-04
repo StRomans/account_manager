@@ -71,6 +71,8 @@ export class ClassificationRuleUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ classificationRule }) => {
+      this.editForm.valueChanges.subscribe(() => this.estimateClassificationImpact());
+
       this.updateForm(classificationRule);
 
       this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
@@ -80,8 +82,6 @@ export class ClassificationRuleUpdateComponent implements OnInit {
       this.subCategoryService.query().subscribe((res: HttpResponse<ISubCategory[]>) => (this.subcategories = res.body || []));
 
       this.categoryService.query().subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body || []));
-
-      this.estimateClassificationImpact();
     });
   }
 
@@ -89,7 +89,7 @@ export class ClassificationRuleUpdateComponent implements OnInit {
    * Evaluate # of transactions to classify
    */
   estimateClassificationImpact(): void {
-    if (this.editForm.get('applyToUnclassified')!.value && this.editForm.valid) {
+    if (this.editForm.valid) {
       this.transactionService
         .estimateClassification(this.createFromForm())
         .subscribe(

@@ -171,4 +171,28 @@ public class FilterRule implements Serializable {
             ", stringValue='" + getStringValue() + "'" +
             "}";
     }
+
+    public boolean isMatching(Transaction transaction){
+        boolean isMatching = true;
+
+        if(RuleField.AMOUNT.equals((this.getField()))){
+            BigDecimal value = transaction.getAmount();
+            if(RuleOperator.EQUALS.equals(this.getOperator()))              isMatching &= value.equals(this.getNumberValue());
+            if(RuleOperator.LESSOREQUALTHAN.equals(this.getOperator()))     isMatching &= value.compareTo(this.getNumberValue()) <= 0;
+            if(RuleOperator.GREATEROREQUALTHAN.equals(this.getOperator()))  isMatching &= value.compareTo(this.getNumberValue()) >= 0;
+        }
+        else if (RuleField.DATE.equals((this.getField()))){
+            LocalDate value = transaction.getDate();
+            if(RuleOperator.EQUALS.equals(this.getOperator()))              isMatching &= value.isEqual(this.getDateValue());
+            if(RuleOperator.LESSOREQUALTHAN.equals(this.getOperator()))     isMatching &= value.compareTo(this.getDateValue()) <= 0;
+            if(RuleOperator.GREATEROREQUALTHAN.equals(this.getOperator()))  isMatching &= value.compareTo(this.getDateValue()) >= 0;
+        }
+        else if (RuleField.LABEL.equals((this.getField()))){
+            String value = transaction.getLabel();
+            if(RuleOperator.EQUALS.equals(this.getOperator()))              isMatching &= value.equalsIgnoreCase(this.getStringValue());
+            if(RuleOperator.CONTAINS.equals(this.getOperator()))            isMatching &= value.toUpperCase().contains(this.getStringValue().toUpperCase());
+        }
+
+        return isMatching;
+    }
 }

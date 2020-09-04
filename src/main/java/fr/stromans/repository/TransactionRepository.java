@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Spring Data  repository for the Transaction entity.
  */
@@ -19,4 +21,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
     Page<Transaction> findByOwnedBankAccounts(Pageable pageable);
 
     Transaction findOneByBankAccountAndIdentifier(BankAccount bankAccount, String identifier);
+
+    List<Transaction> findAllByBankAccountAndSubCategoryIsNull(BankAccount bankAccount);
 }
