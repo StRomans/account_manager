@@ -5,6 +5,7 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { IFilterRule, FilterRule } from 'app/shared/model/filter-rule.model';
 import { IClassificationRule } from 'app/shared/model/classification-rule.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RuleField } from '../../shared/model/enumerations/rule-field.model';
 
 @Component({
   templateUrl: './filter-rule-update-embedded.component.html',
@@ -19,27 +20,36 @@ export class FilterRuleUpdateEmbeddedComponent {
     dateValue: [null, null],
   });
 
+  stringFields = [RuleField.LABEL];
+  numberFields = [RuleField.AMOUNT, RuleField.DAY_OF_MONTH];
+  dateFields = [RuleField.DATE];
+
   constructor(private fb: FormBuilder, public activeModal: NgbActiveModal) {}
 
   /**
    * Activate/Deactivate validators depending on selected 'Field' value
    */
   public refreshValidatorsOnFieldChange(): any {
-    if (this.editForm.get('field')?.value !== 'LABEL') this.editForm.get('stringValue')?.setValue(undefined);
-    if (this.editForm.get('field')?.value !== 'AMOUNT') this.editForm.get('numberValue')?.setValue(undefined);
-    if (this.editForm.get('field')?.value !== 'DATE') this.editForm.get('dateValue')?.setValue(undefined);
+    const selectedField = this.editForm.get('field')?.value;
+    const stringControl = this.editForm.get('stringValue');
+    const numberControl = this.editForm.get('numberValue');
+    const dateControl = this.editForm.get('dateValue');
 
-    this.editForm.get('stringValue')?.setValidators(null);
-    this.editForm.get('numberValue')?.setValidators(null);
-    this.editForm.get('dateValue')?.setValidators(null);
+    if (!this.stringFields.includes(selectedField)) stringControl?.setValue(undefined);
+    if (!this.numberFields.includes(selectedField)) numberControl?.setValue(undefined);
+    if (!this.dateFields.includes(selectedField)) dateControl?.setValue(undefined);
 
-    if (this.editForm.get('field')?.value === 'AMOUNT') this.editForm.get('numberValue')?.setValidators([Validators.required]);
-    else if (this.editForm.get('field')?.value === 'DATE') this.editForm.get('dateValue')?.setValidators([Validators.required]);
-    else if (this.editForm.get('field')?.value === 'LABEL') this.editForm.get('stringValue')?.setValidators([Validators.required]);
+    stringControl?.setValidators(null);
+    numberControl?.setValidators(null);
+    dateControl?.setValidators(null);
 
-    this.editForm.controls.stringValue.updateValueAndValidity();
-    this.editForm.controls.numberValue.updateValueAndValidity();
-    this.editForm.controls.dateValue.updateValueAndValidity();
+    if (this.numberFields.includes(selectedField)) numberControl?.setValidators([Validators.required]);
+    else if (this.dateFields.includes(selectedField)) dateControl?.setValidators([Validators.required]);
+    else if (this.stringFields.includes(selectedField)) stringControl?.setValidators([Validators.required]);
+
+    stringControl?.updateValueAndValidity();
+    numberControl?.updateValueAndValidity();
+    dateControl?.updateValueAndValidity();
   }
 
   updateForm(filterRule: IFilterRule): void {

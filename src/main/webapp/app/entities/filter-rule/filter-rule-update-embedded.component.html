@@ -20,6 +20,7 @@
                     <option></option>
                     <option value="AMOUNT">{{ 'accountManagerApp.RuleField.AMOUNT' | translate }}</option>
                     <option value="DATE">{{ 'accountManagerApp.RuleField.DATE' | translate }}</option>
+                    <option value="DAY_OF_MONTH">{{ 'accountManagerApp.RuleField.DAY_OF_MONTH' | translate }}</option>
                     <option value="LABEL">{{ 'accountManagerApp.RuleField.LABEL' | translate }}</option>
                 </select>
                 <div *ngIf="editForm.get('field')!.invalid && (editForm.get('field')!.dirty || editForm.get('field')!.touched)">
@@ -34,10 +35,11 @@
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.operator" for="field_operator">Operator</label>
                 <select class="form-control" name="operator" formControlName="operator" id="field_operator">
                     <option></option>
-                    <option value="EQUALS"                                                                      >{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
-                    <option value="CONTAINS"            [class.d-none]="editForm.get('field')!.value !== 'LABEL'">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
-                    <option value="GREATEROREQUALTHAN"  [class.d-none]="editForm.get('field')!.value === 'LABEL'">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
-                    <option value="LESSOREQUALTHAN"     [class.d-none]="editForm.get('field')!.value === 'LABEL'">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
+                    <option value="EQUALS"                                                                                  >{{ 'accountManagerApp.RuleOperator.EQUALS' | translate }}</option>
+                    <option value="CONTAINS"            [class.d-none]="!stringFields.includes(editForm.get('field')!.value)">{{ 'accountManagerApp.RuleOperator.CONTAINS' | translate }}</option>
+                    <option value="NOTCONTAINS"         [class.d-none]="!stringFields.includes(editForm.get('field')!.value)">{{ 'accountManagerApp.RuleOperator.NOTCONTAINS' | translate }}</option>
+                    <option value="GREATEROREQUALTHAN"  [class.d-none]="stringFields.includes(editForm.get('field')!.value)">{{ 'accountManagerApp.RuleOperator.GREATEROREQUALTHAN' | translate }}</option>
+                    <option value="LESSOREQUALTHAN"     [class.d-none]="stringFields.includes(editForm.get('field')!.value)">{{ 'accountManagerApp.RuleOperator.LESSOREQUALTHAN' | translate }}</option>
                 </select>
                 <div *ngIf="editForm.get('operator')!.invalid && (editForm.get('operator')!.dirty || editForm.get('operator')!.touched)">
                     <small class="form-text text-danger"

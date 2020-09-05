@@ -4,6 +4,7 @@
       "null": "",
       "EQUALS": "equals",
       "CONTAINS": "contains",
+      "NOTCONTAINS": "not contains",
       "GREATEROREQUALTHAN": "is greater or equal than",
       "LESSOREQUALTHAN": "is less or equal than"
     }

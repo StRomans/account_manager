@@ -4,6 +4,7 @@
       "null": "",
       "AMOUNT": "Montant",
       "DATE": "Date",
+      "DAY_OF_MONTH": "Jour du mois",
       "LABEL": "Description"
     }
   }
