@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="form-group" *ngIf="editForm.get('field')!.value === 'LABEL'">
+            <div class="form-group" *ngIf="stringFields.includes(editForm.get('field')!.value)">
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.stringValue" for="field_stringValue">String Value</label>
                 <input type="text" class="form-control" name="stringValue" id="field_stringValue"
                        formControlName="stringValue" />
@@ -60,7 +60,7 @@
                     </small>
                 </div>
             </div>
-            <div class="form-group" *ngIf="editForm.get('field')!.value === 'AMOUNT'">
+            <div class="form-group" *ngIf="numberFields.includes(editForm.get('field')!.value)">
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.numberValue" for="field_numberValue">Number Value</label>
                 <input type="number" class="form-control" name="numberValue" id="field_numberValue" formControlName="numberValue" />
                 <div *ngIf="editForm.get('numberValue')!.invalid && (editForm.get('numberValue')!.dirty || editForm.get('numberValue')!.touched)">
@@ -74,7 +74,7 @@
                     </small>
                 </div>
             </div>
-            <div class="form-group" *ngIf="editForm.get('field')!.value === 'DATE'">
+            <div class="form-group" *ngIf="dateFields.includes(editForm.get('field')!.value)">
                 <label class="form-control-label" jhiTranslate="accountManagerApp.filterRule.dateValue" for="field_dateValue">Date Value</label>
                 <div class="input-group">
                     <input id="field_dateValue" type="text" class="form-control" name="dateValue" ngbDatepicker #dateDp="ngbDatepicker" formControlName="dateValue" />
