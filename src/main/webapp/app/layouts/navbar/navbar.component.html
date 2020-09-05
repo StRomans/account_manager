@@ -58,11 +58,19 @@
                     </li>
                 </ul>
             </li>
-            <li>
-                <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="analyse-menu">
                     <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
                     <span jhiTranslate="global.menu.data.analyse.main">Analyser</span>
                 </a>
+                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="analyse-menu">
+                    <li>
+                        <a class="dropdown-item" routerLink="rendering/savings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.data.analyse.savings">Mes économies</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
 

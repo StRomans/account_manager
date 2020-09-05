@@ -16,7 +16,8 @@
           "subCategory": "Sub-Categories"
         },
         "analyse": {
-          "main": "Analyse"
+          "main": "Analyse",
+          "savings": "Savings"
         }
       },
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
