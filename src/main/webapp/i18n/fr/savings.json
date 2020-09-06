@@ -1,0 +1,20 @@
+{
+  "accountManagerApp": {
+    "savings": {
+      "xaxis": {
+        "january": "Jan",
+        "february": "Fév",
+        "march": "Mars",
+        "april": "Avril",
+        "may": "Mai",
+        "june": "Juin",
+        "july": "Juillet",
+        "august": "Août",
+        "september": "Sept",
+        "october": "Oct",
+        "november": "Nov",
+        "december": "Déc"
+      }
+    }
+  }
+}
